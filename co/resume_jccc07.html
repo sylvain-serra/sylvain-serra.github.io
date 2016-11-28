@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="fr">
+ <head>
+  <title>Dr Sylvain Serra - JCCC 2007</title>
+  <meta charset="UTF-8">
+  <meta name="author" content>
+  <meta name="keywords" content="Energ&eacute;tique, r&eacute;seaux de chaleur, optimisation, proc&eacute;d&eacute;s, simulation num&eacute;rique, &eacute;coulement turbulent, densit&eacute; variable, transfert thermique, combustion, LATEP - ENSGTI - IPRA - UPPA, ">
+  <meta name="date" content>
+  <link rel="stylesheet" type="text/css" href="../wdgt/scCodeMgr/scCodeMgr.css">
+  <link rel="stylesheet" type="text/css" href="../wdgt/scImgMgr/scImgMgr.css">
+  <script type="text/JavaScript">
+/*0*/ var scServices = {};
+/*1*/ scServices["scLoad"] = {loadFromRoot:function(pUrl){window.location.href="../"+pUrl;}, getPathFromRoot:function(pPath){return "../"+pPath;}, getUrlFromRoot:function(pHref){if(!this.fRootOffset) this.fRootOffset = scCoLib.hrefBase().length-21; return pHref.substring(this.fRootOffset);},getRootUrl:function(){if(!this.fRootUrl) this.fRootUrl = scCoLib.hrefBase().substring(0,scCoLib.hrefBase().length-22); return this.fRootUrl;}};
+</script>
+  <!--[if lt IE 9]><script type="text/JavaScript" src="../wdgt/html5shiv/html5shiv.js"></script><![endif]--><script type="text/JavaScript" src="../lib-sm/scCoLib.js"></script>
+  <script type="text/JavaScript" src="../lib-sm/scPaLib.js"></script>
+  <script type="text/JavaScript" src="../lib-sm/scSiLib.js"></script>
+  <script type="text/JavaScript" src="../lib-sm/scTiLib.js"></script>
+  <script type="text/JavaScript" src="../lib-sm/scTooltipMgr.js"></script>
+  <script type="text/JavaScript" src="../svc/scorm.js"></script>
+  <script type="text/JavaScript" src="../lib-sm/scDynUiMgr.js"></script>
+  <script type="text/JavaScript" src="../svc/scSearch/scSearch.js"></script>
+  <script type="text/JavaScript" src="../wdgt/tplMgr/tplMgr.js"></script>
+  <script type="text/JavaScript" src="../wdgt/dynSizes/dynSizes.js"></script>
+  <script type="text/JavaScript" src="../wdgt/scCodeMgr/scCodeMgr.js"></script>
+  <script type="text/JavaScript" src="../wdgt/scImgMgr/scImgMgr.js"></script>
+  <script type="text/JavaScript">
+/*0*/ try{var vCurrDir = scCoLib.hrefBase().substring(0,scCoLib.hrefBase().lastIndexOf("/")+1); if(window.opener && window.opener.location.href.lastIndexOf(vCurrDir, vCurrDir.length)==0 && window.opener.scServices) scServices = window.opener.scServices; else if(window.parent && window.parent.location.href.lastIndexOf(vCurrDir, vCurrDir.length)==0 && window.parent.scServices) scServices = window.parent.scServices;}catch(e){}
+scCodeMgr.registerCode("des:div.code");
+
+scImgMgr.registerGallery("des:div.galFra");
+
+scImgMgr.registerZoom("des:a.imgZoom",{toolbar:1,mag:1,titlePath:"par:/nsi:/chi:span.capTi"});
+
+</script>
+  <meta name="generator" content="SCENARI 4.1.10 / Opale 3.5.014 - http://scenari-platform.org/opale">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <meta name="revision" content="2016-11-04 09:37">
+  <link rel="start" href="sylvain_serra.html" title="Dr Sylvain Serra">
+  <script type="text/javascript">try{
+	if(window.frameElement.setSubWindowTitle) window.frameElement.setSubWindowTitle(document.title);
+}catch(e){}
+</script>
+  <script type="text/javascript"> scSiLib.getContentHeight = function(pContainer) {
+ var vCh = pContainer.lastChild;
+ var vH = 0;
+ while(vCh && ( vCh.nodeType != 1 || ! (vH = vCh.offsetHeight) || vCh.style.position=="absolute") ) vCh = vCh.previousSibling;
+ if(vCh) {
+  return vCh.offsetTop + vH;
+ }
+ return Number.NaN;
+}</script>
+  <link type="text/css" rel="stylesheet" href="../skin/css/html.css" media="all">
+  <link type="text/css" rel="stylesheet" href="../skin/css/struct_ref.css" media="screen">
+  <link type="text/css" rel="stylesheet" href="../skin/css/buttons.css" media="screen">
+  <link type="text/css" rel="stylesheet" href="../skin/css/transf.css" media="all">
+  <!--[if IE]><link type="text/css" rel="stylesheet" href="../skin/css/ie.css" media="screen"/><![endif]-->
+  <!--[if lt IE 7]><link type="text/css" rel="stylesheet" href="../skin/css/ie6_ref.css" media="screen"/><![endif]--><link type="text/css" rel="stylesheet" href="../skin/css/print.css" media="print">
+ </head>
+ <body>
+  <div id="tplFra"><div id="tplCo"><div id="refCo" class="scroller"><a id="content" class="accessAnc" name="content" href="#content"></a><div id="tplCoMarginW"><div id="tplCoFlexTop"></div><div id="tplCo2"><div class="mainContent "><h1 class="mainContent_ti"><span>JCCC 2007</span></h1><div class="mainContent_co "><div class="info "><div class="info_co "><div><p class="op_txt_p">L'objectif de ce travail est d'&eacute;tudier, &agrave; l'aide de la Simulation des Grandes &eacute;chelles (SGE), les effets d'un fort gradient de temp&eacute;rature sur un &eacute;coulement turbulent. Ces contraintes dynamique et thermique se rencontrent au sein des r&eacute;cepteurs de centrales &eacute;lectriques solaires. Le r&eacute;cepteur solaire est soumis, d'un cot&eacute;, &agrave; des temp&eacute;ratures tr&egrave;s importantes obtenues gr&acirc;ce au rayonnement solaire, et de l'autre, &agrave; la temp&eacute;rature ambiante. On cherche alors &agrave; capter le maximum d'&eacute;nergie thermique dans le fluide circulant &agrave; travers le r&eacute;cepteur. </p><p class="op_txt_p">Un fort gradient de temp&eacute;rature a un effet non n&eacute;gligeable sur un &eacute;coulement turbulent et l'&eacute;volution des ph&eacute;nom&egrave;nes physiques n'est pas pr&eacute;cis&eacute;ment caract&eacute;ris&eacute;e. Une configuration acad&eacute;mique, &agrave; savoir un canal plan bi-p&eacute;riodique, est utilis&eacute;e afin de d&eacute;terminer le plus pr&eacute;cis&eacute;ment possible l'influence de la thermique sur la dynamique et les interactions qui en d&eacute;coulent. Un fluide turbulent circule entre deux plaques maintenues &agrave; des temp&eacute;ratures constantes (<span class="op_txt_tl_mathtex">
+		<img class="sfile_math_inline" alt src="../res/resume_jccc07.png" style="vertical-align:-3px;">
+	</span> et <span class="op_txt_tl_mathtex">
+		<img class="sfile_math_inline" alt src="../res/resume_jccc07_1.png" style="vertical-align:-3px;">
+	</span>) diff&eacute;rentes l'une de l'autre. La temp&eacute;rature <span class="op_txt_tl_mathtex">
+		<img class="sfile_math_inline" alt src="../res/resume_jccc07.png" style="vertical-align:-3px;">
+	</span> de la plaque inf&eacute;rieure est fix&eacute;e &agrave; <span class="op_txt_tl_mathtex">
+		<img class="sfile_math_inline" alt src="../res/resume_jccc07_2.png" style="vertical-align:-1px;">
+	</span> et, selon les simulations num&eacute;riques, le rapport de temp&eacute;rature &eacute;volue. Le d&eacute;bit est impos&eacute; afin d'obtenir un nombre de Reynolds de frottement de <span class="op_txt_tl_mathtex">
+		<img class="sfile_math_inline" alt src="../res/resume_jccc07_3.png" style="vertical-align:-1px;">
+	</span> ou de <span class="op_txt_tl_mathtex">
+		<img class="sfile_math_inline" alt src="../res/resume_jccc07_4.png" style="vertical-align:-0px;">
+	</span>.</p><p class="op_txt_p">Les simulations sont r&eacute;alis&eacute;es &agrave; l'aide d'un code de calcul d&eacute;velopp&eacute; par le CEA de Grenoble : Trio_U. Les &eacute;quations de Navier-Stokes et de conservation de l'&eacute;nergie sont simplifi&eacute;es gr&acirc;ce &agrave; l'hypoth&egrave;se de Bas-Mach. Cette approximation permet de faire varier la masse volumique en fonction de la temp&eacute;rature et &eacute;vite les ondes acoustiques dont les effets sont importants dans les &eacute;coulements supersoniques. Le mod&egrave;le sous-maille utilis&eacute; est le mod&egrave;le Wale (Wall Adapting Local Eddy) qui permet une bonne prise en compte des effets de proche paroi. Diff&eacute;rentes &eacute;tudes sont effectu&eacute;es et nous avons consid&eacute;r&eacute; plusieurs rapports de temp&eacute;rature (allant jusqu'&agrave; 5). Les r&eacute;sultats pr&eacute;sent&eacute;s porteront principalement sur un ratio de 2. Le nombre de Prandtl sous maille est soit constant soit calcul&eacute; dynamiquement afin de d&eacute;terminer son influence sur l'&eacute;coulement.</p></div></div></div></div></div></div></div></div></div><div id="tplFooter"><hr class="hidden"><a id="footer" class="accessAnc" name="footer" href="#footer"></a><a href="#" onclick="window.print();return false;" class="printSubWinBtn" title="Imprimer la page"><span><img alt="Imprimer" src="../skin/img/btn/printSubWin.png" onmouseover="this.src='../skin/img/btn/printSubWinOver.png';" onmouseout="this.src='../skin/img/btn/printSubWin.png';" class="btnImg"><span class="btnLbl">Imprimer</span></span></a></div></div>
+  <script type="text/JavaScript" src="../skin/js/skin.js"></script>
+  <script type="text/javascript">tplMgr.init();scCodeMgr.init();scImgMgr.init();new scSiRuleAutoMarginW("tplCoMarginW","ide:tplCo",true,450,100);new scSiRuleFlexH("tplCoFlexTop","ide:tplCo",true,.3);</script>
+ </body>
+</html>
