@@ -122,7 +122,7 @@ div.logoHome{
 	top: 30%;
 	left:10%;
 	background-color: white;
-	-moz-opacity:0.8;
+	-moz-opacity:1.0;
 	filter:Alpha(opacity=80);
 	opacity:0.8; 
 	font-weight: bold;
