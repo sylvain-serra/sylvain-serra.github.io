@@ -121,8 +121,8 @@ div.logoHome{
 	width: 80%;
 	top: 30%;
 	left:10%;
-	background-color: transparence;
-	-moz-opacity:1.0;
+	background-color: white;
+	-moz-opacity:0.8;
 	filter:Alpha(opacity=80);
 	opacity:0.8; 
 	font-weight: bold;
