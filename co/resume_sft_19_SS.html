@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="fr">
+ <head>
+  <meta http-equiv="x-ua-compatible" content="IE=EDGE">
+  <title>MOD&Eacute;LISATION ET SIMULATION DYNAMIQUE D'UNE CENTRALE SOLAIRE THERMIQUE</title>
+  <meta charset="UTF-8">
+  <meta name="generator" content="SCENARI 4.2.107 / Opale 3.7.001">
+  <meta name="revision" content="2019-12-17 14:48">
+  <link rel="start" href="Sylvain_serra.html" title="Dr Sylvain Serra">
+  <meta name="author" content>
+  <meta name="date" content>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="../lib-md/w_scImgMgr/scImgMgr.css">
+  <link rel="stylesheet" type="text/css" href="../lib-md/w_scCodeMgr/scCodeMgr.css">
+  <script type="text/JavaScript">
+/*0*/ var scServices = {id:"k49zesfs"};
+/*1*/ window.scLoadParams = {destUri:"/co/resume_sft_19_SS.html", pathToRoot:"../"};
+</script>
+  <script type="text/JavaScript" src="../lib-sc/scCoLib.js"></script>
+  <script type="text/JavaScript" src="../lib-sc/scTiLib.js"></script>
+  <script type="text/JavaScript" src="../lib-sc/scSiLib.js"></script>
+  <script type="text/JavaScript" src="../lib-sc/scPaLib.js"></script>
+  <script type="text/JavaScript" src="../lib-sc/scTooltipMgr.js"></script>
+  <script type="text/JavaScript" src="../lib-sc/scDynUiMgr.js"></script>
+  <script type="text/JavaScript" src="../lib-md/s_assmnt.js"></script>
+  <script type="text/JavaScript" src="../lib-sc/scMapMgr.js"></script>
+  <script type="text/JavaScript" src="../lib-sc/scDragMgr.js"></script>
+  <script type="text/JavaScript" src="../lib-sc/scAssmntMgr.js"></script>
+  <script type="text/JavaScript" src="../lib-md/s_scSearch/scSearch.js"></script>
+  <script type="text/JavaScript" src="../lib-md/w_mathjax/mathjaxMgr.js"></script>
+  <script type="text/JavaScript" src="../lib-md/w_tplMgr/tplMgr.js"></script>
+  <script type="text/JavaScript" src="../lib-md/w_scCodeMgr/scCodeMgr.js"></script>
+  <script type="text/JavaScript" src="../lib-md/w_scMediaMgr/scMediaMgr.js"></script>
+  <script type="text/JavaScript" src="../lib-md/w_scImgMgr/scImgMgr.js"></script>
+  <script type="text/JavaScript">
+/*0*/ try{if(window.opener && window.opener.scServices && window.opener.scServices.id == scServices.id) scServices = window.opener.scServices; else if(window.parent && window.parent.scServices && window.parent.scServices.id == scServices.id) scServices = window.parent.scServices;}catch(e){}
+scCodeMgr.registerCode("des:div.code");
+
+scImgMgr.registerAdaptedImage("ide:content/des:img");
+
+scImgMgr.registerGallery("des:div.galFra");
+
+scImgMgr.registerSvg("des:svg");
+scImgMgr.registerZoom("des:a.svgZoom",{type:"svg",svgMax:1,toolbar:1,titlePath:"par:/nsi:/des:span.capTi"});
+
+scImgMgr.registerZoom("des:a.imgZoom",{toolbar:1,mag:1,titlePath:"par:/nsi:/des:span.capTi"});
+
+</script>
+  <link type="text/css" rel="stylesheet" href="../skin/css/main.css" media="all">
+  <link type="text/css" rel="stylesheet" href="../skin/css/skin.css" media="all">
+  <link type="text/css" rel="stylesheet" href="../skin/css/print.css" media="print">
+  <script type="text/javascript">try{
+	if(window.frameElement.setSubWindowTitle) window.frameElement.setSubWindowTitle(document.title);
+}catch(e){}
+</script>
+ </head>
+ <body class="subWin ref">
+  <div id="root"><header id="header" role="banner"><nav role="navigation"><ul id="accessibility"><li class="waiContent"><a href="#content"><span>contenu</span></a></li></ul></nav></header><main id="main" role="main"><div id="document"><div id="content" tabindex="-1"><div class="scroller"><hr class="hidden"><section class="hBk article expUc"><h2 class="hBk_ti"><span>MOD&Eacute;LISATION ET SIMULATION DYNAMIQUE D'UNE CENTRALE SOLAIRE THERMIQUE</span></h2><div class="hBk_co "><div class="iBk info"><div class="iBk_co "><div class="rBk "><p><strong class="txt_emp_is ">R&Eacute;SUM&Eacute;</strong> :</p><p>NEWHEAT est une jeune entreprise innovante ayant pour mission de d&eacute;velopper, financer, construire et exploiter des moyens de production de chaleur solaire &agrave; destination des proc&eacute;d&eacute;s industriels et des r&eacute;seaux de chaleur urbains. Elle con&ccedil;oit notamment des centrales solaires thermiques fonctionnant &agrave; basse temp&eacute;rature (&lt;100&deg;C), bas&eacute;es sur des technologies solaires sans concentration. Dans le cadre du d&eacute;veloppement d'un outil d'optimisation dynamique d'une centrale solaire thermique, la mod&eacute;lisation fine du syst&egrave;me et la simulation dynamique de celui-ci sont deux des &eacute;tapes majeures pr&eacute;c&eacute;dant le travail final d'optimisation.</p><p>Une centrale solaire thermique comprend de nombreux &eacute;l&eacute;ments et chacun d'entre eux a &eacute;t&eacute; mod&eacute;lis&eacute; : les collecteurs solaires et plus largement le champ solaire, les &eacute;changeurs de chaleur, une cuve de stockage par chaleur sensible ainsi que des tuyauteries de liaison. L'ensemble des mod&egrave;les respecte les conservations de la masse et de l'&eacute;nergie. Un mod&egrave;le simple de pertes de charge est &eacute;galement &eacute;crit. Des analyses de sensibilit&eacute; permettant de v&eacute;rifier le bon comportement de ces mod&egrave;les et/ou de simplifier le probl&egrave;me global ont &eacute;t&eacute; men&eacute;es. Des r&eacute;sultats exp&eacute;rimentaux permettront prochainement de valider les mod&egrave;les utilis&eacute;s. Par la suite, ces diff&eacute;rents &eacute;l&eacute;ments ont &eacute;t&eacute; li&eacute;s de telle sorte que la structure g&eacute;n&eacute;rale d'une centrale solaire thermique soit respect&eacute;e. Enfin, des simulations dynamiques sur diff&eacute;rents horizons de temps ont pu &ecirc;tre r&eacute;alis&eacute;es. Ces simulations mettent en &eacute;vidence diff&eacute;rents aspects du fonctionnement standard d'une centrale : les conditions de d&eacute;marrage et d'arr&ecirc;t, la livraison directe de chaleur, la charge et la d&eacute;charge du stockage, le respect ou non-respect de la demande. Une m&eacute;thode de collocation orthogonale a permis de rendre le syst&egrave;me &agrave; r&eacute;soudre purement alg&eacute;brique et d'adopter un r&eacute;solution simultan&eacute;e (orient&eacute;e-&eacute;quation) du probl&egrave;me, et ce, dans le but de r&eacute;aliser ces travaux de mod&eacute;lisation et de simulation sur le logiciel GAMS &reg; qui a &eacute;t&eacute; choisi pour le d&eacute;veloppement futur de l'outil d'optimisation.</p><p>Les r&eacute;sultats des simulations dynamiques permettront &agrave; l'avenir d'initialiser le probl&egrave;me d'optimisation dynamique du fonctionnement &agrave; court terme d'une centrale solaire thermique. L'objectif de l'optimisation pourra alors &ecirc;tre de maximiser l'&eacute;nergie fournie au consommateur. Les variables d'optimisation seront principalement les d&eacute;bits massiques des circuits primaire (c&ocirc;t&eacute; production solaire) et secondaire (c&ocirc;t&eacute; stockage/livraison). Un angle d'inclinaison dynamique des capteurs solaires sera &eacute;galement envisag&eacute; dans la mesure o&ugrave; NEWHEAT porte cette innovation de tracking solaire 1 axe (Nord-Sud) pour des capteurs plans.</p><p><strong class="txt_emp_is ">Mots Cl&eacute;s :</strong> Centrales solaires thermiques / Mod&eacute;lisation / Simulation dynamique</p></div></div></div></div></section></div></div></div></main><footer id="footer" role="contentinfo" tabindex="-1"><hr class="hidden"></footer></div>
+  <script type="text/JavaScript" src="../skin/js/skin.js"></script>
+  <script type="text/javascript">tplMgr.init();scCodeMgr.init();scMediaMgr.init("ide:content/chi:div/chi:section/des:.mediaPlayer",{processYoutubeUrls :true});scImgMgr.init();</script>
+ </body>
+</html>

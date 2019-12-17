@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="fr">
+ <head>
+  <meta http-equiv="x-ua-compatible" content="IE=EDGE">
+  <title>Optimisation multiobjectif d'une centrale g&eacute;othermique de cog&eacute;n&eacute;ration &eacute;lectricit&eacute;/chaleur</title>
+  <meta charset="UTF-8">
+  <meta name="generator" content="SCENARI 4.2.107 / Opale 3.7.001">
+  <meta name="revision" content="2019-12-17 14:48">
+  <link rel="start" href="Sylvain_serra.html" title="Dr Sylvain Serra">
+  <meta name="author" content>
+  <meta name="date" content>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="../lib-md/w_scImgMgr/scImgMgr.css">
+  <link rel="stylesheet" type="text/css" href="../lib-md/w_scCodeMgr/scCodeMgr.css">
+  <script type="text/JavaScript">
+/*0*/ var scServices = {id:"k49zesfs"};
+/*1*/ window.scLoadParams = {destUri:"/co/resume_sft_19_FM.html", pathToRoot:"../"};
+</script>
+  <script type="text/JavaScript" src="../lib-sc/scCoLib.js"></script>
+  <script type="text/JavaScript" src="../lib-sc/scTiLib.js"></script>
+  <script type="text/JavaScript" src="../lib-sc/scSiLib.js"></script>
+  <script type="text/JavaScript" src="../lib-sc/scPaLib.js"></script>
+  <script type="text/JavaScript" src="../lib-sc/scTooltipMgr.js"></script>
+  <script type="text/JavaScript" src="../lib-sc/scDynUiMgr.js"></script>
+  <script type="text/JavaScript" src="../lib-md/s_assmnt.js"></script>
+  <script type="text/JavaScript" src="../lib-sc/scMapMgr.js"></script>
+  <script type="text/JavaScript" src="../lib-sc/scDragMgr.js"></script>
+  <script type="text/JavaScript" src="../lib-sc/scAssmntMgr.js"></script>
+  <script type="text/JavaScript" src="../lib-md/s_scSearch/scSearch.js"></script>
+  <script type="text/JavaScript" src="../lib-md/w_mathjax/mathjaxMgr.js"></script>
+  <script type="text/JavaScript" src="../lib-md/w_tplMgr/tplMgr.js"></script>
+  <script type="text/JavaScript" src="../lib-md/w_scCodeMgr/scCodeMgr.js"></script>
+  <script type="text/JavaScript" src="../lib-md/w_scMediaMgr/scMediaMgr.js"></script>
+  <script type="text/JavaScript" src="../lib-md/w_scImgMgr/scImgMgr.js"></script>
+  <script type="text/JavaScript">
+/*0*/ try{if(window.opener && window.opener.scServices && window.opener.scServices.id == scServices.id) scServices = window.opener.scServices; else if(window.parent && window.parent.scServices && window.parent.scServices.id == scServices.id) scServices = window.parent.scServices;}catch(e){}
+scCodeMgr.registerCode("des:div.code");
+
+scImgMgr.registerAdaptedImage("ide:content/des:img");
+
+scImgMgr.registerGallery("des:div.galFra");
+
+scImgMgr.registerSvg("des:svg");
+scImgMgr.registerZoom("des:a.svgZoom",{type:"svg",svgMax:1,toolbar:1,titlePath:"par:/nsi:/des:span.capTi"});
+
+scImgMgr.registerZoom("des:a.imgZoom",{toolbar:1,mag:1,titlePath:"par:/nsi:/des:span.capTi"});
+
+</script>
+  <link type="text/css" rel="stylesheet" href="../skin/css/main.css" media="all">
+  <link type="text/css" rel="stylesheet" href="../skin/css/skin.css" media="all">
+  <link type="text/css" rel="stylesheet" href="../skin/css/print.css" media="print">
+  <script type="text/javascript">try{
+	if(window.frameElement.setSubWindowTitle) window.frameElement.setSubWindowTitle(document.title);
+}catch(e){}
+</script>
+ </head>
+ <body class="subWin ref">
+  <div id="root"><header id="header" role="banner"><nav role="navigation"><ul id="accessibility"><li class="waiContent"><a href="#content"><span>contenu</span></a></li></ul></nav></header><main id="main" role="main"><div id="document"><div id="content" tabindex="-1"><div class="scroller"><hr class="hidden"><section class="hBk article expUc"><h2 class="hBk_ti"><span>Optimisation multiobjectif d'une centrale g&eacute;othermique de cog&eacute;n&eacute;ration &eacute;lectricit&eacute;/chaleur</span></h2><div class="hBk_co "><div class="iBk info"><div class="iBk_co "><div class="rBk "><p><strong class="txt_emp_is ">R&eacute;sum&eacute;</strong></p><p>Dirig&eacute; par la soci&eacute;t&eacute; Fonroche G&eacute;othermie, un consortium de dix partenaires participe au projet FONGEOSEC qui s'inscrit dans le cadre des Investissements d'Avenir de l'ADEME. Ce projet a pour but de concevoir et de r&eacute;aliser un d&eacute;monstrateur innovant de centrale g&eacute;othermique haute enthalpie. L'&eacute;nergie, ainsi r&eacute;cup&eacute;r&eacute;e en profondeur, servira &agrave; la cog&eacute;n&eacute;ration d'&eacute;lectricit&eacute; et de chaleur. L'une des &eacute;tapes du projet est l'optimisation &eacute;conomique et exerg&eacute;tique des activit&eacute;s de surface de la centrale (production d'&eacute;lectricit&eacute; et distribution de la chaleur).</p><p>Dans l'&eacute;tude propos&eacute;e, le fluide g&eacute;othermal est utilis&eacute; comme source chaude (1) pour un Cycle Organique de Rankine (ORC : Organic Rankine Cycle) qui va permettre la production d'&eacute;lectricit&eacute;, et (2) pour un R&eacute;seau de Chaleur Urbain (RCU) qui va permettre la distribution de la chaleur aux consommateurs finaux. Chaque constituant de l'ORC est dimensionn&eacute; et la topologie du RCU est d&eacute;termin&eacute;e. La formulation du probl&egrave;me d'optimisation permet alors de d&eacute;terminer simultan&eacute;ment :</p><ul class="txt_il "><li class="txt_ili "><p> la meilleure configuration entre production d'&eacute;lectricit&eacute; et de chaleur,</p></li><li class="txt_ili "><p> l'existence ou non d'un r&eacute;cup&eacute;rateur de chaleur interne pour l'ORC,</p></li><li class="txt_ili "><p> les meilleures dimensions pour les composants de l'ORC,</p></li><li class="txt_ili "><p> le raccordement ou non de consommateurs potentiels au r&eacute;seau (topologie du RCU).</p></li></ul><p>L'utilisation de variables discr&egrave;tes est n&eacute;cessaire pour g&eacute;rer les existences (r&eacute;cup&eacute;rateur de chaleur interne et consommateurs potentiels) et le probl&egrave;me d'optimisation ainsi r&eacute;solu est un probl&egrave;me de type MINLP (Mixed Integer Non Linear Programming).</p><p>Pour cette &eacute;tude, une approche multiobjectif permettant de confronter un crit&egrave;re &eacute;conomique (les b&eacute;n&eacute;fices nets annuels de la centrale &agrave; maximiser) et un crit&egrave;re exerg&eacute;tique (les pertes totales d'exergie &agrave; minimiser) est propos&eacute;e. Ces deux crit&egrave;res sont pris en compte dans une unique fonction objectif. L'utilisation d'un facteur de pond&eacute;ration dans la fonction objectif permet de privil&eacute;gier plus ou moins, l'un ou l'autre des crit&egrave;res d'optimisation. L'optimisation du syst&egrave;me est alors r&eacute;alis&eacute;e pour une dizaine de valeur du facteur de pond&eacute;ration. La repr&eacute;sentation graphique des points solutions du point de vue de chacun des deux crit&egrave;res fait apparaitre un front de Pareto. Ainsi, un ensemble de configurations de la centrale g&eacute;othermique est obtenu. Le choix d'une configuration par rapport &agrave; une autre revient au d&eacute;cideur et d&eacute;pend de l'importance qu'il veut attribuer &agrave; l'un ou l'autre des crit&egrave;res. Les r&eacute;sultats montrent cependant que la solution obtenue lors de l'optimisation mono-objectif d'un crit&egrave;re d'int&eacute;r&ecirc;t seul (soit des b&eacute;n&eacute;fices soit des pertes d'exergie) n'est pas n&eacute;cessairement une solution de choix pour le d&eacute;cideur. En effet, le front de Pareto met en &eacute;vidence l'existence d'une solution permettant une nette am&eacute;lioration du second crit&egrave;re, au prix d'une faible d&eacute;t&eacute;rioration du crit&egrave;re d'int&eacute;r&ecirc;t choisi.</p></div></div></div></div></section></div></div></div></main><footer id="footer" role="contentinfo" tabindex="-1"><hr class="hidden"></footer></div>
+  <script type="text/JavaScript" src="../skin/js/skin.js"></script>
+  <script type="text/javascript">tplMgr.init();scCodeMgr.init();scMediaMgr.init("ide:content/chi:div/chi:section/des:.mediaPlayer",{processYoutubeUrls :true});scImgMgr.init();</script>
+ </body>
+</html>

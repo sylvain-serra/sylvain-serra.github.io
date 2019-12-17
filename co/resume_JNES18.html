@@ -1,65 +1,62 @@
 <!DOCTYPE html>
 <html lang="fr">
  <head>
-  <title>Dr Sylvain Serra - MOD&Eacute;LISATION ET OPTIMISATION DYNAMIQUE D'UNE CENTRALE SOLAIRE THERMIQUE</title>
+  <meta http-equiv="x-ua-compatible" content="IE=EDGE">
+  <title>MOD&Eacute;LISATION ET OPTIMISATION DYNAMIQUE D'UNE CENTRALE SOLAIRE THERMIQUE</title>
   <meta charset="UTF-8">
+  <meta name="generator" content="SCENARI 4.2.107 / Opale 3.7.001">
+  <meta name="revision" content="2019-12-17 14:48">
+  <link rel="start" href="Sylvain_serra.html" title="Dr Sylvain Serra">
   <meta name="author" content>
-  <meta name="keywords" content="Energ&eacute;tique, r&eacute;seaux de chaleur, optimisation, proc&eacute;d&eacute;s, simulation num&eacute;rique, &eacute;coulement turbulent, densit&eacute; variable, transfert thermique, LATEP - ENSGTI - IPRA - UPPA, Sylvain Serra, ">
   <meta name="date" content>
-  <link rel="stylesheet" type="text/css" href="../wdgt/scCodeMgr/scCodeMgr.css">
-  <link rel="stylesheet" type="text/css" href="../wdgt/scImgMgr/scImgMgr.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="../lib-md/w_scImgMgr/scImgMgr.css">
+  <link rel="stylesheet" type="text/css" href="../lib-md/w_scCodeMgr/scCodeMgr.css">
   <script type="text/JavaScript">
-/*0*/ var scServices = {};
-/*1*/ scServices["scLoad"] = {loadFromRoot:function(pUrl){window.location.href="../"+pUrl;}, getPathFromRoot:function(pPath){return "../"+pPath;}, getUrlFromRoot:function(pHref){if(!this.fRootOffset) this.fRootOffset = scCoLib.hrefBase().length-21; return pHref.substring(this.fRootOffset);},getRootUrl:function(){if(!this.fRootUrl) this.fRootUrl = scCoLib.hrefBase().substring(0,scCoLib.hrefBase().length-22); return this.fRootUrl;}};
+/*0*/ var scServices = {id:"k49zesfs"};
+/*1*/ window.scLoadParams = {destUri:"/co/resume_JNES18.html", pathToRoot:"../"};
 </script>
-  <!--[if lt IE 9]><script type="text/JavaScript" src="../wdgt/html5shiv/html5shiv.js"></script><![endif]--><script type="text/JavaScript" src="../lib-sm/scCoLib.js"></script>
-  <script type="text/JavaScript" src="../lib-sm/scPaLib.js"></script>
-  <script type="text/JavaScript" src="../lib-sm/scSiLib.js"></script>
-  <script type="text/JavaScript" src="../lib-sm/scTiLib.js"></script>
-  <script type="text/JavaScript" src="../lib-sm/scTooltipMgr.js"></script>
-  <script type="text/JavaScript" src="../svc/scorm.js"></script>
-  <script type="text/JavaScript" src="../lib-sm/scDynUiMgr.js"></script>
-  <script type="text/JavaScript" src="../svc/scSearch/scSearch.js"></script>
-  <script type="text/JavaScript" src="../wdgt/tplMgr/tplMgr.js"></script>
-  <script type="text/JavaScript" src="../wdgt/dynSizes/dynSizes.js"></script>
-  <script type="text/JavaScript" src="../wdgt/scCodeMgr/scCodeMgr.js"></script>
-  <script type="text/JavaScript" src="../wdgt/scImgMgr/scImgMgr.js"></script>
+  <script type="text/JavaScript" src="../lib-sc/scCoLib.js"></script>
+  <script type="text/JavaScript" src="../lib-sc/scTiLib.js"></script>
+  <script type="text/JavaScript" src="../lib-sc/scSiLib.js"></script>
+  <script type="text/JavaScript" src="../lib-sc/scPaLib.js"></script>
+  <script type="text/JavaScript" src="../lib-sc/scTooltipMgr.js"></script>
+  <script type="text/JavaScript" src="../lib-sc/scDynUiMgr.js"></script>
+  <script type="text/JavaScript" src="../lib-md/s_assmnt.js"></script>
+  <script type="text/JavaScript" src="../lib-sc/scMapMgr.js"></script>
+  <script type="text/JavaScript" src="../lib-sc/scDragMgr.js"></script>
+  <script type="text/JavaScript" src="../lib-sc/scAssmntMgr.js"></script>
+  <script type="text/JavaScript" src="../lib-md/s_scSearch/scSearch.js"></script>
+  <script type="text/JavaScript" src="../lib-md/w_mathjax/mathjaxMgr.js"></script>
+  <script type="text/JavaScript" src="../lib-md/w_tplMgr/tplMgr.js"></script>
+  <script type="text/JavaScript" src="../lib-md/w_scCodeMgr/scCodeMgr.js"></script>
+  <script type="text/JavaScript" src="../lib-md/w_scMediaMgr/scMediaMgr.js"></script>
+  <script type="text/JavaScript" src="../lib-md/w_scImgMgr/scImgMgr.js"></script>
   <script type="text/JavaScript">
-/*0*/ try{var vCurrDir = scCoLib.hrefBase().substring(0,scCoLib.hrefBase().lastIndexOf("/")+1); if(window.opener && window.opener.location.href.lastIndexOf(vCurrDir, vCurrDir.length)==0 && window.opener.scServices) scServices = window.opener.scServices; else if(window.parent && window.parent.location.href.lastIndexOf(vCurrDir, vCurrDir.length)==0 && window.parent.scServices) scServices = window.parent.scServices;}catch(e){}
+/*0*/ try{if(window.opener && window.opener.scServices && window.opener.scServices.id == scServices.id) scServices = window.opener.scServices; else if(window.parent && window.parent.scServices && window.parent.scServices.id == scServices.id) scServices = window.parent.scServices;}catch(e){}
 scCodeMgr.registerCode("des:div.code");
+
+scImgMgr.registerAdaptedImage("ide:content/des:img");
 
 scImgMgr.registerGallery("des:div.galFra");
 
-scImgMgr.registerZoom("des:a.imgZoom",{toolbar:1,mag:1,titlePath:"par:/nsi:/chi:span.capTi"});
+scImgMgr.registerSvg("des:svg");
+scImgMgr.registerZoom("des:a.svgZoom",{type:"svg",svgMax:1,toolbar:1,titlePath:"par:/nsi:/des:span.capTi"});
+
+scImgMgr.registerZoom("des:a.imgZoom",{toolbar:1,mag:1,titlePath:"par:/nsi:/des:span.capTi"});
 
 </script>
-  <meta name="generator" content="SCENARI 4.1.10 / Opale 3.5.014 - http://scenari-platform.org/opale">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-  <meta name="revision" content="2019-08-21 12:43">
-  <link rel="start" href="sylvain_serra.html" title="Dr Sylvain Serra">
+  <link type="text/css" rel="stylesheet" href="../skin/css/main.css" media="all">
+  <link type="text/css" rel="stylesheet" href="../skin/css/skin.css" media="all">
+  <link type="text/css" rel="stylesheet" href="../skin/css/print.css" media="print">
   <script type="text/javascript">try{
 	if(window.frameElement.setSubWindowTitle) window.frameElement.setSubWindowTitle(document.title);
 }catch(e){}
 </script>
-  <script type="text/javascript"> scSiLib.getContentHeight = function(pContainer) {
- var vCh = pContainer.lastChild;
- var vH = 0;
- while(vCh && ( vCh.nodeType != 1 || ! (vH = vCh.offsetHeight) || vCh.style.position=="absolute") ) vCh = vCh.previousSibling;
- if(vCh) {
-  return vCh.offsetTop + vH;
- }
- return Number.NaN;
-}</script>
-  <link type="text/css" rel="stylesheet" href="../skin/css/html.css" media="all">
-  <link type="text/css" rel="stylesheet" href="../skin/css/struct_ref.css" media="screen">
-  <link type="text/css" rel="stylesheet" href="../skin/css/buttons.css" media="screen">
-  <link type="text/css" rel="stylesheet" href="../skin/css/transf.css" media="all">
-  <!--[if IE]><link type="text/css" rel="stylesheet" href="../skin/css/ie.css" media="screen"/><![endif]-->
-  <!--[if lt IE 7]><link type="text/css" rel="stylesheet" href="../skin/css/ie6_ref.css" media="screen"/><![endif]--><link type="text/css" rel="stylesheet" href="../skin/css/print.css" media="print">
  </head>
- <body>
-  <div id="tplFra"><div id="tplCo"><div id="refCo" class="scroller"><a id="content" class="accessAnc" name="content" href="#content"></a><div id="tplCoMarginW"><div id="tplCoFlexTop"></div><div id="tplCo2"><div class="mainContent "><h1 class="mainContent_ti"><span>MOD&Eacute;LISATION ET OPTIMISATION DYNAMIQUE D'UNE CENTRALE SOLAIRE THERMIQUE</span></h1><div class="mainContent_co "><div class="info "><h2 class="info_ti"><span>JNES 2018</span></h2><div class="info_co "><div><p class="op_txt_p">Le projet ISORC (ADEME) vise la cr&eacute;ation d'outils pour optimiser le dimensionnement en phase conception et am&eacute;liorer la phase exploitation des r&eacute;seaux de chaleur int&eacute;grant une ou des productions solaires thermiques. Il regroupe des partenaires industriels et acad&eacute;mique : Tecsol, NewHeat, Sermet et le LaTEP.</p><p class="op_txt_p">Un des axes du projet se focalisera sur le d&eacute;veloppement d'un outil d'optimisation en phase conception couplant &agrave; la fois les r&eacute;seaux de chaleur, le solaire thermique et le stockage &agrave; court et long terme. Il utilisera des mod&egrave;les lin&eacute;aires et simplifi&eacute;s afin de pouvoir prendre en compte la variabilit&eacute; de la ressource solaire (multi-p&eacute;riode). L'outil sera utilisable pour de multiples configurations de r&eacute;seaux de chaleur, nouveaux ou d&eacute;j&agrave; existants, raccord&eacute;s &agrave; des installations solaires et &eacute;ventuellement &agrave; d'autres installations de production d'&eacute;nergie (bois, gaz, fioul, ...) ainsi qu'&agrave; des stockages journaliers et/ou inter-saisonniers. L'utilisation de m&eacute;thodes math&eacute;matiques d'optimisation permettra de prendre en compte le tr&egrave;s grand nombre de variables et de param&egrave;tres auxquels doivent faire face les ing&eacute;nieurs lors de la conception de tels syst&egrave;mes.</p><p class="op_txt_p">L'outil permettra par exemple d'obtenir les bilans de performances &eacute;nerg&eacute;tiques (chaleur livr&eacute;e, chaleur produite totale, ensoleillement global pris en compte, rendement de captation, pertes de stockage) ; et &eacute;conomique &agrave; l'&eacute;chelle du r&eacute;seau (prix de la chaleur) et &agrave; l'&eacute;chelle de la composante solaire (CAPEX et OPEX d&eacute;taill&eacute;s). A ceci s'ajoute les solutions optimis&eacute;es au niveau de la conception avec deux types de variables optimales : les variables binaires permettront de choisir l'existence des composants (stockage, unit&eacute; de production, type de panneaux...) ; les variables continues permettront de conna&icirc;tre la surface d'installation solaire, la puissance des autres producteurs, le volume de stockage journalier et/ou le volume de stockage inter-saisonnier ...</p><p class="op_txt_p">Il est important de garder &agrave; l'esprit que l'optimum d'un syst&egrave;me complet ne peut &ecirc;tre que meilleur (au pire, &eacute;gal) &agrave; la somme des optima des diff&eacute;rents syst&egrave;mes (centrale solaire, r&eacute;seau de chaleur, stockages) &eacute;tudi&eacute;s s&eacute;par&eacute;ment. La possibilit&eacute; d'&eacute;tudier diff&eacute;rent de type de stockages thermique dans une optimisation du syst&egrave;me complet est donc indispensable pour pr&eacute;tendre obtenir un syst&egrave;me performant.</p></div></div></div></div></div></div></div></div></div><div id="tplFooter"><hr class="hidden"><a id="footer" class="accessAnc" name="footer" href="#footer"></a><a href="#" onclick="window.print();return false;" class="printSubWinBtn" title="Imprimer la page"><span><img alt="Imprimer" src="../skin/img/btn/printSubWin.png" onmouseover="this.src='../skin/img/btn/printSubWinOver.png';" onmouseout="this.src='../skin/img/btn/printSubWin.png';" class="btnImg"><span class="btnLbl">Imprimer</span></span></a></div></div>
+ <body class="subWin ref">
+  <div id="root"><header id="header" role="banner"><nav role="navigation"><ul id="accessibility"><li class="waiContent"><a href="#content"><span>contenu</span></a></li></ul></nav></header><main id="main" role="main"><div id="document"><div id="content" tabindex="-1"><div class="scroller"><hr class="hidden"><section class="hBk article expUc"><h2 class="hBk_ti"><span>MOD&Eacute;LISATION ET OPTIMISATION DYNAMIQUE D'UNE CENTRALE SOLAIRE THERMIQUE</span></h2><div class="hBk_co "><div class="iBk info"><h3 class="iBk_ti"><span>JNES 2018</span></h3><div class="iBk_co "><div class="rBk "><p>Le projet ISORC (ADEME) vise la cr&eacute;ation d'outils pour optimiser le dimensionnement en phase conception et am&eacute;liorer la phase exploitation des r&eacute;seaux de chaleur int&eacute;grant une ou des productions solaires thermiques. Il regroupe des partenaires industriels et acad&eacute;mique : Tecsol, NewHeat, Sermet et le LaTEP.</p><p>Un des axes du projet se focalisera sur le d&eacute;veloppement d'un outil d'optimisation en phase conception couplant &agrave; la fois les r&eacute;seaux de chaleur, le solaire thermique et le stockage &agrave; court et long terme. Il utilisera des mod&egrave;les lin&eacute;aires et simplifi&eacute;s afin de pouvoir prendre en compte la variabilit&eacute; de la ressource solaire (multi-p&eacute;riode). L'outil sera utilisable pour de multiples configurations de r&eacute;seaux de chaleur, nouveaux ou d&eacute;j&agrave; existants, raccord&eacute;s &agrave; des installations solaires et &eacute;ventuellement &agrave; d'autres installations de production d'&eacute;nergie (bois, gaz, fioul, ...) ainsi qu'&agrave; des stockages journaliers et/ou inter-saisonniers. L'utilisation de m&eacute;thodes math&eacute;matiques d'optimisation permettra de prendre en compte le tr&egrave;s grand nombre de variables et de param&egrave;tres auxquels doivent faire face les ing&eacute;nieurs lors de la conception de tels syst&egrave;mes.</p><p>L'outil permettra par exemple d'obtenir les bilans de performances &eacute;nerg&eacute;tiques (chaleur livr&eacute;e, chaleur produite totale, ensoleillement global pris en compte, rendement de captation, pertes de stockage) ; et &eacute;conomique &agrave; l'&eacute;chelle du r&eacute;seau (prix de la chaleur) et &agrave; l'&eacute;chelle de la composante solaire (CAPEX et OPEX d&eacute;taill&eacute;s). A ceci s'ajoute les solutions optimis&eacute;es au niveau de la conception avec deux types de variables optimales : les variables binaires permettront de choisir l'existence des composants (stockage, unit&eacute; de production, type de panneaux...) ; les variables continues permettront de conna&icirc;tre la surface d'installation solaire, la puissance des autres producteurs, le volume de stockage journalier et/ou le volume de stockage inter-saisonnier ...</p><p>Il est important de garder &agrave; l'esprit que l'optimum d'un syst&egrave;me complet ne peut &ecirc;tre que meilleur (au pire, &eacute;gal) &agrave; la somme des optima des diff&eacute;rents syst&egrave;mes (centrale solaire, r&eacute;seau de chaleur, stockages) &eacute;tudi&eacute;s s&eacute;par&eacute;ment. La possibilit&eacute; d'&eacute;tudier diff&eacute;rent de type de stockages thermique dans une optimisation du syst&egrave;me complet est donc indispensable pour pr&eacute;tendre obtenir un syst&egrave;me performant.</p></div></div></div></div></section></div></div></div></main><footer id="footer" role="contentinfo" tabindex="-1"><hr class="hidden"></footer></div>
   <script type="text/JavaScript" src="../skin/js/skin.js"></script>
-  <script type="text/javascript">tplMgr.init();scCodeMgr.init();scImgMgr.init();new scSiRuleAutoMarginW("tplCoMarginW","ide:tplCo",true,450,100);new scSiRuleFlexH("tplCoFlexTop","ide:tplCo",true,.3);</script>
+  <script type="text/javascript">tplMgr.init();scCodeMgr.init();scMediaMgr.init("ide:content/chi:div/chi:section/des:.mediaPlayer",{processYoutubeUrls :true});scImgMgr.init();</script>
  </body>
 </html>

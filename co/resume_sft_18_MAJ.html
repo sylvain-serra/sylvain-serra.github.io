@@ -1,65 +1,62 @@
 <!DOCTYPE html>
 <html lang="fr">
  <head>
-  <title>Dr Sylvain Serra - Mod&eacute;lisation dynamique d'un r&eacute;seau de chaleur &agrave; d&eacute;bits variables</title>
+  <meta http-equiv="x-ua-compatible" content="IE=EDGE">
+  <title>Mod&eacute;lisation dynamique d'un r&eacute;seau de chaleur &agrave; d&eacute;bits variables</title>
   <meta charset="UTF-8">
+  <meta name="generator" content="SCENARI 4.2.107 / Opale 3.7.001">
+  <meta name="revision" content="2019-12-17 14:48">
+  <link rel="start" href="Sylvain_serra.html" title="Dr Sylvain Serra">
   <meta name="author" content>
-  <meta name="keywords" content="Energ&eacute;tique, r&eacute;seaux de chaleur, optimisation, proc&eacute;d&eacute;s, simulation num&eacute;rique, &eacute;coulement turbulent, densit&eacute; variable, transfert thermique, LATEP - ENSGTI - IPRA - UPPA, Sylvain Serra, ">
   <meta name="date" content>
-  <link rel="stylesheet" type="text/css" href="../wdgt/scCodeMgr/scCodeMgr.css">
-  <link rel="stylesheet" type="text/css" href="../wdgt/scImgMgr/scImgMgr.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="../lib-md/w_scImgMgr/scImgMgr.css">
+  <link rel="stylesheet" type="text/css" href="../lib-md/w_scCodeMgr/scCodeMgr.css">
   <script type="text/JavaScript">
-/*0*/ var scServices = {};
-/*1*/ scServices["scLoad"] = {loadFromRoot:function(pUrl){window.location.href="../"+pUrl;}, getPathFromRoot:function(pPath){return "../"+pPath;}, getUrlFromRoot:function(pHref){if(!this.fRootOffset) this.fRootOffset = scCoLib.hrefBase().length-25; return pHref.substring(this.fRootOffset);},getRootUrl:function(){if(!this.fRootUrl) this.fRootUrl = scCoLib.hrefBase().substring(0,scCoLib.hrefBase().length-26); return this.fRootUrl;}};
+/*0*/ var scServices = {id:"k49zesfs"};
+/*1*/ window.scLoadParams = {destUri:"/co/resume_sft_18_MAJ.html", pathToRoot:"../"};
 </script>
-  <!--[if lt IE 9]><script type="text/JavaScript" src="../wdgt/html5shiv/html5shiv.js"></script><![endif]--><script type="text/JavaScript" src="../lib-sm/scCoLib.js"></script>
-  <script type="text/JavaScript" src="../lib-sm/scPaLib.js"></script>
-  <script type="text/JavaScript" src="../lib-sm/scSiLib.js"></script>
-  <script type="text/JavaScript" src="../lib-sm/scTiLib.js"></script>
-  <script type="text/JavaScript" src="../lib-sm/scTooltipMgr.js"></script>
-  <script type="text/JavaScript" src="../svc/scorm.js"></script>
-  <script type="text/JavaScript" src="../lib-sm/scDynUiMgr.js"></script>
-  <script type="text/JavaScript" src="../svc/scSearch/scSearch.js"></script>
-  <script type="text/JavaScript" src="../wdgt/tplMgr/tplMgr.js"></script>
-  <script type="text/JavaScript" src="../wdgt/dynSizes/dynSizes.js"></script>
-  <script type="text/JavaScript" src="../wdgt/scCodeMgr/scCodeMgr.js"></script>
-  <script type="text/JavaScript" src="../wdgt/scImgMgr/scImgMgr.js"></script>
+  <script type="text/JavaScript" src="../lib-sc/scCoLib.js"></script>
+  <script type="text/JavaScript" src="../lib-sc/scTiLib.js"></script>
+  <script type="text/JavaScript" src="../lib-sc/scSiLib.js"></script>
+  <script type="text/JavaScript" src="../lib-sc/scPaLib.js"></script>
+  <script type="text/JavaScript" src="../lib-sc/scTooltipMgr.js"></script>
+  <script type="text/JavaScript" src="../lib-sc/scDynUiMgr.js"></script>
+  <script type="text/JavaScript" src="../lib-md/s_assmnt.js"></script>
+  <script type="text/JavaScript" src="../lib-sc/scMapMgr.js"></script>
+  <script type="text/JavaScript" src="../lib-sc/scDragMgr.js"></script>
+  <script type="text/JavaScript" src="../lib-sc/scAssmntMgr.js"></script>
+  <script type="text/JavaScript" src="../lib-md/s_scSearch/scSearch.js"></script>
+  <script type="text/JavaScript" src="../lib-md/w_mathjax/mathjaxMgr.js"></script>
+  <script type="text/JavaScript" src="../lib-md/w_tplMgr/tplMgr.js"></script>
+  <script type="text/JavaScript" src="../lib-md/w_scCodeMgr/scCodeMgr.js"></script>
+  <script type="text/JavaScript" src="../lib-md/w_scMediaMgr/scMediaMgr.js"></script>
+  <script type="text/JavaScript" src="../lib-md/w_scImgMgr/scImgMgr.js"></script>
   <script type="text/JavaScript">
-/*0*/ try{var vCurrDir = scCoLib.hrefBase().substring(0,scCoLib.hrefBase().lastIndexOf("/")+1); if(window.opener && window.opener.location.href.lastIndexOf(vCurrDir, vCurrDir.length)==0 && window.opener.scServices) scServices = window.opener.scServices; else if(window.parent && window.parent.location.href.lastIndexOf(vCurrDir, vCurrDir.length)==0 && window.parent.scServices) scServices = window.parent.scServices;}catch(e){}
+/*0*/ try{if(window.opener && window.opener.scServices && window.opener.scServices.id == scServices.id) scServices = window.opener.scServices; else if(window.parent && window.parent.scServices && window.parent.scServices.id == scServices.id) scServices = window.parent.scServices;}catch(e){}
 scCodeMgr.registerCode("des:div.code");
+
+scImgMgr.registerAdaptedImage("ide:content/des:img");
 
 scImgMgr.registerGallery("des:div.galFra");
 
-scImgMgr.registerZoom("des:a.imgZoom",{toolbar:1,mag:1,titlePath:"par:/nsi:/chi:span.capTi"});
+scImgMgr.registerSvg("des:svg");
+scImgMgr.registerZoom("des:a.svgZoom",{type:"svg",svgMax:1,toolbar:1,titlePath:"par:/nsi:/des:span.capTi"});
+
+scImgMgr.registerZoom("des:a.imgZoom",{toolbar:1,mag:1,titlePath:"par:/nsi:/des:span.capTi"});
 
 </script>
-  <meta name="generator" content="SCENARI 4.1.10 / Opale 3.5.014 - http://scenari-platform.org/opale">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-  <meta name="revision" content="2019-08-21 12:43">
-  <link rel="start" href="sylvain_serra.html" title="Dr Sylvain Serra">
+  <link type="text/css" rel="stylesheet" href="../skin/css/main.css" media="all">
+  <link type="text/css" rel="stylesheet" href="../skin/css/skin.css" media="all">
+  <link type="text/css" rel="stylesheet" href="../skin/css/print.css" media="print">
   <script type="text/javascript">try{
 	if(window.frameElement.setSubWindowTitle) window.frameElement.setSubWindowTitle(document.title);
 }catch(e){}
 </script>
-  <script type="text/javascript"> scSiLib.getContentHeight = function(pContainer) {
- var vCh = pContainer.lastChild;
- var vH = 0;
- while(vCh && ( vCh.nodeType != 1 || ! (vH = vCh.offsetHeight) || vCh.style.position=="absolute") ) vCh = vCh.previousSibling;
- if(vCh) {
-  return vCh.offsetTop + vH;
- }
- return Number.NaN;
-}</script>
-  <link type="text/css" rel="stylesheet" href="../skin/css/html.css" media="all">
-  <link type="text/css" rel="stylesheet" href="../skin/css/struct_ref.css" media="screen">
-  <link type="text/css" rel="stylesheet" href="../skin/css/buttons.css" media="screen">
-  <link type="text/css" rel="stylesheet" href="../skin/css/transf.css" media="all">
-  <!--[if IE]><link type="text/css" rel="stylesheet" href="../skin/css/ie.css" media="screen"/><![endif]-->
-  <!--[if lt IE 7]><link type="text/css" rel="stylesheet" href="../skin/css/ie6_ref.css" media="screen"/><![endif]--><link type="text/css" rel="stylesheet" href="../skin/css/print.css" media="print">
  </head>
- <body>
-  <div id="tplFra"><div id="tplCo"><div id="refCo" class="scroller"><a id="content" class="accessAnc" name="content" href="#content"></a><div id="tplCoMarginW"><div id="tplCoFlexTop"></div><div id="tplCo2"><div class="mainContent "><h1 class="mainContent_ti"><span>Mod&eacute;lisation dynamique d'un r&eacute;seau de chaleur &agrave; d&eacute;bits variables</span></h1><div class="mainContent_co "><div class="info "><h2 class="info_ti"><span>SFT 2018</span></h2><div class="info_co "><div><p class="op_txt_p">Ce travail s'inscrit dans le cadre de l'AMI FONGEOSEC, port&eacute; par FONROCHE GEOTHERMIE, dont l'objectif, pour r&eacute;pondre aux enjeux &eacute;nerg&eacute;tiques pos&eacute;s par le r&eacute;chauffement climatique, est de r&eacute;aliser un d&eacute;monstrateur de centrale g&eacute;othermique haute enthalpie innovante o&ugrave; la source g&eacute;othermale servira &agrave; la cog&eacute;n&eacute;ration de chaleur et d'&eacute;lectricit&eacute; (par le biais d'un cycle organique de Rankine).</p><p class="op_txt_p">En ce qui concerne les activit&eacute;s de surface, outre l'optimisation &eacute;conomique du cycle de Rankine et de la r&eacute;partition de la source g&eacute;othermale, le LaTEP (Laboratoire de Thermique Energ&eacute;tique et Proc&eacute;d&eacute;s) a pour objectif de d&eacute;velopper un outil de simulation dynamique d'un r&eacute;seau de  chaleur &laquo; moderne &raquo; &agrave; d&eacute;bits variables dans les diff&eacute;rentes branches. En effet, classiquement, les r&eacute;seaux de chaleur utilisent des d&eacute;bits constants avec des syst&egrave;mes de by-pass et/ou de stockage pour g&eacute;rer les variations de demande des consommateurs.</p><p class="op_txt_p">Le mod&egrave;le propos&eacute; ici est un mod&egrave;le quasi-dynamique dans lequel la propagation dynamique de la temp&eacute;rature de l'eau dans les canalisations est d&eacute;crite, tandis que les caract&eacute;ristiques hydrauliques sont recalcul&eacute;es &agrave; chaque instant pour r&eacute;pondre aux appels de puissance thermique demand&eacute;s par les consommateurs. Le syst&egrave;me est constitu&eacute; d'une unit&eacute; de production de chaleur, d'un r&eacute;seau de canalisations d'eau enterr&eacute;es, qui distribuent la chaleur, et de consommateurs repr&eacute;sent&eacute;s par des &eacute;changeurs thermiques auxquels la chaleur est d&eacute;livr&eacute;e. Les canalisations peuvent &ecirc;tre divis&eacute;es en deux parties : la partie d'alimentation (1) dans laquelle l'eau &laquo; chaude &raquo; circule de la centrale g&eacute;othermique vers les consommateurs ; une fois que les consommateurs ont &eacute;t&eacute; aliment&eacute;s, l'eau &laquo; froide &raquo; circule dans la partie retour (2) vers la centrale g&eacute;othermique pour former une boucle d'&eacute;coulement ferm&eacute;e. Les canalisations d'eau sont constitu&eacute;es de trois couches : le mat&eacute;riau des tuyaux m&ecirc;me, l'isolation, et le casing. L'&eacute;coulement, &agrave; l'int&eacute;rieur de ces canalisations, est consid&eacute;r&eacute; comme unidirectionnel.</p><p class="op_txt_p">A chaque instant, les d&eacute;bits massiques des canalisations alimentant directement les consommateurs sont recalcul&eacute;s, de mani&egrave;re &agrave; satisfaire l'appel de puissance, en n&eacute;gligeant l'inertie et l'accumulation des &eacute;changeurs thermiques. Les d&eacute;bits de toutes les autres canalisations du r&eacute;seau peuvent &ecirc;tre calcul&eacute;s en r&eacute;solvant l'ensemble des bilans de mati&egrave;re sur les noeuds connectant les canalisations. Les inerties de l'isolation et du casing &eacute;tant n&eacute;glig&eacute;es, les &eacute;quations des bilans d'&eacute;nergie sont &eacute;crites pour l'eau et pour le tuyau. Une m&eacute;thode de volumes finis est utilis&eacute;e pour discr&eacute;tiser les canalisations afin de transformer les &eacute;quations aux d&eacute;riv&eacute;es partielles en syst&egrave;mes d'&eacute;quations diff&eacute;rentielles ordinaires o&ugrave; l'unique variable d'int&eacute;gration est le temps.</p><p class="op_txt_p">Pour l'int&eacute;gration en temps, une m&eacute;thode de Runge-Kutta-Merson, d'ordre 4 &agrave; pas de temps adaptatif, est employ&eacute;e. Pour un cas d'&eacute;tude comprenant diff&eacute;rents types de consommateurs, les r&eacute;sultats obtenus pour les variations des puissances d&eacute;livr&eacute;es et des d&eacute;bits massiques seront analys&eacute;s afin de d&eacute;montrer le bon contr&ocirc;le des d&eacute;bits permettant de respecter les appels de puissance des consommateurs.</p><p class="op_txt_p">Ces travaux s'inscrivent dans une d&eacute;marche globale qui vise &agrave; proposer une gestion dynamique optimale des r&eacute;seaux de chaleur et ouvrent la perspective &agrave; l'int&eacute;gration des &eacute;l&eacute;ments de stockage.</p></div></div></div></div></div></div></div></div></div><div id="tplFooter"><hr class="hidden"><a id="footer" class="accessAnc" name="footer" href="#footer"></a><a href="#" onclick="window.print();return false;" class="printSubWinBtn" title="Imprimer la page"><span><img alt="Imprimer" src="../skin/img/btn/printSubWin.png" onmouseover="this.src='../skin/img/btn/printSubWinOver.png';" onmouseout="this.src='../skin/img/btn/printSubWin.png';" class="btnImg"><span class="btnLbl">Imprimer</span></span></a></div></div>
+ <body class="subWin ref">
+  <div id="root"><header id="header" role="banner"><nav role="navigation"><ul id="accessibility"><li class="waiContent"><a href="#content"><span>contenu</span></a></li></ul></nav></header><main id="main" role="main"><div id="document"><div id="content" tabindex="-1"><div class="scroller"><hr class="hidden"><section class="hBk article expUc"><h2 class="hBk_ti"><span>Mod&eacute;lisation dynamique d'un r&eacute;seau de chaleur &agrave; d&eacute;bits variables</span></h2><div class="hBk_co "><div class="iBk info"><h3 class="iBk_ti"><span>SFT 2018</span></h3><div class="iBk_co "><div class="rBk "><p>Ce travail s'inscrit dans le cadre de l'AMI FONGEOSEC, port&eacute; par FONROCHE GEOTHERMIE, dont l'objectif, pour r&eacute;pondre aux enjeux &eacute;nerg&eacute;tiques pos&eacute;s par le r&eacute;chauffement climatique, est de r&eacute;aliser un d&eacute;monstrateur de centrale g&eacute;othermique haute enthalpie innovante o&ugrave; la source g&eacute;othermale servira &agrave; la cog&eacute;n&eacute;ration de chaleur et d'&eacute;lectricit&eacute; (par le biais d'un cycle organique de Rankine).</p><p>En ce qui concerne les activit&eacute;s de surface, outre l'optimisation &eacute;conomique du cycle de Rankine et de la r&eacute;partition de la source g&eacute;othermale, le LaTEP (Laboratoire de Thermique Energ&eacute;tique et Proc&eacute;d&eacute;s) a pour objectif de d&eacute;velopper un outil de simulation dynamique d'un r&eacute;seau de  chaleur &laquo; moderne &raquo; &agrave; d&eacute;bits variables dans les diff&eacute;rentes branches. En effet, classiquement, les r&eacute;seaux de chaleur utilisent des d&eacute;bits constants avec des syst&egrave;mes de by-pass et/ou de stockage pour g&eacute;rer les variations de demande des consommateurs.</p><p>Le mod&egrave;le propos&eacute; ici est un mod&egrave;le quasi-dynamique dans lequel la propagation dynamique de la temp&eacute;rature de l'eau dans les canalisations est d&eacute;crite, tandis que les caract&eacute;ristiques hydrauliques sont recalcul&eacute;es &agrave; chaque instant pour r&eacute;pondre aux appels de puissance thermique demand&eacute;s par les consommateurs. Le syst&egrave;me est constitu&eacute; d'une unit&eacute; de production de chaleur, d'un r&eacute;seau de canalisations d'eau enterr&eacute;es, qui distribuent la chaleur, et de consommateurs repr&eacute;sent&eacute;s par des &eacute;changeurs thermiques auxquels la chaleur est d&eacute;livr&eacute;e. Les canalisations peuvent &ecirc;tre divis&eacute;es en deux parties : la partie d'alimentation (1) dans laquelle l'eau &laquo; chaude &raquo; circule de la centrale g&eacute;othermique vers les consommateurs ; une fois que les consommateurs ont &eacute;t&eacute; aliment&eacute;s, l'eau &laquo; froide &raquo; circule dans la partie retour (2) vers la centrale g&eacute;othermique pour former une boucle d'&eacute;coulement ferm&eacute;e. Les canalisations d'eau sont constitu&eacute;es de trois couches : le mat&eacute;riau des tuyaux m&ecirc;me, l'isolation, et le casing. L'&eacute;coulement, &agrave; l'int&eacute;rieur de ces canalisations, est consid&eacute;r&eacute; comme unidirectionnel.</p><p>A chaque instant, les d&eacute;bits massiques des canalisations alimentant directement les consommateurs sont recalcul&eacute;s, de mani&egrave;re &agrave; satisfaire l'appel de puissance, en n&eacute;gligeant l'inertie et l'accumulation des &eacute;changeurs thermiques. Les d&eacute;bits de toutes les autres canalisations du r&eacute;seau peuvent &ecirc;tre calcul&eacute;s en r&eacute;solvant l'ensemble des bilans de mati&egrave;re sur les noeuds connectant les canalisations. Les inerties de l'isolation et du casing &eacute;tant n&eacute;glig&eacute;es, les &eacute;quations des bilans d'&eacute;nergie sont &eacute;crites pour l'eau et pour le tuyau. Une m&eacute;thode de volumes finis est utilis&eacute;e pour discr&eacute;tiser les canalisations afin de transformer les &eacute;quations aux d&eacute;riv&eacute;es partielles en syst&egrave;mes d'&eacute;quations diff&eacute;rentielles ordinaires o&ugrave; l'unique variable d'int&eacute;gration est le temps.</p><p>Pour l'int&eacute;gration en temps, une m&eacute;thode de Runge-Kutta-Merson, d'ordre 4 &agrave; pas de temps adaptatif, est employ&eacute;e. Pour un cas d'&eacute;tude comprenant diff&eacute;rents types de consommateurs, les r&eacute;sultats obtenus pour les variations des puissances d&eacute;livr&eacute;es et des d&eacute;bits massiques seront analys&eacute;s afin de d&eacute;montrer le bon contr&ocirc;le des d&eacute;bits permettant de respecter les appels de puissance des consommateurs.</p><p>Ces travaux s'inscrivent dans une d&eacute;marche globale qui vise &agrave; proposer une gestion dynamique optimale des r&eacute;seaux de chaleur et ouvrent la perspective &agrave; l'int&eacute;gration des &eacute;l&eacute;ments de stockage.</p></div></div></div></div></section></div></div></div></main><footer id="footer" role="contentinfo" tabindex="-1"><hr class="hidden"></footer></div>
   <script type="text/JavaScript" src="../skin/js/skin.js"></script>
-  <script type="text/javascript">tplMgr.init();scCodeMgr.init();scImgMgr.init();new scSiRuleAutoMarginW("tplCoMarginW","ide:tplCo",true,450,100);new scSiRuleFlexH("tplCoFlexTop","ide:tplCo",true,.3);</script>
+  <script type="text/javascript">tplMgr.init();scCodeMgr.init();scMediaMgr.init("ide:content/chi:div/chi:section/des:.mediaPlayer",{processYoutubeUrls :true});scImgMgr.init();</script>
  </body>
 </html>
