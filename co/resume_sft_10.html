@@ -1,73 +1,62 @@
 <!DOCTYPE html>
 <html lang="fr">
  <head>
-  <title>Dr Sylvain Serra - Etude d'un fort gradient de temp&eacute;rature sur un &eacute;coulement turbulent &agrave; travers son effet sur la viscosit&eacute; dynamique totale</title>
+  <meta http-equiv="x-ua-compatible" content="IE=EDGE">
+  <title>Etude d'un fort gradient de temp&eacute;rature sur un &eacute;coulement turbulent &agrave; travers son effet sur la viscosit&eacute; dynamique totale</title>
   <meta charset="UTF-8">
+  <meta name="generator" content="SCENARI 4.2.107 / Opale 3.7.001">
+  <meta name="revision" content="2020-01-09 21:29">
+  <link rel="start" href="Sylvain_serra.html" title="Dr Sylvain Serra">
   <meta name="author" content>
-  <meta name="keywords" content="Energ&eacute;tique, r&eacute;seaux de chaleur, optimisation, proc&eacute;d&eacute;s, simulation num&eacute;rique, &eacute;coulement turbulent, densit&eacute; variable, transfert thermique, LATEP - ENSGTI - IPRA - UPPA, Sylvain Serra, ">
   <meta name="date" content>
-  <link rel="stylesheet" type="text/css" href="../wdgt/scCodeMgr/scCodeMgr.css">
-  <link rel="stylesheet" type="text/css" href="../wdgt/scImgMgr/scImgMgr.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="../lib-md/w_scImgMgr/scImgMgr.css">
+  <link rel="stylesheet" type="text/css" href="../lib-md/w_scCodeMgr/scCodeMgr.css">
   <script type="text/JavaScript">
-/*0*/ var scServices = {};
-/*1*/ scServices["scLoad"] = {loadFromRoot:function(pUrl){window.location.href="../"+pUrl;}, getPathFromRoot:function(pPath){return "../"+pPath;}, getUrlFromRoot:function(pHref){if(!this.fRootOffset) this.fRootOffset = scCoLib.hrefBase().length-21; return pHref.substring(this.fRootOffset);},getRootUrl:function(){if(!this.fRootUrl) this.fRootUrl = scCoLib.hrefBase().substring(0,scCoLib.hrefBase().length-22); return this.fRootUrl;}};
+/*0*/ var scServices = {id:"k578w70k"};
+/*1*/ window.scLoadParams = {destUri:"/co/resume_sft_10.html", pathToRoot:"../"};
 </script>
-  <!--[if lt IE 9]><script type="text/JavaScript" src="../wdgt/html5shiv/html5shiv.js"></script><![endif]--><script type="text/JavaScript" src="../lib-sm/scCoLib.js"></script>
-  <script type="text/JavaScript" src="../lib-sm/scPaLib.js"></script>
-  <script type="text/JavaScript" src="../lib-sm/scSiLib.js"></script>
-  <script type="text/JavaScript" src="../lib-sm/scTiLib.js"></script>
-  <script type="text/JavaScript" src="../lib-sm/scTooltipMgr.js"></script>
-  <script type="text/JavaScript" src="../svc/scorm.js"></script>
-  <script type="text/JavaScript" src="../lib-sm/scDynUiMgr.js"></script>
-  <script type="text/JavaScript" src="../svc/scSearch/scSearch.js"></script>
-  <script type="text/JavaScript" src="../wdgt/tplMgr/tplMgr.js"></script>
-  <script type="text/JavaScript" src="../wdgt/dynSizes/dynSizes.js"></script>
-  <script type="text/JavaScript" src="../wdgt/scCodeMgr/scCodeMgr.js"></script>
-  <script type="text/JavaScript" src="../wdgt/scImgMgr/scImgMgr.js"></script>
+  <script type="text/JavaScript" src="../lib-sc/scCoLib.js"></script>
+  <script type="text/JavaScript" src="../lib-sc/scTiLib.js"></script>
+  <script type="text/JavaScript" src="../lib-sc/scSiLib.js"></script>
+  <script type="text/JavaScript" src="../lib-sc/scPaLib.js"></script>
+  <script type="text/JavaScript" src="../lib-sc/scTooltipMgr.js"></script>
+  <script type="text/JavaScript" src="../lib-sc/scDynUiMgr.js"></script>
+  <script type="text/JavaScript" src="../lib-md/s_assmnt.js"></script>
+  <script type="text/JavaScript" src="../lib-sc/scMapMgr.js"></script>
+  <script type="text/JavaScript" src="../lib-sc/scDragMgr.js"></script>
+  <script type="text/JavaScript" src="../lib-sc/scAssmntMgr.js"></script>
+  <script type="text/JavaScript" src="../lib-md/s_scSearch/scSearch.js"></script>
+  <script type="text/JavaScript" src="../lib-md/w_mathjax/mathjaxMgr.js"></script>
+  <script type="text/JavaScript" src="../lib-md/w_tplMgr/tplMgr.js"></script>
+  <script type="text/JavaScript" src="../lib-md/w_scCodeMgr/scCodeMgr.js"></script>
+  <script type="text/JavaScript" src="../lib-md/w_scMediaMgr/scMediaMgr.js"></script>
+  <script type="text/JavaScript" src="../lib-md/w_scImgMgr/scImgMgr.js"></script>
   <script type="text/JavaScript">
-/*0*/ try{var vCurrDir = scCoLib.hrefBase().substring(0,scCoLib.hrefBase().lastIndexOf("/")+1); if(window.opener && window.opener.location.href.lastIndexOf(vCurrDir, vCurrDir.length)==0 && window.opener.scServices) scServices = window.opener.scServices; else if(window.parent && window.parent.location.href.lastIndexOf(vCurrDir, vCurrDir.length)==0 && window.parent.scServices) scServices = window.parent.scServices;}catch(e){}
+/*0*/ try{if(window.opener && window.opener.scServices && window.opener.scServices.id == scServices.id) scServices = window.opener.scServices; else if(window.parent && window.parent.scServices && window.parent.scServices.id == scServices.id) scServices = window.parent.scServices;}catch(e){}
 scCodeMgr.registerCode("des:div.code");
+
+scImgMgr.registerAdaptedImage("ide:content/des:img");
 
 scImgMgr.registerGallery("des:div.galFra");
 
-scImgMgr.registerZoom("des:a.imgZoom",{toolbar:1,mag:1,titlePath:"par:/nsi:/chi:span.capTi"});
+scImgMgr.registerSvg("des:svg");
+scImgMgr.registerZoom("des:a.svgZoom",{type:"svg",svgMax:1,toolbar:1,titlePath:"par:/nsi:/des:span.capTi"});
+
+scImgMgr.registerZoom("des:a.imgZoom",{toolbar:1,mag:1,titlePath:"par:/nsi:/des:span.capTi"});
 
 </script>
-  <meta name="generator" content="SCENARI 4.1.10 / Opale 3.5.014 - http://scenari-platform.org/opale">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-  <meta name="revision" content="2019-08-21 12:43">
-  <link rel="start" href="sylvain_serra.html" title="Dr Sylvain Serra">
+  <link type="text/css" rel="stylesheet" href="../skin/css/main.css" media="all">
+  <link type="text/css" rel="stylesheet" href="../skin/css/skin.css" media="all">
+  <link type="text/css" rel="stylesheet" href="../skin/css/print.css" media="print">
   <script type="text/javascript">try{
 	if(window.frameElement.setSubWindowTitle) window.frameElement.setSubWindowTitle(document.title);
 }catch(e){}
 </script>
-  <script type="text/javascript"> scSiLib.getContentHeight = function(pContainer) {
- var vCh = pContainer.lastChild;
- var vH = 0;
- while(vCh && ( vCh.nodeType != 1 || ! (vH = vCh.offsetHeight) || vCh.style.position=="absolute") ) vCh = vCh.previousSibling;
- if(vCh) {
-  return vCh.offsetTop + vH;
- }
- return Number.NaN;
-}</script>
-  <link type="text/css" rel="stylesheet" href="../skin/css/html.css" media="all">
-  <link type="text/css" rel="stylesheet" href="../skin/css/struct_ref.css" media="screen">
-  <link type="text/css" rel="stylesheet" href="../skin/css/buttons.css" media="screen">
-  <link type="text/css" rel="stylesheet" href="../skin/css/transf.css" media="all">
-  <!--[if IE]><link type="text/css" rel="stylesheet" href="../skin/css/ie.css" media="screen"/><![endif]-->
-  <!--[if lt IE 7]><link type="text/css" rel="stylesheet" href="../skin/css/ie6_ref.css" media="screen"/><![endif]--><link type="text/css" rel="stylesheet" href="../skin/css/print.css" media="print">
  </head>
- <body>
-  <div id="tplFra"><div id="tplCo"><div id="refCo" class="scroller"><a id="content" class="accessAnc" name="content" href="#content"></a><div id="tplCoMarginW"><div id="tplCoFlexTop"></div><div id="tplCo2"><div class="mainContent "><h1 class="mainContent_ti"><span>Etude d'un fort gradient de temp&eacute;rature sur un &eacute;coulement turbulent &agrave; travers son effet sur la viscosit&eacute; dynamique totale</span></h1><div class="mainContent_co "><div class="info "><h2 class="info_ti"><span>SFT 2010</span></h2><div class="info_co "><div><p class="op_txt_p">Cette &eacute;tude concerne la Simulation des Grandes &eacute;chelles Thermiques (SGET). Elle vise &agrave; &eacute;tudier l'influence d'un gradient de temp&eacute;rature sur un &eacute;coulement turbulent dans la configuration acad&eacute;mique d'un canal plan bi-p&eacute;riodique avec temp&eacute;ratures impos&eacute;es aux parois. Les SGET sont r&eacute;alis&eacute;es pour deux intensit&eacute;s de turbulence (<span class="op_txt_tl_mathtex">
-		<img class="sfile_math_inline" alt src="../res/resume_sft_10.png" style="vertical-align:-3px;">
-	</span> et <span class="op_txt_tl_mathtex">
-		<img class="sfile_math_inline" alt src="../res/resume_sft_10_1.png" style="vertical-align:-0px;">
-	</span>) et pour trois rapports de temp&eacute;rature (<span class="op_txt_tl_mathtex">
-		<img class="sfile_math_inline" alt src="../res/resume_sft_10_2.png" style="vertical-align:-3px;">
-	</span> et <span class="op_txt_tl_mathtex">
-		<img class="sfile_math_inline" alt src="../res/resume_sft_10_3.png" style="vertical-align:-0px;">
-	</span>). L'influence du gradient de temp&eacute;rature sur un &eacute;coulement turbulent cr&eacute;e une dissym&eacute;trie des profils de vitesse et de temp&eacute;rature qui est amplifi&eacute;e par l'intensit&eacute; turbulente. Une diff&eacute;rence d'&eacute;volution des profils est not&eacute;e pour les &eacute;coulements faiblement turbulents soumis &agrave; de tr&egrave;s forts gradients de temp&eacute;rature. Nous montrons qu'un ph&eacute;nom&egrave;ne de relaminarisation du c&ocirc;t&eacute; chaud du domaine est responsable de cette diff&eacute;rence d'&eacute;volution. En effet, une &eacute;tude analytique d'un &eacute;coulement laminaire soumis &agrave; un fort gradient de temp&eacute;rature montre un d&eacute;calage de la vitesse maximale du c&ocirc;t&eacute; froid du domaine, soit l'oppos&eacute; de ce qui a &eacute;t&eacute; remarqu&eacute; pour un &eacute;coulement turbulent. Par cons&eacute;quent, les &eacute;volutions d'un &eacute;coulement turbulent soumis &agrave; de tr&egrave;s forts gradients de temp&eacute;rature sont fortement influenc&eacute;es par le ph&eacute;nom&egrave;ne de relaminarisation, en particulier par l'influence de la temp&eacute;rature sur la viscosit&eacute; dynamique totale.</p><p class="op_txt_p">T&eacute;l&eacute;chargement&nbsp;: <a class="op_txt_ul" target="_blank" title="http://www.sft.asso.fr/Local/sft/dir/user-3775/documents/actes/Congres_2010/communications/26.pdf (nouvelle fen&ecirc;tre)" href="http://www.sft.asso.fr/Local/sft/dir/user-3775/documents/actes/Congres_2010/communications/26.pdf">http://www.sft.asso.fr/Local/sft/dir/user-3775/documents/actes/Congres_2010/communications/26.pdf</a></p></div></div></div></div></div></div></div></div></div><div id="tplFooter"><hr class="hidden"><a id="footer" class="accessAnc" name="footer" href="#footer"></a><a href="#" onclick="window.print();return false;" class="printSubWinBtn" title="Imprimer la page"><span><img alt="Imprimer" src="../skin/img/btn/printSubWin.png" onmouseover="this.src='../skin/img/btn/printSubWinOver.png';" onmouseout="this.src='../skin/img/btn/printSubWin.png';" class="btnImg"><span class="btnLbl">Imprimer</span></span></a></div></div>
+ <body class="subWin ref">
+  <div id="root"><header id="header" role="banner"><nav role="navigation"><ul id="accessibility"><li class="waiContent"><a href="#content"><span>contenu</span></a></li></ul></nav></header><main id="main" role="main"><div id="document"><div id="content" tabindex="-1"><div class="scroller"><hr class="hidden"><section class="hBk article expUc"><h2 class="hBk_ti"><span>Etude d'un fort gradient de temp&eacute;rature sur un &eacute;coulement turbulent &agrave; travers son effet sur la viscosit&eacute; dynamique totale</span></h2><div class="hBk_co "><div class="iBk info"><h3 class="iBk_ti"><span>SFT 2010</span></h3><div class="iBk_co "><div class="rBk "><p>Cette &eacute;tude concerne la Simulation des Grandes &eacute;chelles Thermiques (SGET). Elle vise &agrave; &eacute;tudier l'influence d'un gradient de temp&eacute;rature sur un &eacute;coulement turbulent dans la configuration acad&eacute;mique d'un canal plan bi-p&eacute;riodique avec temp&eacute;ratures impos&eacute;es aux parois. Les SGET sont r&eacute;alis&eacute;es pour deux intensit&eacute;s de turbulence (<span class="txt_mathtex_tl "><span aria-label="Notation Latex&nbsp;: Re_{\tau} = 395">\(Re_{\tau} = 395\)</span></span> et <span class="txt_mathtex_tl "><span aria-label="Notation Latex&nbsp;: 180">\(180\)</span></span>) et pour trois rapports de temp&eacute;rature (<span class="txt_mathtex_tl "><span aria-label="Notation Latex&nbsp;: T_2/T_1 = 1,04 ; 2">\(T_2/T_1 = 1,04 ; 2\)</span></span> et <span class="txt_mathtex_tl "><span aria-label="Notation Latex&nbsp;: 5">\(5\)</span></span>). L'influence du gradient de temp&eacute;rature sur un &eacute;coulement turbulent cr&eacute;e une dissym&eacute;trie des profils de vitesse et de temp&eacute;rature qui est amplifi&eacute;e par l'intensit&eacute; turbulente. Une diff&eacute;rence d'&eacute;volution des profils est not&eacute;e pour les &eacute;coulements faiblement turbulents soumis &agrave; de tr&egrave;s forts gradients de temp&eacute;rature. Nous montrons qu'un ph&eacute;nom&egrave;ne de relaminarisation du c&ocirc;t&eacute; chaud du domaine est responsable de cette diff&eacute;rence d'&eacute;volution. En effet, une &eacute;tude analytique d'un &eacute;coulement laminaire soumis &agrave; un fort gradient de temp&eacute;rature montre un d&eacute;calage de la vitesse maximale du c&ocirc;t&eacute; froid du domaine, soit l'oppos&eacute; de ce qui a &eacute;t&eacute; remarqu&eacute; pour un &eacute;coulement turbulent. Par cons&eacute;quent, les &eacute;volutions d'un &eacute;coulement turbulent soumis &agrave; de tr&egrave;s forts gradients de temp&eacute;rature sont fortement influenc&eacute;es par le ph&eacute;nom&egrave;ne de relaminarisation, en particulier par l'influence de la temp&eacute;rature sur la viscosit&eacute; dynamique totale.</p><p>T&eacute;l&eacute;chargement&nbsp;: <a class="op_txt_ul" target="_blank" href="http://www.sft.asso.fr/Local/sft/dir/user-3775/documents/actes/Congres_2010/communications/26.pdf" rel="noopener" title="http://www.sft.asso.fr/Local/sft/dir/user-3775/documents/actes/Congres_2010/communications/26.pdf (nouvelle fen&ecirc;tre)"><span>http://www.sft.asso.fr/Local/sft/dir/user-3775/documents/actes/Congres_2010/communications/26.pdf</span></a></p></div></div></div></div></section></div></div></div></main><footer id="footer" role="contentinfo" tabindex="-1"><hr class="hidden"></footer></div>
   <script type="text/JavaScript" src="../skin/js/skin.js"></script>
-  <script type="text/javascript">tplMgr.init();scCodeMgr.init();scImgMgr.init();new scSiRuleAutoMarginW("tplCoMarginW","ide:tplCo",true,450,100);new scSiRuleFlexH("tplCoFlexTop","ide:tplCo",true,.3);</script>
+  <script type="text/javascript">tplMgr.init();scCodeMgr.init();mathjaxMgr.init();scMediaMgr.init("ide:content/chi:div/chi:section/des:.mediaPlayer",{processYoutubeUrls :true});scImgMgr.init();</script>
  </body>
 </html>
