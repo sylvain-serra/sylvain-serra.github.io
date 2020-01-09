@@ -1,62 +1,65 @@
 <!DOCTYPE html>
 <html lang="fr">
  <head>
-  <meta http-equiv="x-ua-compatible" content="IE=EDGE">
-  <title>Optimisation exerg&eacute;tique de la production d'&eacute;lectricit&eacute; et de la distribution de chaleur d'une centrale de cog&eacute;n&eacute;ration</title>
+  <title>Dr Sylvain Serra - Optimisation exerg&eacute;tique de la production d'&eacute;lectricit&eacute; et de la distribution de chaleur d'une centrale de cog&eacute;n&eacute;ration</title>
   <meta charset="UTF-8">
-  <meta name="generator" content="SCENARI 4.2.107 / Opale 3.7.001">
-  <meta name="revision" content="2019-12-17 14:48">
-  <link rel="start" href="Sylvain_serra.html" title="Dr Sylvain Serra">
   <meta name="author" content>
+  <meta name="keywords" content="Energ&eacute;tique, r&eacute;seaux de chaleur, optimisation, proc&eacute;d&eacute;s, simulation num&eacute;rique, &eacute;coulement turbulent, densit&eacute; variable, transfert thermique, LATEP - ENSGTI - IPRA - UPPA, Sylvain Serra, ">
   <meta name="date" content>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" type="text/css" href="../lib-md/w_scImgMgr/scImgMgr.css">
-  <link rel="stylesheet" type="text/css" href="../lib-md/w_scCodeMgr/scCodeMgr.css">
+  <link rel="stylesheet" type="text/css" href="../wdgt/scCodeMgr/scCodeMgr.css">
+  <link rel="stylesheet" type="text/css" href="../wdgt/scImgMgr/scImgMgr.css">
   <script type="text/JavaScript">
-/*0*/ var scServices = {id:"k49zesfs"};
-/*1*/ window.scLoadParams = {destUri:"/co/resume_sft_18_FM.html", pathToRoot:"../"};
+/*0*/ var scServices = {};
+/*1*/ scServices["scLoad"] = {loadFromRoot:function(pUrl){window.location.href="../"+pUrl;}, getPathFromRoot:function(pPath){return "../"+pPath;}, getUrlFromRoot:function(pHref){if(!this.fRootOffset) this.fRootOffset = scCoLib.hrefBase().length-24; return pHref.substring(this.fRootOffset);},getRootUrl:function(){if(!this.fRootUrl) this.fRootUrl = scCoLib.hrefBase().substring(0,scCoLib.hrefBase().length-25); return this.fRootUrl;}};
 </script>
-  <script type="text/JavaScript" src="../lib-sc/scCoLib.js"></script>
-  <script type="text/JavaScript" src="../lib-sc/scTiLib.js"></script>
-  <script type="text/JavaScript" src="../lib-sc/scSiLib.js"></script>
-  <script type="text/JavaScript" src="../lib-sc/scPaLib.js"></script>
-  <script type="text/JavaScript" src="../lib-sc/scTooltipMgr.js"></script>
-  <script type="text/JavaScript" src="../lib-sc/scDynUiMgr.js"></script>
-  <script type="text/JavaScript" src="../lib-md/s_assmnt.js"></script>
-  <script type="text/JavaScript" src="../lib-sc/scMapMgr.js"></script>
-  <script type="text/JavaScript" src="../lib-sc/scDragMgr.js"></script>
-  <script type="text/JavaScript" src="../lib-sc/scAssmntMgr.js"></script>
-  <script type="text/JavaScript" src="../lib-md/s_scSearch/scSearch.js"></script>
-  <script type="text/JavaScript" src="../lib-md/w_mathjax/mathjaxMgr.js"></script>
-  <script type="text/JavaScript" src="../lib-md/w_tplMgr/tplMgr.js"></script>
-  <script type="text/JavaScript" src="../lib-md/w_scCodeMgr/scCodeMgr.js"></script>
-  <script type="text/JavaScript" src="../lib-md/w_scMediaMgr/scMediaMgr.js"></script>
-  <script type="text/JavaScript" src="../lib-md/w_scImgMgr/scImgMgr.js"></script>
+  <!--[if lt IE 9]><script type="text/JavaScript" src="../wdgt/html5shiv/html5shiv.js"></script><![endif]--><script type="text/JavaScript" src="../lib-sm/scCoLib.js"></script>
+  <script type="text/JavaScript" src="../lib-sm/scPaLib.js"></script>
+  <script type="text/JavaScript" src="../lib-sm/scSiLib.js"></script>
+  <script type="text/JavaScript" src="../lib-sm/scTiLib.js"></script>
+  <script type="text/JavaScript" src="../lib-sm/scTooltipMgr.js"></script>
+  <script type="text/JavaScript" src="../svc/scorm.js"></script>
+  <script type="text/JavaScript" src="../lib-sm/scDynUiMgr.js"></script>
+  <script type="text/JavaScript" src="../svc/scSearch/scSearch.js"></script>
+  <script type="text/JavaScript" src="../wdgt/tplMgr/tplMgr.js"></script>
+  <script type="text/JavaScript" src="../wdgt/dynSizes/dynSizes.js"></script>
+  <script type="text/JavaScript" src="../wdgt/scCodeMgr/scCodeMgr.js"></script>
+  <script type="text/JavaScript" src="../wdgt/scImgMgr/scImgMgr.js"></script>
   <script type="text/JavaScript">
-/*0*/ try{if(window.opener && window.opener.scServices && window.opener.scServices.id == scServices.id) scServices = window.opener.scServices; else if(window.parent && window.parent.scServices && window.parent.scServices.id == scServices.id) scServices = window.parent.scServices;}catch(e){}
+/*0*/ try{var vCurrDir = scCoLib.hrefBase().substring(0,scCoLib.hrefBase().lastIndexOf("/")+1); if(window.opener && window.opener.location.href.lastIndexOf(vCurrDir, vCurrDir.length)==0 && window.opener.scServices) scServices = window.opener.scServices; else if(window.parent && window.parent.location.href.lastIndexOf(vCurrDir, vCurrDir.length)==0 && window.parent.scServices) scServices = window.parent.scServices;}catch(e){}
 scCodeMgr.registerCode("des:div.code");
-
-scImgMgr.registerAdaptedImage("ide:content/des:img");
 
 scImgMgr.registerGallery("des:div.galFra");
 
-scImgMgr.registerSvg("des:svg");
-scImgMgr.registerZoom("des:a.svgZoom",{type:"svg",svgMax:1,toolbar:1,titlePath:"par:/nsi:/des:span.capTi"});
-
-scImgMgr.registerZoom("des:a.imgZoom",{toolbar:1,mag:1,titlePath:"par:/nsi:/des:span.capTi"});
+scImgMgr.registerZoom("des:a.imgZoom",{toolbar:1,mag:1,titlePath:"par:/nsi:/chi:span.capTi"});
 
 </script>
-  <link type="text/css" rel="stylesheet" href="../skin/css/main.css" media="all">
-  <link type="text/css" rel="stylesheet" href="../skin/css/skin.css" media="all">
-  <link type="text/css" rel="stylesheet" href="../skin/css/print.css" media="print">
+  <meta name="generator" content="SCENARI 4.1.10 / Opale 3.5.014 - http://scenari-platform.org/opale">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <meta name="revision" content="2019-08-21 12:43">
+  <link rel="start" href="sylvain_serra.html" title="Dr Sylvain Serra">
   <script type="text/javascript">try{
 	if(window.frameElement.setSubWindowTitle) window.frameElement.setSubWindowTitle(document.title);
 }catch(e){}
 </script>
+  <script type="text/javascript"> scSiLib.getContentHeight = function(pContainer) {
+ var vCh = pContainer.lastChild;
+ var vH = 0;
+ while(vCh && ( vCh.nodeType != 1 || ! (vH = vCh.offsetHeight) || vCh.style.position=="absolute") ) vCh = vCh.previousSibling;
+ if(vCh) {
+  return vCh.offsetTop + vH;
+ }
+ return Number.NaN;
+}</script>
+  <link type="text/css" rel="stylesheet" href="../skin/css/html.css" media="all">
+  <link type="text/css" rel="stylesheet" href="../skin/css/struct_ref.css" media="screen">
+  <link type="text/css" rel="stylesheet" href="../skin/css/buttons.css" media="screen">
+  <link type="text/css" rel="stylesheet" href="../skin/css/transf.css" media="all">
+  <!--[if IE]><link type="text/css" rel="stylesheet" href="../skin/css/ie.css" media="screen"/><![endif]-->
+  <!--[if lt IE 7]><link type="text/css" rel="stylesheet" href="../skin/css/ie6_ref.css" media="screen"/><![endif]--><link type="text/css" rel="stylesheet" href="../skin/css/print.css" media="print">
  </head>
- <body class="subWin ref">
-  <div id="root"><header id="header" role="banner"><nav role="navigation"><ul id="accessibility"><li class="waiContent"><a href="#content"><span>contenu</span></a></li></ul></nav></header><main id="main" role="main"><div id="document"><div id="content" tabindex="-1"><div class="scroller"><hr class="hidden"><section class="hBk article expUc"><h2 class="hBk_ti"><span>Optimisation exerg&eacute;tique de la production d'&eacute;lectricit&eacute; et de la distribution de chaleur d'une centrale de cog&eacute;n&eacute;ration</span></h2><div class="hBk_co "><div class="iBk info"><h3 class="iBk_ti"><span>SFT 2018</span></h3><div class="iBk_co "><div class="rBk "><p>Dirig&eacute; par la soci&eacute;t&eacute; Fonroche G&eacute;othermie, un consortium de dix partenaires participe au projet FONGEOSEC qui s'inscrit dans le cadre des Investissements d'Avenir de l'ADEME. Ce projet a pour but de concevoir et de r&eacute;aliser un d&eacute;monstrateur innovant de centrale g&eacute;othermique haute enthalpie. L'&eacute;nergie, ainsi r&eacute;cup&eacute;r&eacute;e en profondeur, servira &agrave; la cog&eacute;n&eacute;ration d'&eacute;lectricit&eacute; et de chaleur. L'une des &eacute;tapes du projet est l'optimisation &eacute;conomique et exerg&eacute;tique des activit&eacute;s de surface de la centrale (production d'&eacute;lectricit&eacute; et distribution de la chaleur).</p><p>Dans l'&eacute;tude propos&eacute;e, la r&eacute;partition entre la production d'&eacute;lectricit&eacute; et de chaleur s'effectue en parall&egrave;le. Le fluide g&eacute;othermal est s&eacute;par&eacute; en deux courants, l'un alimentant un Cycle Organique de Rankine (ORC : Organic Rankine Cycle) pour la production d'&eacute;lectricit&eacute;, et l'autre &eacute;tant reli&eacute; &agrave; un R&eacute;seau de Chaleur Urbain (RCU) pour la distribution de la chaleur. Chaque constituant de l'ORC est dimensionn&eacute; et la topologie du RCU est d&eacute;termin&eacute;e. La formulation du probl&egrave;me d'optimisation permet alors de d&eacute;terminer simultan&eacute;ment :</p><ul class="txt_il "><li class="txt_ili "><p>quelle est la meilleure r&eacute;partition entre production d'&eacute;lectricit&eacute; et de chaleur,</p></li><li class="txt_ili "><p>quelles sont les meilleures dimensions pour les composants de l'ORC,</p></li><li class="txt_ili "><p>et quelle est la meilleure topologie du RCU.</p></li></ul><p>Concernant l'ORC, l'outil permettra de savoir si l'utilisation d'un &eacute;ventuel r&eacute;cup&eacute;rateur de chaleur interne (IHE : Internal Heat Exchanger) est avantageuse ou non. Du point de vue du RCU, tous les consommateurs (sous-stations) envisag&eacute;s ne sont pas obligatoires. L'outil permettra de choisir quels consommateurs relier au r&eacute;seau et dans quelle disposition. L'utilisation de variables discr&egrave;tes est alors n&eacute;cessaire et le probl&egrave;me d'optimisation ainsi r&eacute;solu est un probl&egrave;me de type MINLP (Mixed Integer Non Linear Programming). Nous proposons dans ces travaux l'&eacute;tude de l'aspect exerg&eacute;tique repr&eacute;sent&eacute; par les pertes de flux d'exergie de l'installation &agrave; minimiser.</p></div></div></div></div></section></div></div></div></main><footer id="footer" role="contentinfo" tabindex="-1"><hr class="hidden"></footer></div>
+ <body>
+  <div id="tplFra"><div id="tplCo"><div id="refCo" class="scroller"><a id="content" class="accessAnc" name="content" href="#content"></a><div id="tplCoMarginW"><div id="tplCoFlexTop"></div><div id="tplCo2"><div class="mainContent "><h1 class="mainContent_ti"><span>Optimisation exerg&eacute;tique de la production d'&eacute;lectricit&eacute; et de la distribution de chaleur d'une centrale de cog&eacute;n&eacute;ration</span></h1><div class="mainContent_co "><div class="info "><h2 class="info_ti"><span>SFT 2018</span></h2><div class="info_co "><div><p class="op_txt_p">Dirig&eacute; par la soci&eacute;t&eacute; Fonroche G&eacute;othermie, un consortium de dix partenaires participe au projet FONGEOSEC qui s'inscrit dans le cadre des Investissements d'Avenir de l'ADEME. Ce projet a pour but de concevoir et de r&eacute;aliser un d&eacute;monstrateur innovant de centrale g&eacute;othermique haute enthalpie. L'&eacute;nergie, ainsi r&eacute;cup&eacute;r&eacute;e en profondeur, servira &agrave; la cog&eacute;n&eacute;ration d'&eacute;lectricit&eacute; et de chaleur. L'une des &eacute;tapes du projet est l'optimisation &eacute;conomique et exerg&eacute;tique des activit&eacute;s de surface de la centrale (production d'&eacute;lectricit&eacute; et distribution de la chaleur).</p><p class="op_txt_p">Dans l'&eacute;tude propos&eacute;e, la r&eacute;partition entre la production d'&eacute;lectricit&eacute; et de chaleur s'effectue en parall&egrave;le. Le fluide g&eacute;othermal est s&eacute;par&eacute; en deux courants, l'un alimentant un Cycle Organique de Rankine (ORC : Organic Rankine Cycle) pour la production d'&eacute;lectricit&eacute;, et l'autre &eacute;tant reli&eacute; &agrave; un R&eacute;seau de Chaleur Urbain (RCU) pour la distribution de la chaleur. Chaque constituant de l'ORC est dimensionn&eacute; et la topologie du RCU est d&eacute;termin&eacute;e. La formulation du probl&egrave;me d'optimisation permet alors de d&eacute;terminer simultan&eacute;ment :</p><ul class="op_txt_il"><li class="op_txt_ili"><p class="op_txt_p">quelle est la meilleure r&eacute;partition entre production d'&eacute;lectricit&eacute; et de chaleur,</p></li><li class="op_txt_ili"><p class="op_txt_p">quelles sont les meilleures dimensions pour les composants de l'ORC,</p></li><li class="op_txt_ili"><p class="op_txt_p">et quelle est la meilleure topologie du RCU.</p></li></ul><p class="op_txt_p">Concernant l'ORC, l'outil permettra de savoir si l'utilisation d'un &eacute;ventuel r&eacute;cup&eacute;rateur de chaleur interne (IHE : Internal Heat Exchanger) est avantageuse ou non. Du point de vue du RCU, tous les consommateurs (sous-stations) envisag&eacute;s ne sont pas obligatoires. L'outil permettra de choisir quels consommateurs relier au r&eacute;seau et dans quelle disposition. L'utilisation de variables discr&egrave;tes est alors n&eacute;cessaire et le probl&egrave;me d'optimisation ainsi r&eacute;solu est un probl&egrave;me de type MINLP (Mixed Integer Non Linear Programming). Nous proposons dans ces travaux l'&eacute;tude de l'aspect exerg&eacute;tique repr&eacute;sent&eacute; par les pertes de flux d'exergie de l'installation &agrave; minimiser.</p></div></div></div></div></div></div></div></div></div><div id="tplFooter"><hr class="hidden"><a id="footer" class="accessAnc" name="footer" href="#footer"></a><a href="#" onclick="window.print();return false;" class="printSubWinBtn" title="Imprimer la page"><span><img alt="Imprimer" src="../skin/img/btn/printSubWin.png" onmouseover="this.src='../skin/img/btn/printSubWinOver.png';" onmouseout="this.src='../skin/img/btn/printSubWin.png';" class="btnImg"><span class="btnLbl">Imprimer</span></span></a></div></div>
   <script type="text/JavaScript" src="../skin/js/skin.js"></script>
-  <script type="text/javascript">tplMgr.init();scCodeMgr.init();scMediaMgr.init("ide:content/chi:div/chi:section/des:.mediaPlayer",{processYoutubeUrls :true});scImgMgr.init();</script>
+  <script type="text/javascript">tplMgr.init();scCodeMgr.init();scImgMgr.init();new scSiRuleAutoMarginW("tplCoMarginW","ide:tplCo",true,450,100);new scSiRuleFlexH("tplCoFlexTop","ide:tplCo",true,.3);</script>
  </body>
 </html>

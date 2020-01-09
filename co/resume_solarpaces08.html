@@ -1,62 +1,73 @@
 <!DOCTYPE html>
 <html lang="fr">
  <head>
-  <meta http-equiv="x-ua-compatible" content="IE=EDGE">
-  <title>Numerical investigation of a turbulent flow submitted to a high temperature gradient</title>
+  <title>Dr Sylvain Serra - Numerical investigation of a turbulent flow submitted to a high temperature gradient</title>
   <meta charset="UTF-8">
-  <meta name="generator" content="SCENARI 4.2.107 / Opale 3.7.001">
-  <meta name="revision" content="2019-12-17 14:48">
-  <link rel="start" href="Sylvain_serra.html" title="Dr Sylvain Serra">
   <meta name="author" content>
+  <meta name="keywords" content="Energ&eacute;tique, r&eacute;seaux de chaleur, optimisation, proc&eacute;d&eacute;s, simulation num&eacute;rique, &eacute;coulement turbulent, densit&eacute; variable, transfert thermique, LATEP - ENSGTI - IPRA - UPPA, Sylvain Serra, ">
   <meta name="date" content>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" type="text/css" href="../lib-md/w_scImgMgr/scImgMgr.css">
-  <link rel="stylesheet" type="text/css" href="../lib-md/w_scCodeMgr/scCodeMgr.css">
+  <link rel="stylesheet" type="text/css" href="../wdgt/scCodeMgr/scCodeMgr.css">
+  <link rel="stylesheet" type="text/css" href="../wdgt/scImgMgr/scImgMgr.css">
   <script type="text/JavaScript">
-/*0*/ var scServices = {id:"k49zesfs"};
-/*1*/ window.scLoadParams = {destUri:"/co/resume_solarpaces08.html", pathToRoot:"../"};
+/*0*/ var scServices = {};
+/*1*/ scServices["scLoad"] = {loadFromRoot:function(pUrl){window.location.href="../"+pUrl;}, getPathFromRoot:function(pPath){return "../"+pPath;}, getUrlFromRoot:function(pHref){if(!this.fRootOffset) this.fRootOffset = scCoLib.hrefBase().length-27; return pHref.substring(this.fRootOffset);},getRootUrl:function(){if(!this.fRootUrl) this.fRootUrl = scCoLib.hrefBase().substring(0,scCoLib.hrefBase().length-28); return this.fRootUrl;}};
 </script>
-  <script type="text/JavaScript" src="../lib-sc/scCoLib.js"></script>
-  <script type="text/JavaScript" src="../lib-sc/scTiLib.js"></script>
-  <script type="text/JavaScript" src="../lib-sc/scSiLib.js"></script>
-  <script type="text/JavaScript" src="../lib-sc/scPaLib.js"></script>
-  <script type="text/JavaScript" src="../lib-sc/scTooltipMgr.js"></script>
-  <script type="text/JavaScript" src="../lib-sc/scDynUiMgr.js"></script>
-  <script type="text/JavaScript" src="../lib-md/s_assmnt.js"></script>
-  <script type="text/JavaScript" src="../lib-sc/scMapMgr.js"></script>
-  <script type="text/JavaScript" src="../lib-sc/scDragMgr.js"></script>
-  <script type="text/JavaScript" src="../lib-sc/scAssmntMgr.js"></script>
-  <script type="text/JavaScript" src="../lib-md/s_scSearch/scSearch.js"></script>
-  <script type="text/JavaScript" src="../lib-md/w_mathjax/mathjaxMgr.js"></script>
-  <script type="text/JavaScript" src="../lib-md/w_tplMgr/tplMgr.js"></script>
-  <script type="text/JavaScript" src="../lib-md/w_scCodeMgr/scCodeMgr.js"></script>
-  <script type="text/JavaScript" src="../lib-md/w_scMediaMgr/scMediaMgr.js"></script>
-  <script type="text/JavaScript" src="../lib-md/w_scImgMgr/scImgMgr.js"></script>
+  <!--[if lt IE 9]><script type="text/JavaScript" src="../wdgt/html5shiv/html5shiv.js"></script><![endif]--><script type="text/JavaScript" src="../lib-sm/scCoLib.js"></script>
+  <script type="text/JavaScript" src="../lib-sm/scPaLib.js"></script>
+  <script type="text/JavaScript" src="../lib-sm/scSiLib.js"></script>
+  <script type="text/JavaScript" src="../lib-sm/scTiLib.js"></script>
+  <script type="text/JavaScript" src="../lib-sm/scTooltipMgr.js"></script>
+  <script type="text/JavaScript" src="../svc/scorm.js"></script>
+  <script type="text/JavaScript" src="../lib-sm/scDynUiMgr.js"></script>
+  <script type="text/JavaScript" src="../svc/scSearch/scSearch.js"></script>
+  <script type="text/JavaScript" src="../wdgt/tplMgr/tplMgr.js"></script>
+  <script type="text/JavaScript" src="../wdgt/dynSizes/dynSizes.js"></script>
+  <script type="text/JavaScript" src="../wdgt/scCodeMgr/scCodeMgr.js"></script>
+  <script type="text/JavaScript" src="../wdgt/scImgMgr/scImgMgr.js"></script>
   <script type="text/JavaScript">
-/*0*/ try{if(window.opener && window.opener.scServices && window.opener.scServices.id == scServices.id) scServices = window.opener.scServices; else if(window.parent && window.parent.scServices && window.parent.scServices.id == scServices.id) scServices = window.parent.scServices;}catch(e){}
+/*0*/ try{var vCurrDir = scCoLib.hrefBase().substring(0,scCoLib.hrefBase().lastIndexOf("/")+1); if(window.opener && window.opener.location.href.lastIndexOf(vCurrDir, vCurrDir.length)==0 && window.opener.scServices) scServices = window.opener.scServices; else if(window.parent && window.parent.location.href.lastIndexOf(vCurrDir, vCurrDir.length)==0 && window.parent.scServices) scServices = window.parent.scServices;}catch(e){}
 scCodeMgr.registerCode("des:div.code");
-
-scImgMgr.registerAdaptedImage("ide:content/des:img");
 
 scImgMgr.registerGallery("des:div.galFra");
 
-scImgMgr.registerSvg("des:svg");
-scImgMgr.registerZoom("des:a.svgZoom",{type:"svg",svgMax:1,toolbar:1,titlePath:"par:/nsi:/des:span.capTi"});
-
-scImgMgr.registerZoom("des:a.imgZoom",{toolbar:1,mag:1,titlePath:"par:/nsi:/des:span.capTi"});
+scImgMgr.registerZoom("des:a.imgZoom",{toolbar:1,mag:1,titlePath:"par:/nsi:/chi:span.capTi"});
 
 </script>
-  <link type="text/css" rel="stylesheet" href="../skin/css/main.css" media="all">
-  <link type="text/css" rel="stylesheet" href="../skin/css/skin.css" media="all">
-  <link type="text/css" rel="stylesheet" href="../skin/css/print.css" media="print">
+  <meta name="generator" content="SCENARI 4.1.10 / Opale 3.5.014 - http://scenari-platform.org/opale">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <meta name="revision" content="2019-08-21 12:43">
+  <link rel="start" href="sylvain_serra.html" title="Dr Sylvain Serra">
   <script type="text/javascript">try{
 	if(window.frameElement.setSubWindowTitle) window.frameElement.setSubWindowTitle(document.title);
 }catch(e){}
 </script>
+  <script type="text/javascript"> scSiLib.getContentHeight = function(pContainer) {
+ var vCh = pContainer.lastChild;
+ var vH = 0;
+ while(vCh && ( vCh.nodeType != 1 || ! (vH = vCh.offsetHeight) || vCh.style.position=="absolute") ) vCh = vCh.previousSibling;
+ if(vCh) {
+  return vCh.offsetTop + vH;
+ }
+ return Number.NaN;
+}</script>
+  <link type="text/css" rel="stylesheet" href="../skin/css/html.css" media="all">
+  <link type="text/css" rel="stylesheet" href="../skin/css/struct_ref.css" media="screen">
+  <link type="text/css" rel="stylesheet" href="../skin/css/buttons.css" media="screen">
+  <link type="text/css" rel="stylesheet" href="../skin/css/transf.css" media="all">
+  <!--[if IE]><link type="text/css" rel="stylesheet" href="../skin/css/ie.css" media="screen"/><![endif]-->
+  <!--[if lt IE 7]><link type="text/css" rel="stylesheet" href="../skin/css/ie6_ref.css" media="screen"/><![endif]--><link type="text/css" rel="stylesheet" href="../skin/css/print.css" media="print">
  </head>
- <body class="subWin ref">
-  <div id="root"><header id="header" role="banner"><nav role="navigation"><ul id="accessibility"><li class="waiContent"><a href="#content"><span>contenu</span></a></li></ul></nav></header><main id="main" role="main"><div id="document"><div id="content" tabindex="-1"><div class="scroller"><hr class="hidden"><section class="hBk article expUc"><h2 class="hBk_ti"><span>Numerical investigation of a turbulent flow submitted to a high temperature gradient</span></h2><div class="hBk_co "><div class="iBk info"><h3 class="iBk_ti"><span>Solar Paces 2008</span></h3><div class="iBk_co "><div class="rBk "><p>Strong temperature variations that appear in high temperature solar receivers induce significant changes to fluid properties. In order to understand the impact of thermal gradients, we perform numerical simulations on a turbulent channel flow with fixed wall temperatures. The numerical simulations are performed for two different turbulent Reynolds numbers depending on the setting: <span class="txt_mathtex_tl "><span aria-label="Notation Latex&nbsp;: 180">\(180\)</span></span> and <span class="txt_mathtex_tl "><span aria-label="Notation Latex&nbsp;: 395.">\(395.\)</span></span></p><p>We performed simulations using Fluent software in order to check the abilities and limits of thermal Reynolds Averaged Navier-Stokes (RANS) models using a commercial code. The results on the mean velocity and the temperature fields are compared to direct numerical simulation (DNS) of published data. We find a good match using the ReNormalization Groups (RNG) <span class="txt_mathtex_tl "><span aria-label="Notation Latex&nbsp;: k">\(k\)</span></span>-<span class="txt_mathtex_tl "><span aria-label="Notation Latex&nbsp;: \varepsilon">\(\varepsilon\)</span></span> model and Reynolds Stress model (RSM) with enhanced wall treatment for the isothermal case. At the opposite, Fluent fails to simulate the temperature effect on the fluid properties and the induced effect on the velocity for the non-isothermal cases with weak and strong temperature gradients. Our results show that the difference between Fluent results and literature data increases with the temperature gradient.</p><p>We inferred from this study that we needed to use more precise turbulence and thermal models like Thermal Large Eddy Simulation (TLES) with some alternate Computational Fluid Dynamics (CFD) code. We used the Trio_U code developed by the Grenoble laboratory of the French atomic agency (CEA). We consider low Mach number equations and carry out TLES. These equations permit to take into account the compressible effects due to the temperature (without considering the effects due to the velocity). Furthermore, the conductivity and viscosity vary with the temperature according to Sutherland law.</p><p>These LES simulations are validated by comparisons with DNS data for both the isothermal and non-isothermal cases. The thermal subgrid-scale modeling was also studied. A first analysis of the temperature gradient effects shows that a dissymmetry appears in the mean velocity and temperature profiles. It also points out a strong effect on the turbulent parts.</p></div></div></div></div></section></div></div></div></main><footer id="footer" role="contentinfo" tabindex="-1"><hr class="hidden"></footer></div>
+ <body>
+  <div id="tplFra"><div id="tplCo"><div id="refCo" class="scroller"><a id="content" class="accessAnc" name="content" href="#content"></a><div id="tplCoMarginW"><div id="tplCoFlexTop"></div><div id="tplCo2"><div class="mainContent "><h1 class="mainContent_ti"><span>Numerical investigation of a turbulent flow submitted to a high temperature gradient</span></h1><div class="mainContent_co "><div class="info "><h2 class="info_ti"><span>Solar Paces 2008</span></h2><div class="info_co "><div><p class="op_txt_p">Strong temperature variations that appear in high temperature solar receivers induce significant changes to fluid properties. In order to understand the impact of thermal gradients, we perform numerical simulations on a turbulent channel flow with fixed wall temperatures. The numerical simulations are performed for two different turbulent Reynolds numbers depending on the setting: <span class="op_txt_tl_mathtex">
+		<img class="sfile_math_inline" alt src="../res/resume_solarpaces08.png" style="vertical-align:-0px;">
+	</span> and <span class="op_txt_tl_mathtex">
+		<img class="sfile_math_inline" alt src="../res/resume_solarpaces08_1.png" style="vertical-align:-1px;">
+	</span></p><p class="op_txt_p">We performed simulations using Fluent software in order to check the abilities and limits of thermal Reynolds Averaged Navier-Stokes (RANS) models using a commercial code. The results on the mean velocity and the temperature fields are compared to direct numerical simulation (DNS) of published data. We find a good match using the ReNormalization Groups (RNG) <span class="op_txt_tl_mathtex">
+		<img class="sfile_math_inline" alt src="../res/resume_solarpaces08_2.png" style="vertical-align:-0px;">
+	</span>-<span class="op_txt_tl_mathtex">
+		<img class="sfile_math_inline" alt src="../res/resume_solarpaces08_3.png" style="vertical-align:-0px;">
+	</span> model and Reynolds Stress model (RSM) with enhanced wall treatment for the isothermal case. At the opposite, Fluent fails to simulate the temperature effect on the fluid properties and the induced effect on the velocity for the non-isothermal cases with weak and strong temperature gradients. Our results show that the difference between Fluent results and literature data increases with the temperature gradient.</p><p class="op_txt_p">We inferred from this study that we needed to use more precise turbulence and thermal models like Thermal Large Eddy Simulation (TLES) with some alternate Computational Fluid Dynamics (CFD) code. We used the Trio_U code developed by the Grenoble laboratory of the French atomic agency (CEA). We consider low Mach number equations and carry out TLES. These equations permit to take into account the compressible effects due to the temperature (without considering the effects due to the velocity). Furthermore, the conductivity and viscosity vary with the temperature according to Sutherland law.</p><p class="op_txt_p">These LES simulations are validated by comparisons with DNS data for both the isothermal and non-isothermal cases. The thermal subgrid-scale modeling was also studied. A first analysis of the temperature gradient effects shows that a dissymmetry appears in the mean velocity and temperature profiles. It also points out a strong effect on the turbulent parts.</p></div></div></div></div></div></div></div></div></div><div id="tplFooter"><hr class="hidden"><a id="footer" class="accessAnc" name="footer" href="#footer"></a><a href="#" onclick="window.print();return false;" class="printSubWinBtn" title="Imprimer la page"><span><img alt="Imprimer" src="../skin/img/btn/printSubWin.png" onmouseover="this.src='../skin/img/btn/printSubWinOver.png';" onmouseout="this.src='../skin/img/btn/printSubWin.png';" class="btnImg"><span class="btnLbl">Imprimer</span></span></a></div></div>
   <script type="text/JavaScript" src="../skin/js/skin.js"></script>
-  <script type="text/javascript">tplMgr.init();scCodeMgr.init();mathjaxMgr.init();scMediaMgr.init("ide:content/chi:div/chi:section/des:.mediaPlayer",{processYoutubeUrls :true});scImgMgr.init();</script>
+  <script type="text/javascript">tplMgr.init();scCodeMgr.init();scImgMgr.init();new scSiRuleAutoMarginW("tplCoMarginW","ide:tplCo",true,450,100);new scSiRuleFlexH("tplCoFlexTop","ide:tplCo",true,.3);</script>
  </body>
 </html>

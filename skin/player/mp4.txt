@@ -1,4 +1,3 @@
-bgcolor1=434e52
-bgcolor2=434e52
-playercolor=434e52
-buttoncolor=e0ecec
+bgcolor1=7C97CA
+bgcolor2=4D6CA3
+playercolor=7C97CA
