@@ -24,7 +24,7 @@
  * Alternatively, the contents of this file may be used under the terms of
  * either of the GNU General Public License Version 3.0 or later (the "GPL"),
  * or the GNU Lesser General Public License Version 3.0 or later (the "LGPL"),
- * or the CeCILL Licence Version 2.1 (http://www.cecill.info/licences.en.html),
+ * or the CeCILL Licence Version 2.1 (http://www.cecill.info),
  * in which case the provisions of the GPL, the LGPL or the CeCILL are applicable
  * instead of those above. If you wish to allow use of your version of this file
  * only under the terms of either the GPL, the LGPL or the CeCILL, and not to allow

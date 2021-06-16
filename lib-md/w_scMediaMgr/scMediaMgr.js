@@ -16,7 +16,7 @@
  * The Initial Developer of the Original Code is 
  * nicolas.boyer@kelis.fr
  *
- * Portions created by the Initial Developer are Copyright (C) 2013-2017
+ * Portions created by the Initial Developer are Copyright (C) 2013-2020
  * the Initial Developer. All Rights Reserved.
  *
  * Contributor(s):
@@ -47,6 +47,7 @@ var scMediaMgr = {
 	fVideoType: /\.(webm|mp4|mp3|ogg|ogv|oga|opus|wav|m4a|m4v|WEBM|MP4|MP3|OGG|OGV|OGA|OPUS|WAV|M4A|M4V)$/,
 	fYoutubeVideoIds: {},
 	fProcessYoutubeUrls: null,
+	fInitMediasOnload: null,
 
 	fStrings: ["Montrer les sous-titres", "Cacher les sous-titres",
 	/*02*/      "Choisir la langue", "Off",
@@ -64,10 +65,10 @@ var scMediaMgr = {
 	/*26*/      "Pour quitter le plein écran, appuyer sur Échap...", "",
 	/*28*/      "Barre de navigation", "Barre de volume",
 	/*30*/      "Télécharger la transcription", "Chargement",
-	/*32*/		"Ce type de lien n\'est pas reconnu par le lecteur. Vous pourrez y accédez en cliquant sur le lien ci-dessous", "Haute",
-	/*34*/		"Moyenne", "Basse",
-	/*36*/		"Qualité", "Qualité",
-	/*38*/		"Erreur de connexion. Veuillez vérifier que vous êtes bien connecté à un réseau mobile ou internet ...", ""],
+	/*32*/      "Ce type de lien n\'est pas reconnu par le lecteur. Vous pourrez y accédez en cliquant sur le lien ci-dessous", "Haute",
+	/*34*/      "Moyenne", "Basse",
+	/*36*/      "Qualité", "Qualité",
+	/*38*/      "Erreur de connexion. Veuillez vérifier que vous êtes bien connecté à un réseau mobile ou internet ...", ""],
 
 	init: function (pMediaPath, pOpts) {
 		try {
@@ -76,6 +77,7 @@ var scMediaMgr = {
 			this.fOpts = (typeof pOpts == "undefined" ? { isFlashFallback: false, processYoutubeUrls: false } : pOpts);
 			this.fOpts.isFlashFallback = (typeof this.fOpts.isFlashFallback == "undefined" ? false : this.fOpts.isFlashFallback);
 			this.fProcessYoutubeUrls = this.fProcessYoutubeUrls != null ? this.fProcessYoutubeUrls : this.fOpts.processYoutubeUrls || false;
+			this.fInitMediasOnload = this.fInitMediasOnload != null ? this.fInitMediasOnload : this.fOpts.initMediasOnload || false;
 
 			// WebBrowser Type
 			var vWebBrowser = this.xGetWebBrowser();
@@ -83,22 +85,24 @@ var scMediaMgr = {
 
 			this.fStore = new LocalStore();
 			
-			this.initMedias();
-
-			// Lance la création vidéos youtube
-			this.xCreateYoutubeVideos();
+			if (this.fInitMediasOnload) scOnLoads[scOnLoads.length] = this;
+			else this.initMedias();
 
 		} catch (e) { scCoLib.log("ERROR - scMediaMgr.init : " + e); }
 	},
-
+	onLoad: function (){
+		this.initMedias();
+	},
+	loadSortKey : "ZZZZ",
 	initMedias: function () {
 		var vMedias = scPaLib.findNodes(this.fMediaPath);
 		if (!vMedias) return;
 		for (var i = 0; i < vMedias.length; i++) {
 			this.initMedia(vMedias[i]);
 		}
+		// Lance la création vidéos youtube
+		this.xCreateYoutubeVideos();
 	},
-
 	initMedia: function (pMediaNode) {
 		try {
 			if (pMediaNode.fInitialized) return pMediaNode;
@@ -173,12 +177,13 @@ var scMediaMgr = {
 			var vLnkBkA = this.xAddLnk(vLnkBk, null, vSrc);
 			vLnkBkA.href = vSrc;
 			vLnkBkA.target = "_blank";
-			pMedia.fParent.removeChild(vInnerPlayer);
+			if (vInnerPlayer) pMedia.fParent.removeChild(vInnerPlayer);
 			return;
 		}
 
 		// Création du média
 		pMedia.fContainer = scDynUiMgr.addElement(pType, pMedia.fParent);
+		pMedia.fContainer.setAttribute("preload", "metadata");
 		var vSources = pMedia.fOtherEncoding != "no" ? [vSrc, pMedia.fOtherEncoding] : [vSrc];
 
 		for (var i = 0; i < vSources.length; i++) {
@@ -187,7 +192,7 @@ var scMediaMgr = {
 		}
 		if (pType == 'video') {
 			pMedia.fContainer.style.maxWidth = pMedia.fWidth ? pMedia.fWidth + "px" : pMedia.fMaxWidth ? pMedia.fMaxWidth + "px" : pMedia.fContainer.getAttribute("width") + "px";
-			pMedia.fContainer.style.maxHeight = pMedia.fHeight ? "auto" : pMedia.fMaxHeight ? pMedia.fMaxHeight + "px" : pMedia.fContainer.getAttribute("height") + "px";
+			pMedia.fContainer.style.maxHeight = pMedia.fHeight ? pMedia.fHeight + "px" : pMedia.fMaxHeight ? pMedia.fMaxHeight + "px" : pMedia.fContainer.getAttribute("height") + "px";
 			pMedia.fContainer.setAttribute("width", "100%");
 			pMedia.fContainer.setAttribute("height", "auto");
 			pMedia.fContainer.style.width = "100%";
@@ -220,7 +225,7 @@ var scMediaMgr = {
 		if (pMedia.fType == "video") {
 			pMedia.fPlayOnScreenBtn = this.xAddBtn(pMedia.fParent, "playOnScreen", this.fStrings[19], this.fStrings[19]);
 			pMedia.fPlayOnScreenBtn.media = pMedia;
-			pMedia.fPlayOnScreenBtn.onclick = this.sPlayPause;	
+			pMedia.fPlayOnScreenBtn.onclick = this.sPlayPause;
 		}
 
 		// Création du lecteur et des boutons par défaut du lecteur
@@ -282,12 +287,15 @@ var scMediaMgr = {
 			vTranscriptBtn.fElt = pMedia.fTranscript == 'text' ? scPaLib.findNode("nsi:", pMedia.fParent) : pMedia.fTranscript;
 			if (pMedia.fTranscript == 'text') this.xToggleTranscript(vTranscriptBtn, true);
 			else vTranscriptBtn.fTranscriptIsPdf = true;
+			vTranscriptBtn.onclick = this.sToggleTranscript;
+			/*
 			if (pType == 'audio') vTranscriptBtn.onclick = this.sToggleTranscript;
 			else {
 				vTranscriptBtn.fClick = this.sToggleTranscript;
 				pMedia.fDefaultVidsBtns.push(vTranscriptBtn);
 				pMedia.fIsAltBtn = true;
 			}
+			*/
 			pMedia.fToolsBtnCnt += 1;
 		}
 		var vAltVidsBtns = scDynUiMgr.addElement("span", pMedia.fPlayerElt, "altVids_bk");
@@ -346,12 +354,29 @@ var scMediaMgr = {
 				pMedia.fSeekBtn.setAttribute("aria-valuemax", scCoLib.toInt(this.duration));
 			}
 			if (pMedia.fPlayOnScreenBtn) {
-				pMedia.fPlayOnScreenBtn.style.width = pMedia.fContainer.offsetWidth + "px";
+				var vWidth = pMedia.fWidth||pMedia.fContainer.offsetWidth;
+				var vHeight = pMedia.fHeight||pMedia.fContainer.offsetHeight;
+				if(!vWidth && pMedia.fMaxWidth){
+					var vVidWidth = this.videoWidth;
+					var vVidHeight = this.videoHeight;
+					var vRatio = vVidWidth / vVidHeight;
+					if (vVidWidth>scCoLib.toInt(pMedia.fMaxWidth)){
+						vVidWidth = scCoLib.toInt(pMedia.fMaxWidth);
+						vVidHeight = vVidWidth / vRatio;
+					}
+					if (vVidHeight>scCoLib.toInt(pMedia.fMaxHeight)){
+						vVidHeight = scCoLib.toInt(pMedia.fMaxHeight);
+						vVidWidth = vVidHeight * vRatio;
+					}
+					vWidth = vVidWidth;
+					vHeight = vVidHeight;
+				}
+				pMedia.fPlayOnScreenBtn.style.width = vWidth + "px";
 				// Sous IE 11 si on ne met pas de top et de left le bouton n'est pas centré sur la vidéo
-				pMedia.fPlayOnScreenBtn.style.marginLeft = -pMedia.fContainer.offsetWidth / 2 + "px";
+				pMedia.fPlayOnScreenBtn.style.marginLeft = -vWidth / 2 + "px";
 				pMedia.fPlayOnScreenBtn.style.top = 0;
 				pMedia.fPlayOnScreenBtn.style.left = "50%";
-				pMedia.fPlayOnScreenBtn.style.height = pMedia.fContainer.offsetHeight + "px";
+				pMedia.fPlayOnScreenBtn.style.height = vHeight + "px";
 			}
 			scMediaMgr.xNotifyListener("mediaLoaded", this);
 		}, false);

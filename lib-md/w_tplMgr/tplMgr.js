@@ -137,6 +137,10 @@ var tplMgr = {
 		var vCollBlk = scPaLib.findNode("anc:.collBlk_closed",pNode);
 		if(vCollBlk) vCollBlk.fTitle.onclick();
 	},
+	hideCaption : function(pNode){
+		var vCaption = scPaLib.findNode("anc:figure/chi:figcaption",pNode);
+		if (vCaption) vCaption.style.display = "none";
+	},
 	xMediaFallback: function(pMedia) {
 		while (pMedia.firstChild) {
 			if (pMedia.firstChild instanceof HTMLSourceElement) {
