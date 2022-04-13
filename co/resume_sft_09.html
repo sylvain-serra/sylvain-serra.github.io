@@ -4,8 +4,8 @@
   <meta http-equiv="x-ua-compatible" content="IE=EDGE">
   <title>Etude de la mod&eacute;lisation thermique d'un &eacute;coulement turbulent soumis &agrave; un fort gradient de temp&eacute;rature avec la Simulation des Grandes Echelles Thermique</title>
   <meta charset="UTF-8">
-  <meta name="generator" content="SCENARI 4.2.202 / Opale 3.7.002">
-  <meta name="revision" content="2021-07-21 09:08">
+  <meta name="generator" content="SCENARI 4.2.106 / Opale 3.6.103">
+  <meta name="revision" content="2022-04-13 16:58">
   <link rel="start" href="Sylvain_serra.html" title="Dr (HDR) Sylvain Serra">
   <meta name="author" content>
   <meta name="date" content>
@@ -13,16 +13,19 @@
   <link rel="stylesheet" type="text/css" href="../lib-md/w_scImgMgr/scImgMgr.css">
   <link rel="stylesheet" type="text/css" href="../lib-md/w_scCodeMgr/scCodeMgr.css">
   <script type="text/JavaScript">
-/*0*/ var scServices = {id:"krd9jpnf"};
+/*0*/ var scServices = {id:"l1xtgswr"};
 /*1*/ window.scLoadParams = {destUri:"/co/resume_sft_09.html", pathToRoot:"../"};
 </script>
   <script type="text/JavaScript" src="../lib-sc/scCoLib.js"></script>
   <script type="text/JavaScript" src="../lib-sc/scTiLib.js"></script>
   <script type="text/JavaScript" src="../lib-sc/scSiLib.js"></script>
   <script type="text/JavaScript" src="../lib-sc/scPaLib.js"></script>
-  <script type="text/JavaScript" src="../lib-sc/scDynUiMgr.js"></script>
   <script type="text/JavaScript" src="../lib-sc/scTooltipMgr.js"></script>
+  <script type="text/JavaScript" src="../lib-sc/scDynUiMgr.js"></script>
   <script type="text/JavaScript" src="../lib-md/s_assmnt.js"></script>
+  <script type="text/JavaScript" src="../lib-sc/scMapMgr.js"></script>
+  <script type="text/JavaScript" src="../lib-sc/scDragMgr.js"></script>
+  <script type="text/JavaScript" src="../lib-sc/scAssmntMgr.js"></script>
   <script type="text/JavaScript" src="../lib-md/s_scSearch/scSearch.js"></script>
   <script type="text/JavaScript" src="../lib-md/w_mathjax/mathjaxMgr.js"></script>
   <script type="text/JavaScript" src="../lib-md/w_tplMgr/tplMgr.js"></script>
@@ -33,12 +36,9 @@
 /*0*/ try{if(window.opener && window.opener.scServices && window.opener.scServices.id == scServices.id) scServices = window.opener.scServices; else if(window.parent && window.parent.scServices && window.parent.scServices.id == scServices.id) scServices = window.parent.scServices;}catch(e){}
 scCodeMgr.registerCode("des:div.code");
 
-scImgMgr.registerAdaptedImage("ide:content/des:figure/des:img");
+scImgMgr.registerAdaptedImage("ide:content/des:img");
 
 scImgMgr.registerGallery("des:div.galFra");
-
-scImgMgr.registerSvg("des:svg");
-scImgMgr.registerZoom("des:a.svgZoom",{type:"svg",svgMax:1,toolbar:1,titlePath:"par:/nsi:/des:span.capTi"});
 
 scImgMgr.registerZoom("des:a.imgZoom",{toolbar:1,mag:1,titlePath:"par:/nsi:/des:span.capTi"});
 
@@ -52,7 +52,7 @@ scImgMgr.registerZoom("des:a.imgZoom",{toolbar:1,mag:1,titlePath:"par:/nsi:/des:
 </script>
  </head>
  <body class="subWin ref">
-  <div id="root"><header id="header" role="banner"><nav role="navigation"><ul id="accessibility"><li class="waiContent"><a href="#content"><span>contenu</span></a></li></ul></nav></header><main id="main" role="main"><div id="document"><div id="content" tabindex="-1"><div class="scroller"><hr class="hidden"><section class="hBk article expUc"><h2 class="hBk_ti"><span>Etude de la mod&eacute;lisation thermique d'un &eacute;coulement turbulent soumis &agrave; un fort gradient de temp&eacute;rature avec la Simulation des Grandes Echelles Thermique</span></h2><div class="hBk_co "><div class="iBk info"><h3 class="iBk_ti"><span>SFT 2009</span></h3><div class="iBk_co "><div class="rBk "><p>Cette &eacute;tude concerne la Simulation des Grandes Echelles Thermiques (SGET). Elle vise &agrave; &eacute;tudier l'influence d'un gradient de temp&eacute;rature sur un &eacute;coulement turbulent dans la configuration acad&eacute;mique d'un canal plan bi-p&eacute;riodique avec temp&eacute;ratures impos&eacute;es aux parois. Diff&eacute;rents rapports de temp&eacute;rature et diff&eacute;rentes intensit&eacute;s turbulentes sont &eacute;tudi&eacute;s. Pour simuler pr&eacute;cis&eacute;ment le couplage entre la dynamique et la thermique de l'&eacute;coulement, une &eacute;tude sur la mod&eacute;lisation sous-maille thermique a &eacute;t&eacute; r&eacute;alis&eacute;e.</p></div><div class="rBk "><p>T&eacute;l&eacute;chargement&nbsp;:<a class="op_txt_ul" target="_blank" href="http://www.sft.asso.fr/Local/sft/dir/user-3775/documents/actes/congres_2009/Communications/10.pdf" rel="noopener" title=" http://www.sft.asso.fr/Local/sft/dir/user-3775/documents/actes/congres_2009/Communications/10.pdf (nouvelle fen&ecirc;tre)"><span> http://www.sft.asso.fr/Local/sft/dir/user-3775/documents/actes/congres_2009/Communications/10.pdf</span></a></p></div></div></div></div></section></div></div></div></main><footer id="footer" role="contentinfo" tabindex="-1"><hr class="hidden"></footer></div>
+  <div id="root"><header id="header" role="banner"><nav role="navigation"><ul id="accessibility"><li class="waiContent"><a href="#content"><span>contenu</span></a></li></ul></nav></header><main id="main" role="main"><div id="document"><div id="content" tabindex="-1"><div class="scroller"><hr class="hidden"><section class="hBk article expUc"><h2 class="hBk_ti"><span>Etude de la mod&eacute;lisation thermique d'un &eacute;coulement turbulent soumis &agrave; un fort gradient de temp&eacute;rature avec la Simulation des Grandes Echelles Thermique</span></h2><div class="hBk_co "><div class="iBk info"><h3 class="iBk_ti"><span>SFT 2009</span></h3><div class="iBk_co "><div class="rBk "><p>Cette &eacute;tude concerne la Simulation des Grandes Echelles Thermiques (SGET). Elle vise &agrave; &eacute;tudier l'influence d'un gradient de temp&eacute;rature sur un &eacute;coulement turbulent dans la configuration acad&eacute;mique d'un canal plan bi-p&eacute;riodique avec temp&eacute;ratures impos&eacute;es aux parois. Diff&eacute;rents rapports de temp&eacute;rature et diff&eacute;rentes intensit&eacute;s turbulentes sont &eacute;tudi&eacute;s. Pour simuler pr&eacute;cis&eacute;ment le couplage entre la dynamique et la thermique de l'&eacute;coulement, une &eacute;tude sur la mod&eacute;lisation sous-maille thermique a &eacute;t&eacute; r&eacute;alis&eacute;e.</p></div><div class="rBk "><p>T&eacute;l&eacute;chargement&nbsp;:<a class="op_txt_ul" target="_blank" href="http://www.sft.asso.fr/Local/sft/dir/user-3775/documents/actes/congres_2009/Communications/10.pdf" title=" http://www.sft.asso.fr/Local/sft/dir/user-3775/documents/actes/congres_2009/Communications/10.pdf (nouvelle fen&ecirc;tre)"><span> http://www.sft.asso.fr/Local/sft/dir/user-3775/documents/actes/congres_2009/Communications/10.pdf</span></a></p></div></div></div></div></section></div></div></div></main><footer id="footer" role="contentinfo" tabindex="-1"><hr class="hidden"></footer></div>
   <script type="text/JavaScript" src="../skin/js/skin.js"></script>
   <script type="text/javascript">tplMgr.init();scCodeMgr.init();scMediaMgr.init("ide:content/chi:div/chi:section/des:.mediaPlayer",{processYoutubeUrls :true});scImgMgr.init();</script>
  </body>

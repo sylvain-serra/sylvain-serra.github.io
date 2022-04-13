@@ -16,7 +16,7 @@
  * The Initial Developer of the Original Code is 
  * nicolas.boyer@kelis.fr
  *
- * Portions created by the Initial Developer are Copyright (C) 2013-2020
+ * Portions created by the Initial Developer are Copyright (C) 2013-2017
  * the Initial Developer. All Rights Reserved.
  *
  * Contributor(s):
@@ -47,7 +47,6 @@ var scMediaMgr = {
 	fVideoType: /\.(webm|mp4|mp3|ogg|ogv|oga|opus|wav|m4a|m4v|WEBM|MP4|MP3|OGG|OGV|OGA|OPUS|WAV|M4A|M4V)$/,
 	fYoutubeVideoIds: {},
 	fProcessYoutubeUrls: null,
-	fInitMediasOnload: null,
 
 	fStrings: ["Montrer les sous-titres", "Cacher les sous-titres",
 	/*02*/      "Choisir la langue", "Off",
@@ -65,44 +64,39 @@ var scMediaMgr = {
 	/*26*/      "Pour quitter le plein écran, appuyer sur Échap...", "",
 	/*28*/      "Barre de navigation", "Barre de volume",
 	/*30*/      "Télécharger la transcription", "Chargement",
-	/*32*/      "Ce type de lien n\'est pas reconnu par le lecteur. Vous pourrez y accédez en cliquant sur le lien ci-dessous", "Haute",
-	/*34*/      "Moyenne", "Basse",
-	/*36*/      "Qualité", "Qualité",
-	/*38*/      "Erreur de connexion. Veuillez vérifier que vous êtes bien connecté à un réseau mobile ou internet ...", ""],
+	/*32*/		"Ce type de lien n\'est pas reconnu par le lecteur. Vous pourrez y accédez en cliquant sur le lien ci-dessous", "Haute",
+	/*34*/		"Moyenne", "Basse",
+	/*36*/		"Qualité", "Qualité",
+	/*38*/		"Erreur de connexion. Veuillez vérifier que vous êtes bien connecté à un réseau mobile ou internet ...", ""],
 
 	init: function (pMediaPath, pOpts) {
 		try {
 			if (typeof pMediaPath != "undefined") this.fMediaPath = pMediaPath;
 
-			this.fOpts = (typeof pOpts == "undefined" ? { isFlashFallback: false, processYoutubeUrls: false } : pOpts);
+			this.fOpts = (typeof pOpts == "undefined" ? { isSkinInWidget: false, isFlashFallback: false, processYoutubeUrls: false } : pOpts);
+			this.fOpts.isSkinInWidget = (typeof this.fOpts.isSkinInWidget == "undefined" ? false : this.fOpts.isSkinInWidget);
 			this.fOpts.isFlashFallback = (typeof this.fOpts.isFlashFallback == "undefined" ? false : this.fOpts.isFlashFallback);
 			this.fProcessYoutubeUrls = this.fProcessYoutubeUrls != null ? this.fProcessYoutubeUrls : this.fOpts.processYoutubeUrls || false;
-			this.fInitMediasOnload = this.fInitMediasOnload != null ? this.fInitMediasOnload : this.fOpts.initMediasOnload || false;
+
+			this.fSkinRelPath = this.fOpts.isSkinInWidget ? scServices.scLoad.resolveDestUri("/lib-md/w_scMediaMgr") : scServices.scLoad.resolveDestUri("/skin");
 
 			// WebBrowser Type
 			var vWebBrowser = this.xGetWebBrowser();
 			this.fIsWebMSupported = (vWebBrowser[0] == "Chrome" && vWebBrowser[1] >= 6) || (vWebBrowser[0] == "Firefox" && vWebBrowser[1] >= 4) || (vWebBrowser[0] == "Opera" && vWebBrowser[1] >= 10.60);
 
 			this.fStore = new LocalStore();
-			
-			if (this.fInitMediasOnload) scOnLoads[scOnLoads.length] = this;
-			else this.initMedias();
+
+			var vMedias = scPaLib.findNodes(this.fMediaPath);
+			if (!vMedias) return;
+			for (var i = 0; i < vMedias.length; i++) {
+				this.initMedia(vMedias[i]);
+			}
+			// Lance la création vidéos youtube
+			this.xCreateYoutubeVideos();
 
 		} catch (e) { scCoLib.log("ERROR - scMediaMgr.init : " + e); }
 	},
-	onLoad: function (){
-		this.initMedias();
-	},
-	loadSortKey : "ZZZZ",
-	initMedias: function () {
-		var vMedias = scPaLib.findNodes(this.fMediaPath);
-		if (!vMedias) return;
-		for (var i = 0; i < vMedias.length; i++) {
-			this.initMedia(vMedias[i]);
-		}
-		// Lance la création vidéos youtube
-		this.xCreateYoutubeVideos();
-	},
+
 	initMedia: function (pMediaNode) {
 		try {
 			if (pMediaNode.fInitialized) return pMediaNode;
@@ -128,7 +122,6 @@ var scMediaMgr = {
 			vMedia.fIsAltBtn = false;
 			vMedia.fToolsBtnCnt = 0;
 			vMedia.fSubtitles = pMediaNode.getAttribute('data-subtitles') || "no";
-			vMedia.fSubtitlesAutoStart = pMediaNode.getAttribute('data-subtitles') && pMediaNode.getAttribute('data-subtitles-autostart') != 'no' ? true : null;
 			pMediaNode.fInitialized = true;
 			this.createMedia(vMedia, vMedia.fType);
 			return pMediaNode;
@@ -177,13 +170,12 @@ var scMediaMgr = {
 			var vLnkBkA = this.xAddLnk(vLnkBk, null, vSrc);
 			vLnkBkA.href = vSrc;
 			vLnkBkA.target = "_blank";
-			if (vInnerPlayer) pMedia.fParent.removeChild(vInnerPlayer);
+			pMedia.fParent.removeChild(vInnerPlayer);
 			return;
 		}
 
 		// Création du média
 		pMedia.fContainer = scDynUiMgr.addElement(pType, pMedia.fParent);
-		pMedia.fContainer.setAttribute("preload", "metadata");
 		var vSources = pMedia.fOtherEncoding != "no" ? [vSrc, pMedia.fOtherEncoding] : [vSrc];
 
 		for (var i = 0; i < vSources.length; i++) {
@@ -192,7 +184,7 @@ var scMediaMgr = {
 		}
 		if (pType == 'video') {
 			pMedia.fContainer.style.maxWidth = pMedia.fWidth ? pMedia.fWidth + "px" : pMedia.fMaxWidth ? pMedia.fMaxWidth + "px" : pMedia.fContainer.getAttribute("width") + "px";
-			pMedia.fContainer.style.maxHeight = pMedia.fHeight ? pMedia.fHeight + "px" : pMedia.fMaxHeight ? pMedia.fMaxHeight + "px" : pMedia.fContainer.getAttribute("height") + "px";
+			pMedia.fContainer.style.maxHeight = pMedia.fHeight ? "auto" : pMedia.fMaxHeight ? pMedia.fMaxHeight + "px" : pMedia.fContainer.getAttribute("height") + "px";
 			pMedia.fContainer.setAttribute("width", "100%");
 			pMedia.fContainer.setAttribute("height", "auto");
 			pMedia.fContainer.style.width = "100%";
@@ -219,13 +211,6 @@ var scMediaMgr = {
 			// Le onerror ne marche pas sur la balise source sur IE
 			// pMedia.fContainer.childNodes[vSources.length-1].onerror = function(){scMediaMgr.xCreateFlashFallback(pMedia);};
 			pMedia.fContainer.onerror = function () { scMediaMgr.xCreateFlashFallback(pMedia); };
-		}
-
-		// Création bouton sur la vidéo permettant de lancer la vidéo en cliquant sur la vidéo
-		if (pMedia.fType == "video") {
-			pMedia.fPlayOnScreenBtn = this.xAddBtn(pMedia.fParent, "playOnScreen", this.fStrings[19], this.fStrings[19]);
-			pMedia.fPlayOnScreenBtn.media = pMedia;
-			pMedia.fPlayOnScreenBtn.onclick = this.sPlayPause;
 		}
 
 		// Création du lecteur et des boutons par défaut du lecteur
@@ -287,15 +272,12 @@ var scMediaMgr = {
 			vTranscriptBtn.fElt = pMedia.fTranscript == 'text' ? scPaLib.findNode("nsi:", pMedia.fParent) : pMedia.fTranscript;
 			if (pMedia.fTranscript == 'text') this.xToggleTranscript(vTranscriptBtn, true);
 			else vTranscriptBtn.fTranscriptIsPdf = true;
-			vTranscriptBtn.onclick = this.sToggleTranscript;
-			/*
 			if (pType == 'audio') vTranscriptBtn.onclick = this.sToggleTranscript;
 			else {
 				vTranscriptBtn.fClick = this.sToggleTranscript;
 				pMedia.fDefaultVidsBtns.push(vTranscriptBtn);
 				pMedia.fIsAltBtn = true;
 			}
-			*/
 			pMedia.fToolsBtnCnt += 1;
 		}
 		var vAltVidsBtns = scDynUiMgr.addElement("span", pMedia.fPlayerElt, "altVids_bk");
@@ -343,8 +325,12 @@ var scMediaMgr = {
 					var vFullScreenBtn = scMediaMgr.xAddBtn(pMedia.fPlayerElt, "fullScreen", scMediaMgr.fStrings[24], scMediaMgr.fStrings[24]);
 					vFullScreenBtn.video = pMedia.fContainer;
 					vFullScreenBtn.isFullScreen = false;
-					vFullScreenBtn.onclick = scMediaMgr.sToggleFullScreen;
+					vFullScreenBtn.onclick = scMediaMgr.sSetFullScreen;
 					pMedia.fToolsBtnCnt += 1;
+					document.addEventListener('fullscreenchange', function () { scMediaMgr.xFullScreenToggle(this) }, false);
+					document.addEventListener('webkitfullscreenchange', function () { scMediaMgr.xFullScreenToggle(this) }, false);
+					document.addEventListener('mozfullscreenchange', function () { scMediaMgr.xFullScreenToggle(this) }, false);
+					document.addEventListener('msfullscreenchange', function () { scMediaMgr.xFullScreenToggle(this) }, false);
 				}
 			}
 			pMedia.fPlayerElt.className += " is_" + pMedia.fToolsBtnCnt + "_toolsBtn";
@@ -352,31 +338,6 @@ var scMediaMgr = {
 			if (!scMediaMgr.fNavie9) {
 				pMedia.fSeekBtn.max = scCoLib.toInt(this.duration);
 				pMedia.fSeekBtn.setAttribute("aria-valuemax", scCoLib.toInt(this.duration));
-			}
-			if (pMedia.fPlayOnScreenBtn) {
-				var vWidth = pMedia.fWidth||pMedia.fContainer.offsetWidth;
-				var vHeight = pMedia.fHeight||pMedia.fContainer.offsetHeight;
-				if(!vWidth && pMedia.fMaxWidth){
-					var vVidWidth = this.videoWidth;
-					var vVidHeight = this.videoHeight;
-					var vRatio = vVidWidth / vVidHeight;
-					if (vVidWidth>scCoLib.toInt(pMedia.fMaxWidth)){
-						vVidWidth = scCoLib.toInt(pMedia.fMaxWidth);
-						vVidHeight = vVidWidth / vRatio;
-					}
-					if (vVidHeight>scCoLib.toInt(pMedia.fMaxHeight)){
-						vVidHeight = scCoLib.toInt(pMedia.fMaxHeight);
-						vVidWidth = vVidHeight * vRatio;
-					}
-					vWidth = vVidWidth;
-					vHeight = vVidHeight;
-				}
-				pMedia.fPlayOnScreenBtn.style.width = vWidth + "px";
-				// Sous IE 11 si on ne met pas de top et de left le bouton n'est pas centré sur la vidéo
-				pMedia.fPlayOnScreenBtn.style.marginLeft = -vWidth / 2 + "px";
-				pMedia.fPlayOnScreenBtn.style.top = 0;
-				pMedia.fPlayOnScreenBtn.style.left = "50%";
-				pMedia.fPlayOnScreenBtn.style.height = vHeight + "px";
 			}
 			scMediaMgr.xNotifyListener("mediaLoaded", this);
 		}, false);
@@ -495,7 +456,6 @@ var scMediaMgr = {
 				vSubBtn.onclick = this.sHideSubs;
 
 			} else vBtnDisplayLangSub.title = this.fStrings[0];
-			if (pMedia.fSubtitlesAutoStart && pMedia.fSubs.fSubtitles.length == 1) this.sToggleSubs(vBtnDisplayLangSub);
 
 			for (var i = 0; i < pMedia.fSubs.fSubtitles.length; i++) {
 				var vSubtitles = pMedia.fSubs.fSubtitles[i];
@@ -506,13 +466,7 @@ var scMediaMgr = {
 					pMedia.fSubs.fBtnsLang.push(vSubBtn);
 					vSubBtn.fSubs = pMedia.fSubs;
 					vSubBtn.fSub = vSubtitles;
-					if (!vSubtitles.video) {
-						vSubBtn.onclick = this.sToggleSubLang;
-						if (i == 0) {
-							scMediaMgr.xSubLangSelect(vBtnDisplayLangSub);
-							vSubBtn.click();
-						}
-					}
+					if (!vSubtitles.video) vSubBtn.onclick = this.sToggleSubLang;
 					else {
 						vSubBtn.typeElt = "video";
 						vSubBtn.src = vSubtitles.file;
@@ -536,8 +490,6 @@ var scMediaMgr = {
 			pBtn.title = this.fStrings[19];
 			pBtn.setAttribute("aria-label", this.fStrings[19]);
 			pBtn.span.className = pBtn.span.className.replace("pause", "play");
-			if (pBtn == pBtn.media.fPlayOnScreenBtn && pBtn.media.fPlayOnScreenBtn) pBtn.media.fPlayBtn.span.className = pBtn.media.fPlayBtn.span.className.replace("pause", "play");
-			if (pBtn == pBtn.media.fPlayBtn && pBtn.media.fPlayOnScreenBtn) pBtn.media.fPlayOnScreenBtn.span.className = pBtn.media.fPlayOnScreenBtn.span.className.replace("pause", "play");
 			pBtn.media.fContainer.paused = true;
 			if (pBtn.media.isFlash) pBtn.media.fContainer.SetVariable("method:pause", "");
 			else pBtn.media.fContainer.pause();
@@ -546,8 +498,6 @@ var scMediaMgr = {
 			pBtn.title = this.fStrings[18];
 			pBtn.setAttribute("aria-label", this.fStrings[18]);
 			pBtn.span.className = pBtn.span.className.replace("play", "pause");
-			if (pBtn == pBtn.media.fPlayOnScreenBtn && pBtn.media.fPlayOnScreenBtn) pBtn.media.fPlayBtn.span.className = pBtn.media.fPlayBtn.span.className.replace("play", "pause");
-			if (pBtn == pBtn.media.fPlayBtn && pBtn.media.fPlayOnScreenBtn) pBtn.media.fPlayOnScreenBtn.span.className = pBtn.media.fPlayOnScreenBtn.span.className.replace("play", "pause");
 			pBtn.media.fContainer.paused = false;
 			if (pBtn.media.isFlash) pBtn.media.fContainer.SetVariable("method:play", "");
 			else pBtn.media.fContainer.play();
@@ -627,10 +577,10 @@ var scMediaMgr = {
 		return false;
 	},
 
-	sToggleSubs: function (pBtn) {
+	sToggleSubs: function () {
 		// Choix des langues si plusieurs langues ou toggle on/off sous-titres
 		try {
-			var vBtn = pBtn && !pBtn.isTrusted ? pBtn : this;
+			var vBtn = this;
 			if (vBtn.fSubs.fSubtitles.length > 1) scMediaMgr.xSubLangSelect(vBtn);
 			else {
 				scMediaMgr.xSubsAdd(vBtn.fSubs.fSubtitles[0].file, vBtn.fSubs.fSubtitles[0], function () {
@@ -662,9 +612,9 @@ var scMediaMgr = {
 		return false;
 	},
 
-	sToggleFullScreen: function () {
+	sSetFullScreen: function () {
 		try {
-			scMediaMgr.xToggleFullScreen(this);
+			scMediaMgr.xSetFullScreen(this);
 		} catch (e) { }
 		return false;
 	},
@@ -732,15 +682,29 @@ var scMediaMgr = {
 		else pMedia.fContainer.SetVariable("method:setPosition", 0)
 	},
 
-	xToggleFullScreen: function (pBtn) {
-		pBtn.isFullScreen = !pBtn.isFullScreen;
-		scMediaMgr.xSwitchClass(pBtn.video.parentNode, pBtn.isFullScreen ? "fullscreen_off" : "fullscreen_on", pBtn.isFullScreen ? "fullscreen_on" : "fullscreen_off", true);
-		document.onkeydown = function(pEvt) {
-			pEvt = pEvt || window.event;
-			if (pEvt.keyCode == 27 && pBtn.isFullScreen) scMediaMgr.xToggleFullScreen(pBtn);
-		};
+	xFullScreenToggle: function () {
+		scCoLib.log("scMediaMgr.xFullScreenToggle");
+		var vFullscreenElement = document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement;
+		if (vFullscreenElement) {
+			this.fCurrentFullScreenElement = vFullscreenElement;
+			this.fCurrentFullScreenElement.setAttribute("controls", true);
+		} else if (this.fCurrentFullScreenElement) {
+			this.fCurrentFullScreenElement.removeAttribute("controls");
+			this.fCurrentFullScreenElement = null;
+		}
 	},
 
+	xSetFullScreen: function (pBtn) {
+		if (pBtn.video.requestFullscreen) {
+			pBtn.video.requestFullscreen();
+		} else if (pBtn.video.msRequestFullscreen) {
+			pBtn.video.msRequestFullscreen();
+		} else if (pBtn.video.mozRequestFullScreen) {
+			pBtn.video.mozRequestFullScreen();
+		} else if (pBtn.video.webkitRequestFullscreen) {
+			pBtn.video.webkitRequestFullscreen();
+		}
+	},
 	xNotifyListener: function (pKey, pParam) {
 		try {
 			for (var i = 0; i < this.fListeners[pKey].length; i++) {

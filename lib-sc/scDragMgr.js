@@ -266,7 +266,7 @@ scDragMgr.coordinates = {
 		var parent = element.offsetParent;
 		while (parent) {
 			offset = offset.plus(this._offset(parent));
-			if (parent.tagName.toLowerCase()!="body") offset = offset.minus(this._scroll(parent));
+			offset = offset.minus(this._scroll(parent));
 			parent = parent.offsetParent;
 		}
 		return offset;
