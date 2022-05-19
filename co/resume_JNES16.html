@@ -1,65 +1,59 @@
 <!DOCTYPE html>
 <html lang="fr">
  <head>
-  <title>Dr Sylvain Serra - OPTIMISATION DYNAMIQUE D'UN SYSTEME DE CONVERSION, STOCKAGE ET DISTRIBUTION DE FROID SOLAIRE A L'ECHELLE URBAINE</title>
+  <meta http-equiv="x-ua-compatible" content="IE=EDGE">
+  <title>OPTIMISATION DYNAMIQUE D'UN SYSTEME DE CONVERSION, STOCKAGE ET DISTRIBUTION DE FROID SOLAIRE A L'ECHELLE URBAINE</title>
   <meta charset="UTF-8">
+  <meta name="generator" content="SCENARI 4.2.106 / Opale 3.6.103">
+  <meta name="revision" content="2022-05-19 20:51">
+  <link rel="start" href="Sylvain_serra.html" title="Dr (HDR) Sylvain Serra">
   <meta name="author" content>
-  <meta name="keywords" content="Energ&eacute;tique, r&eacute;seaux de chaleur, optimisation, proc&eacute;d&eacute;s, simulation num&eacute;rique, &eacute;coulement turbulent, densit&eacute; variable, transfert thermique, LATEP - ENSGTI - IPRA - UPPA, Sylvain Serra, ">
   <meta name="date" content>
-  <link rel="stylesheet" type="text/css" href="../wdgt/scCodeMgr/scCodeMgr.css">
-  <link rel="stylesheet" type="text/css" href="../wdgt/scImgMgr/scImgMgr.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="../lib-md/w_scImgMgr/scImgMgr.css">
+  <link rel="stylesheet" type="text/css" href="../lib-md/w_scCodeMgr/scCodeMgr.css">
   <script type="text/JavaScript">
-/*0*/ var scServices = {};
-/*1*/ scServices["scLoad"] = {loadFromRoot:function(pUrl){window.location.href="../"+pUrl;}, getPathFromRoot:function(pPath){return "../"+pPath;}, getUrlFromRoot:function(pHref){if(!this.fRootOffset) this.fRootOffset = scCoLib.hrefBase().length-21; return pHref.substring(this.fRootOffset);},getRootUrl:function(){if(!this.fRootUrl) this.fRootUrl = scCoLib.hrefBase().substring(0,scCoLib.hrefBase().length-22); return this.fRootUrl;}};
+/*0*/ var scServices = {id:"l3dhn3gr"};
+/*1*/ window.scLoadParams = {destUri:"/co/resume_JNES16.html", pathToRoot:"../"};
 </script>
-  <!--[if lt IE 9]><script type="text/JavaScript" src="../wdgt/html5shiv/html5shiv.js"></script><![endif]--><script type="text/JavaScript" src="../lib-sm/scCoLib.js"></script>
-  <script type="text/JavaScript" src="../lib-sm/scPaLib.js"></script>
-  <script type="text/JavaScript" src="../lib-sm/scSiLib.js"></script>
-  <script type="text/JavaScript" src="../lib-sm/scTiLib.js"></script>
-  <script type="text/JavaScript" src="../lib-sm/scTooltipMgr.js"></script>
-  <script type="text/JavaScript" src="../svc/scorm.js"></script>
-  <script type="text/JavaScript" src="../lib-sm/scDynUiMgr.js"></script>
-  <script type="text/JavaScript" src="../svc/scSearch/scSearch.js"></script>
-  <script type="text/JavaScript" src="../wdgt/tplMgr/tplMgr.js"></script>
-  <script type="text/JavaScript" src="../wdgt/dynSizes/dynSizes.js"></script>
-  <script type="text/JavaScript" src="../wdgt/scCodeMgr/scCodeMgr.js"></script>
-  <script type="text/JavaScript" src="../wdgt/scImgMgr/scImgMgr.js"></script>
+  <script type="text/JavaScript" src="../lib-sc/scCoLib.js"></script>
+  <script type="text/JavaScript" src="../lib-sc/scTiLib.js"></script>
+  <script type="text/JavaScript" src="../lib-sc/scSiLib.js"></script>
+  <script type="text/JavaScript" src="../lib-sc/scPaLib.js"></script>
+  <script type="text/JavaScript" src="../lib-sc/scTooltipMgr.js"></script>
+  <script type="text/JavaScript" src="../lib-sc/scDynUiMgr.js"></script>
+  <script type="text/JavaScript" src="../lib-md/s_assmnt.js"></script>
+  <script type="text/JavaScript" src="../lib-sc/scMapMgr.js"></script>
+  <script type="text/JavaScript" src="../lib-sc/scDragMgr.js"></script>
+  <script type="text/JavaScript" src="../lib-sc/scAssmntMgr.js"></script>
+  <script type="text/JavaScript" src="../lib-md/s_scSearch/scSearch.js"></script>
+  <script type="text/JavaScript" src="../lib-md/w_mathjax/mathjaxMgr.js"></script>
+  <script type="text/JavaScript" src="../lib-md/w_tplMgr/tplMgr.js"></script>
+  <script type="text/JavaScript" src="../lib-md/w_scCodeMgr/scCodeMgr.js"></script>
+  <script type="text/JavaScript" src="../lib-md/w_scMediaMgr/scMediaMgr.js"></script>
+  <script type="text/JavaScript" src="../lib-md/w_scImgMgr/scImgMgr.js"></script>
   <script type="text/JavaScript">
-/*0*/ try{var vCurrDir = scCoLib.hrefBase().substring(0,scCoLib.hrefBase().lastIndexOf("/")+1); if(window.opener && window.opener.location.href.lastIndexOf(vCurrDir, vCurrDir.length)==0 && window.opener.scServices) scServices = window.opener.scServices; else if(window.parent && window.parent.location.href.lastIndexOf(vCurrDir, vCurrDir.length)==0 && window.parent.scServices) scServices = window.parent.scServices;}catch(e){}
+/*0*/ try{if(window.opener && window.opener.scServices && window.opener.scServices.id == scServices.id) scServices = window.opener.scServices; else if(window.parent && window.parent.scServices && window.parent.scServices.id == scServices.id) scServices = window.parent.scServices;}catch(e){}
 scCodeMgr.registerCode("des:div.code");
+
+scImgMgr.registerAdaptedImage("ide:content/des:img");
 
 scImgMgr.registerGallery("des:div.galFra");
 
-scImgMgr.registerZoom("des:a.imgZoom",{toolbar:1,mag:1,titlePath:"par:/nsi:/chi:span.capTi"});
+scImgMgr.registerZoom("des:a.imgZoom",{toolbar:1,mag:1,titlePath:"par:/nsi:/des:span.capTi"});
 
 </script>
-  <meta name="generator" content="SCENARI 4.1.10 / Opale 3.5.014 - http://scenari-platform.org/opale">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-  <meta name="revision" content="2019-08-21 12:43">
-  <link rel="start" href="sylvain_serra.html" title="Dr Sylvain Serra">
+  <link type="text/css" rel="stylesheet" href="../skin/css/main.css" media="all">
+  <link type="text/css" rel="stylesheet" href="../skin/css/skin.css" media="all">
+  <link type="text/css" rel="stylesheet" href="../skin/css/print.css" media="print">
   <script type="text/javascript">try{
 	if(window.frameElement.setSubWindowTitle) window.frameElement.setSubWindowTitle(document.title);
 }catch(e){}
 </script>
-  <script type="text/javascript"> scSiLib.getContentHeight = function(pContainer) {
- var vCh = pContainer.lastChild;
- var vH = 0;
- while(vCh && ( vCh.nodeType != 1 || ! (vH = vCh.offsetHeight) || vCh.style.position=="absolute") ) vCh = vCh.previousSibling;
- if(vCh) {
-  return vCh.offsetTop + vH;
- }
- return Number.NaN;
-}</script>
-  <link type="text/css" rel="stylesheet" href="../skin/css/html.css" media="all">
-  <link type="text/css" rel="stylesheet" href="../skin/css/struct_ref.css" media="screen">
-  <link type="text/css" rel="stylesheet" href="../skin/css/buttons.css" media="screen">
-  <link type="text/css" rel="stylesheet" href="../skin/css/transf.css" media="all">
-  <!--[if IE]><link type="text/css" rel="stylesheet" href="../skin/css/ie.css" media="screen"/><![endif]-->
-  <!--[if lt IE 7]><link type="text/css" rel="stylesheet" href="../skin/css/ie6_ref.css" media="screen"/><![endif]--><link type="text/css" rel="stylesheet" href="../skin/css/print.css" media="print">
  </head>
- <body>
-  <div id="tplFra"><div id="tplCo"><div id="refCo" class="scroller"><a id="content" class="accessAnc" name="content" href="#content"></a><div id="tplCoMarginW"><div id="tplCoFlexTop"></div><div id="tplCo2"><div class="mainContent "><h1 class="mainContent_ti"><span>OPTIMISATION DYNAMIQUE D'UN SYSTEME DE CONVERSION, STOCKAGE ET DISTRIBUTION DE FROID SOLAIRE A L'ECHELLE URBAINE</span></h1><div class="mainContent_co "><div class="info "><h2 class="info_ti"><span>JNES 2016</span></h2><div class="info_co "><div><p class="op_txt_p">R&Eacute;SUM&Eacute;</p><p class="op_txt_p">Le march&eacute; mondial de la climatisation a &eacute;t&eacute; multipli&eacute; par 2 en 10 ans et le march&eacute; europ&eacute;en par 4 en 3 ans. Cet essor de la climatisation implique aujourd'hui une surconsommation &eacute;nerg&eacute;tique en &eacute;t&eacute;, accompagn&eacute;e d'&eacute;missions de gaz &agrave; effet de serre inacceptables. Contrairement aux unit&eacute;s de production locales, voire individuelles, les r&eacute;seaux de distribution permettent, &agrave; l'&eacute;chelle de la ville ou du quartier, une meilleure int&eacute;gration des diff&eacute;rentes sources d'&eacute;nergie primaire, une diminution de l'impact global sur l'environnement et une mutualisation des co&ucirc;ts. Ce type d'infrastructure demande cependant un investissement initial lourd et une politique de gestion adapt&eacute;e.</p><p class="op_txt_p">L'objectif de ce projet est de d&eacute;velopper une m&eacute;thodologie pour l'optimisation dynamique d'un syst&egrave;me int&eacute;gr&eacute; incluant la production (cycle de conversion), le stockage et la distribution (r&eacute;seau &agrave; l'&eacute;chelle de la ville ou du quartier) de froid solaire. Un tel syst&egrave;me est soumis &agrave; de nombreuses perturbations &agrave; diff&eacute;rentes &eacute;chelles de temps (demande des consommateurs, conditions climatiques, disponibilit&eacute; et co&ucirc;t des &eacute;nergies primaires...). L'objectif est donc de d&eacute;finir une politique optimale de gestion des syst&egrave;mes de production et de distribution de froid, politique qui peut inclure une strat&eacute;gie de stockage. Pour se faire, il est n&eacute;cessaire de d&eacute;velopper dans un premier temps, un mod&egrave;le dynamique du syst&egrave;me global, puis de formuler le probl&egrave;me d'optimisation dynamique (ou contr&ocirc;le optimal) &agrave; r&eacute;soudre. Ce projet s'appuie sur des travaux d&eacute;j&agrave; r&eacute;alis&eacute;s au LaTEP portant sur :</p><p class="op_txt_p">- la mod&eacute;lisation et la simulation de syst&egrave;mes de production de froid solaire (en r&eacute;gime permanent et en r&eacute;gime transitoire) : machines frigorifiques &agrave; absorption (Castillo-Garcia L., th&egrave;se UPPA, 2016, AMI SCRIB) et &agrave; absorption-diffusion (Dardour H., th&egrave;se ENIM-Monastir/UPPA, 2012),</p><p class="op_txt_p">- l'optimisation structurelle et param&eacute;trique des r&eacute;seaux de distribution de chaleur (Mertz T., th&egrave;se UPPA/INEF4, 2016 et Marty F., th&egrave;se UPPA/AMI FONGEOSEC, 2017),</p><p class="op_txt_p">- l'optimisation et le contr&ocirc;le optimal de syst&egrave;mes complexes (Miranda M., th&egrave;se ULA/UPPA, 2005),</p><p class="op_txt_p">- le stockage de froid (B&eacute;d&eacute;carrats J.P., HDR UPPA, 2011 et Mar&eacute;chal W., th&egrave;se UPPA, 2014).</p><p class="op_txt_p">Afin de rendre possible l'optimisation du syst&egrave;me complet en des temps de calcul raisonnables, des mod&egrave;les de machines frigorifiques solaires seront d&eacute;velopp&eacute;s &agrave; partir des mod&egrave;les fins d&eacute;j&agrave; d&eacute;velopp&eacute;s au LaTEP en essayant de r&eacute;aliser un compromis entre pr&eacute;cision et temps calcul. Les m&eacute;thodologies d&eacute;velopp&eacute;es sur les r&eacute;seaux de chaleur urbains seront, ici, adapt&eacute;es aux r&eacute;seaux de froid. Enfin, la mod&eacute;lisation des syst&egrave;mes de stockage pourra aussi s'appuyer sur les comp&eacute;tences du LaTEP.</p><p class="op_txt_p">Les principaux travaux seront pr&eacute;sent&eacute;s afin de poser les bases du projet d'optimisation dynamique d'un r&eacute;seau de froid solaire.</p><p class="op_txt_p">Mots Cl&eacute;s : Production/Distribution/Stockage de froid solaire, Optimisation dynamique, Contr&ocirc;le optimal</p></div></div></div></div></div></div></div></div></div><div id="tplFooter"><hr class="hidden"><a id="footer" class="accessAnc" name="footer" href="#footer"></a><a href="#" onclick="window.print();return false;" class="printSubWinBtn" title="Imprimer la page"><span><img alt="Imprimer" src="../skin/img/btn/printSubWin.png" onmouseover="this.src='../skin/img/btn/printSubWinOver.png';" onmouseout="this.src='../skin/img/btn/printSubWin.png';" class="btnImg"><span class="btnLbl">Imprimer</span></span></a></div></div>
+ <body class="subWin ref">
+  <div id="root"><header id="header" role="banner"><nav role="navigation"><ul id="accessibility"><li class="waiContent"><a href="#content"><span>contenu</span></a></li></ul></nav></header><main id="main" role="main"><div id="document"><div id="content" tabindex="-1"><div class="scroller"><hr class="hidden"><section class="hBk article expUc"><h2 class="hBk_ti"><span>OPTIMISATION DYNAMIQUE D'UN SYSTEME DE CONVERSION, STOCKAGE ET DISTRIBUTION DE FROID SOLAIRE A L'ECHELLE URBAINE</span></h2><div class="hBk_co "><div class="iBk info"><h3 class="iBk_ti"><span>JNES 2016</span></h3><div class="iBk_co "><div class="rBk "><p>R&Eacute;SUM&Eacute;</p><p>Le march&eacute; mondial de la climatisation a &eacute;t&eacute; multipli&eacute; par 2 en 10 ans et le march&eacute; europ&eacute;en par 4 en 3 ans. Cet essor de la climatisation implique aujourd'hui une surconsommation &eacute;nerg&eacute;tique en &eacute;t&eacute;, accompagn&eacute;e d'&eacute;missions de gaz &agrave; effet de serre inacceptables. Contrairement aux unit&eacute;s de production locales, voire individuelles, les r&eacute;seaux de distribution permettent, &agrave; l'&eacute;chelle de la ville ou du quartier, une meilleure int&eacute;gration des diff&eacute;rentes sources d'&eacute;nergie primaire, une diminution de l'impact global sur l'environnement et une mutualisation des co&ucirc;ts. Ce type d'infrastructure demande cependant un investissement initial lourd et une politique de gestion adapt&eacute;e.</p><p>L'objectif de ce projet est de d&eacute;velopper une m&eacute;thodologie pour l'optimisation dynamique d'un syst&egrave;me int&eacute;gr&eacute; incluant la production (cycle de conversion), le stockage et la distribution (r&eacute;seau &agrave; l'&eacute;chelle de la ville ou du quartier) de froid solaire. Un tel syst&egrave;me est soumis &agrave; de nombreuses perturbations &agrave; diff&eacute;rentes &eacute;chelles de temps (demande des consommateurs, conditions climatiques, disponibilit&eacute; et co&ucirc;t des &eacute;nergies primaires...). L'objectif est donc de d&eacute;finir une politique optimale de gestion des syst&egrave;mes de production et de distribution de froid, politique qui peut inclure une strat&eacute;gie de stockage. Pour se faire, il est n&eacute;cessaire de d&eacute;velopper dans un premier temps, un mod&egrave;le dynamique du syst&egrave;me global, puis de formuler le probl&egrave;me d'optimisation dynamique (ou contr&ocirc;le optimal) &agrave; r&eacute;soudre. Ce projet s'appuie sur des travaux d&eacute;j&agrave; r&eacute;alis&eacute;s au LaTEP portant sur :</p><p>- la mod&eacute;lisation et la simulation de syst&egrave;mes de production de froid solaire (en r&eacute;gime permanent et en r&eacute;gime transitoire) : machines frigorifiques &agrave; absorption (Castillo-Garcia L., th&egrave;se UPPA, 2016, AMI SCRIB) et &agrave; absorption-diffusion (Dardour H., th&egrave;se ENIM-Monastir/UPPA, 2012),</p><p>- l'optimisation structurelle et param&eacute;trique des r&eacute;seaux de distribution de chaleur (Mertz T., th&egrave;se UPPA/INEF4, 2016 et Marty F., th&egrave;se UPPA/AMI FONGEOSEC, 2017),</p><p>- l'optimisation et le contr&ocirc;le optimal de syst&egrave;mes complexes (Miranda M., th&egrave;se ULA/UPPA, 2005),</p><p>- le stockage de froid (B&eacute;d&eacute;carrats J.P., HDR UPPA, 2011 et Mar&eacute;chal W., th&egrave;se UPPA, 2014).</p><p>Afin de rendre possible l'optimisation du syst&egrave;me complet en des temps de calcul raisonnables, des mod&egrave;les de machines frigorifiques solaires seront d&eacute;velopp&eacute;s &agrave; partir des mod&egrave;les fins d&eacute;j&agrave; d&eacute;velopp&eacute;s au LaTEP en essayant de r&eacute;aliser un compromis entre pr&eacute;cision et temps calcul. Les m&eacute;thodologies d&eacute;velopp&eacute;es sur les r&eacute;seaux de chaleur urbains seront, ici, adapt&eacute;es aux r&eacute;seaux de froid. Enfin, la mod&eacute;lisation des syst&egrave;mes de stockage pourra aussi s'appuyer sur les comp&eacute;tences du LaTEP.</p><p>Les principaux travaux seront pr&eacute;sent&eacute;s afin de poser les bases du projet d'optimisation dynamique d'un r&eacute;seau de froid solaire.</p><p>Mots Cl&eacute;s : Production/Distribution/Stockage de froid solaire, Optimisation dynamique, Contr&ocirc;le optimal</p></div></div></div></div></section></div></div></div></main><footer id="footer" role="contentinfo" tabindex="-1"><hr class="hidden"></footer></div>
   <script type="text/JavaScript" src="../skin/js/skin.js"></script>
-  <script type="text/javascript">tplMgr.init();scCodeMgr.init();scImgMgr.init();new scSiRuleAutoMarginW("tplCoMarginW","ide:tplCo",true,450,100);new scSiRuleFlexH("tplCoFlexTop","ide:tplCo",true,.3);</script>
+  <script type="text/javascript">tplMgr.init();scCodeMgr.init();scMediaMgr.init("ide:content/chi:div/chi:section/des:.mediaPlayer",{processYoutubeUrls :true});scImgMgr.init();</script>
  </body>
 </html>
