@@ -1,15 +1,23 @@
-/*	Extension MS	*/
-div#scDepotStack {
-  position: absolute;
-  top: 10px;
-  left: 180px;
-  color: #ffffff;
-  z-index:99999;
-}
-div#scDepotStack a{
-  color: white;
-  text-decoration:none;
-}
-div#scDepotStack a:hover{
-  text-decoration:underline;
+:root{
+  --fontStyle: 'Montserrat';
+	--fontSize: 0.9em;
+  --maxWidth: 1100px;
+  --menuWidth:300px;
+  --borderRadius:0.3em;
+  --boxShadow:2px;
+	--accentDarkBGalpha: #ff974b;
+  --accentDarkBG: #e46000;
+  --accentDarkFG: white; 
+  --accentLightBG: #ececec;
+	--accentLightFG: #484848;
+  --contentBG: white;
+	--contentFG: black;
+	--contentEmp: #B24A00;
+  --pBkOthers: #484848;
+  --pBkOthersLight: #48484820;
+  --pBkWarning: #dc291e;
+  --pBkWarningLight: #dc291e40;
+  --pBkBasic: #9F590E;
+  --pBkBasicLight: #9F590E40;
+	--footerFG: white;
 }
