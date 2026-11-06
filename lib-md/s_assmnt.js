@@ -1,70 +1,37 @@
 
-if (!Array.isArray) {
-	Array.isArray = function(arg) {
-		return Object.prototype.toString.call(arg) === '[object Array]';
-	};
-}
 scServices.dataUtil = {
 	serialiseObjJs : function(pObj){
 		try{
 			return JSON.stringify(pObj);
-		} catch(e){ // TODO: purge when IE7 not supported
-			var vBuf="";
-			if(pObj) for (var vKey in pObj){
-				var vLbl = (Array.isArray(pObj)) ? "" : '"' + vKey + '":';
-				var vObj = pObj[vKey];
-				if(vObj != null) {
-					vBuf+= (vBuf!="" ? "," : "") + vLbl;
-					if(Array.isArray(vObj) || typeof vObj == "object" || vObj instanceof Object) vBuf+= this.serialiseObjJs(vObj);
-					else if(typeof vObj == "number") vBuf+= '"' + vObj + '"';
-					else vBuf+= '"' + vObj.toString().replace(/[\t\n\r\\'"]/g, this.escapeJs) + '"';
-				}
-			}
-			if(Array.isArray(pObj)) return "[" + vBuf + "]";
-			else if(typeof pObj == "object" || vObj instanceof Object) return "{" + vBuf + "}";
-			else return vBuf;
+		} catch(e){
+			console.error("Cannot serialise Javascript object.");
+			return "";
 		}
 	},
 	deserialiseObjJs : function(pString){
 		if(!pString) return {};
 		try{
 			return JSON.parse(pString);
-		} catch(e){ // TODO: purge when IE7 not supported
+		} catch(e){ // 20220511 TODO: purge in 2027 when there is little chance of non JSON scorm data still around.
 			var vVal;
 			eval("vVal="+pString);
 			return vVal;
 		}
-	},
-	escapeJs : function(pChar){ // TODO: purge when IE7 not supported
-		switch(pChar) {
-			case '\t' : return "\\t";
-			case '\n' : return "\\n";
-			case '\r' : return "\\r";
-			case '\'' : return "\\\'";
-			case '\"' : return "\\\"";
-			case '\\' : return "\\\\";
-		} 
-		return "";
 	}
 }
 
 scServices.storage = scOnLoads[scOnLoads.length] = {
 	fIsActive : false,
 	fIsLocal : false,
-	fDomain : document.location.hostname,
-	fRootKey : document.location.pathname+"/",
+	fRootKey : scServices.scLoad.getRootUrl()+"/",
 	fStorage : null,
 	isStorageActive : function(){return this.fIsActive;},
 	activeStorage : function(pBoolean){
 		if(!pBoolean) this.fIsActive = false;
 		else {
 			try {
-				if (typeof localStorage != "undefined") {
-					this.fStorage = localStorage;
-					this.fIsLocal = true;
-				} else {
-					this.fStorage = globalStorage[this.fDomain];
-				}
+				this.fStorage = localStorage;
+				this.fIsLocal = true;
 				this.fIsActive = true;
 			}catch(e){
 				this.fIsActive = false;
@@ -104,7 +71,7 @@ scServices.storage = scOnLoads[scOnLoads.length] = {
 }
 
 
-scServices.assmntMgr = scOnLoads[scOnLoads.length] = scOnUnloads[scOnUnloads.length] = {
+scServices.assmntMgr = scOnLoads[scOnLoads.length] = scOnPageHides[scOnPageHides.length] = {
 	_SendDataOnSave : true,
 	setResponse: function(pId, pSession, pField, pValue){
 		this.xSetResponse(pId, pSession, pField, pValue);
@@ -195,6 +162,7 @@ scServices.assmntMgr = scOnLoads[scOnLoads.length] = scOnUnloads[scOnUnloads.len
 			vInterac.updated = true;
 			if(! (pSession in vInterac.session))vInterac.session[pSession] = {};
 			vInterac.session[pSession][pStruct] = pValue;
+			this._Dirty = true;
 		};
 		this.xSynch = function(){
 			for(var vId in this._interactionsMap) {
@@ -206,17 +174,20 @@ scServices.assmntMgr = scOnLoads[scOnLoads.length] = scOnUnloads[scOnUnloads.len
 						this._api.SetValue("cmi.interactions."+vInterac.idx+".id", vId);
 						this._api.SetValue("cmi.interactions."+vInterac.idx+".type", "other");
 					}
-					this._api.SetValue("cmi.interactions."+vInterac.idx+".learner_response", scServices.dataUtil.serialiseObjJs(vInterac.session));
+					this._api.SetValue("cmi.interactions."+vInterac.idx+".learner_response", scServices.dataUtil.serialiseObjJs(vInterac.session ? vInterac.session : {}));
 					}catch(e){}
 					vInterac.updated = false;
 				}
 			}
+			this._Dirty = false;
 		};
 		// Enregistrement des données
 		this.commit = function(pForceSendData){
 			var vMustSendData = pForceSendData!=undefined ?  pForceSendData : this._SendDataOnSave;
 			this.xSynch(); 
 			if(vMustSendData) this._api.Commit("");
+			else this._Uncommited = true;
+			if(vMustSendData) this._Uncommited = false;
 		};
 		this.getResponse = function(pId, pSession, pField){var vStruct = this.xGetStruct(pId, pSession, "r"); return vStruct ? vStruct[pField] : null;};
 		this.xSetResponse = function(pId, pSession, pField, pValue){var vStruct = this.xGetStruct(pId, pSession, "r") || {}; vStruct[pField] = pValue; this.xSetStruct(pId, pSession, "r", vStruct);};
@@ -254,6 +225,32 @@ scServices.assmntMgr = scOnLoads[scOnLoads.length] = scOnUnloads[scOnUnloads.len
 		this.getHintsShown = function(pId, pSession){return scServices.suspendDataStorage.getVal(["assmnt", pSession ? pSession+"X" : "#", pId, "h"]);};
 		this.xSetHintsShown = function(pId, pSession, pHintsShown){scServices.suspendDataStorage.setVal(["assmnt", pSession ? pSession+"X" : "#", pId, "h"], pHintsShown);};
 	},
+	xConnectDistrib : function(){
+		this.commit = function(pForceSendData){scServices.distribRecords.synch("assmnt"); scServices.distribRecords.synch("fields");};
+  	this.xSynch = function(){scServices.distribRecords.synch("assmnt"); scServices.distribRecords.synch("fields");};
+  	this.getResponse = function(pId, pSession, pField){return scServices.distribRecords.getField("fields", this.xGetFields(pId,pSession,["r",pField]));};
+  	this.xSetResponse = function(pId, pSession, pField, pValue){scServices.distribRecords.setField("fields", this.xGetFields(pId,pSession,["r",pField]),pValue);};
+  	this.xResetAll = function(){Object.keys(scServices.distribRecords.getField("fields")).forEach(id => scServices.distribRecords.removeField("fields", id));};
+  	this.xResetResponses = function(pId, pSession) {scServices.distribRecords.removeField("fields", this.xGetFields(pId,pSession,"r"));}
+  	this.getMinPts = function(pId, pSession){return scServices.distribRecords.getField("fields", this.xGetFields(pId,pSession,"mi"));};
+  	this.getScorePts = function(pId, pSession){return scServices.distribRecords.getField("fields", this.xGetFields(pId,pSession,"sc"));};
+  	this.getMaxPts = function(pId, pSession){return scServices.distribRecords.getField("fields", this.xGetFields(pId,pSession,"ma"));};
+  	this.xSetPts = function(pId, pSession, pMin, pScore, pMax){ scServices.distribRecords.setField("fields", this.xGetFields(pId,pSession,"mi"),pMin); scServices.distribRecords.setField("fields",this.xGetFields(pId,pSession,"sc"),pScore); scServices.distribRecords.setField("fields", this.xGetFields(pId,pSession,"ma"),pMax); this.xSetScore(pId,pSession, pMin, pScore, pMax);};
+  	this.xGetCompletionStatus = function(pId, pSession){ scServices.distribRecords.getField("fields", this.xGetFields(pId,pSession,"st")); };
+  	this.xSetCompletionStatus = function(pId, pSession, pStatus){ scServices.distribRecords.setField("fields", this.xGetFields(pId,pSession,"st"),pStatus);};
+  	this.getHintsShown = function(pId, pSession){ scServices.distribRecords.getField("fields", this.xGetFields(pId,pSession,"hi")); return this.xGetDatas(pId,pSession).hi;};
+  	this.xSetHintsShown = function(pId, pSession, pHintsShown){"fields", scServices.distribRecords.setField("fields", this.xGetFields(pId,pSession,"hi"), pHintsShown);};
+  	this.xInitData = function(){};
+  	this.xGetFields = function(pId,pSession,pFields){
+  		const vFields = Array.isArray(pFields)?pFields:[pFields];
+  		return [pId,"data",pSession || '#'].concat(vFields);
+  	}
+  	this.xSetScore = function(pId, pSession, pMin, pScore, pMax){
+  		if(!pMax || !pMin || !pScore) return;
+  		const vScore = (pScore - pMin) / (pMax - pMin);
+  		scServices.distribRecords.setField("fields",[pId,pSession||"#","content"],vScore);
+  	}
+  },
 	xConnectNone : function(){
 		this.commit = function(pForceSendData){};
 		this.xSynch = function(){};
@@ -276,19 +273,25 @@ scServices.assmntMgr = scOnLoads[scOnLoads.length] = scOnUnloads[scOnUnloads.len
 		this.xConnectNone();
 		this.reloadData = function(){try{this.xInitData();var vItem=scServices.storage.getItem(scServices.storage.getRootKey()+"assmnt");if(vItem) this.data=scServices.dataUtil.deserialiseObjJs(vItem);} catch(e){}};
 		this.xInitData = function(){this.data={resp:{},scorePts:{},minPts:{},maxPts:{},status:{},hints:{}}};
-		this.commit = function(pForceSendData){scServices.storage.getStorage().setItem(scServices.storage.getRootKey()+"assmnt", scServices.dataUtil.serialiseObjJs(this.data))};	
+		this.commit = function(pForceSendData){scServices.storage.getStorage().setItem(scServices.storage.getRootKey()+"assmnt", scServices.dataUtil.serialiseObjJs(this.data))};
 		this.reloadData();
 	},
 	/* interne */
+	_Dirty: false,
+	_Uncommited: false,
+	isDirty: function(){
+		return this._Dirty || this._Uncommited;
+	},
 	onLoad: function(){
 		if(scServices.scorm2k4 && scServices.scorm2k4.isScorm2k4Active()) this.xConnect2k4();
 		else if(scServices.scorm12 && scServices.scorm12.isScorm12Active() && scServices.suspendDataStorage) this.xConnect12();
+		else if(scServices.distribRecords && scServices.distribRecords.isDistribRecordsActive()) this.xConnectDistrib();
 		else if(scServices.storage && scServices.storage.isStorageActive()) this.xConnectStorage();
 		else this.xConnectNone();
 	},
 	loadSortKey: "2assmntMgr",
-	onUnload: function(){
+	onPageHide: function(){
 		this.xSynch();
 	},
-	unloadSortKey: "2assmntMgr"
+	pageHideSortKey: "2assmntMgr"
 };
