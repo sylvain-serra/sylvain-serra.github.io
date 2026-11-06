@@ -1,11 +1,11 @@
 
 
 
-var scMapMgr = {
+window.scMapMgr = {
 	fEltBuild : document.createElement("div"),
 	addElt : function (pStr) {
 		this.fEltBuild.innerHTML = pStr;
-		var vElt = this.fEltBuild.firstChild.cloneNode(true);
+		const vElt = this.fEltBuild.firstChild.cloneNode(true);
 		this.fEltBuild.innerHTML = "";
 		return vElt;
 	},
@@ -19,7 +19,7 @@ var scMapMgr = {
 		return elem.parentNode.removeChild( elem )
 	},
 	each: function( obj, callback ) {
-		var name,
+		let name,
 			i = 0,
 			length = obj.length,
 			isObj = length === undefined;
@@ -43,19 +43,23 @@ var scMapMgr = {
 	},
 	deserialiseObjJs : function(pStr){
 		if(!pStr) return {};
-		var vVal;
-		eval("vVal="+pStr);
-		return vVal;
+		try{
+			return JSON.parse(pStr);
+		} catch(e){ // TODO: purge when there is little chance of non JSON content.
+			console.warn("WARNING depreciated non-JSON content :", pStr);
+			let vVal;
+			eval("vVal="+pStr);
+			return vVal;
+		}
 	},
 	css : function(elt, rules) {
-		for ( name in rules ) {
+		for (const name in rules ) {
 			elt.style[name] = rules[name];
 		}
 		return this;
 	},
 	addClass: function(elem,  value ) {
-		var classNames, i, l,
-			setClass, c, cl;
+		let classNames, setClass, c, cl;
 
 		if ( value && typeof value === "string" ) {
 			classNames = value.split( " " );
@@ -79,7 +83,7 @@ var scMapMgr = {
 	},
 
 	extend : function() {
-		var options, name, src, copy, copyIsArray, clone,
+		let options, name, src, copy,
 			target = arguments[0] || {},
 			i = 1,
 			length = arguments.length;
@@ -97,7 +101,9 @@ var scMapMgr = {
 						continue;
 					}
 
-					if ( copy !== undefined ) {
+					if ( typeof src === "object" ) {
+						target[ name ] = this.extend(target[ name ], copy);
+					} else if ( copy !== undefined ) {
 						target[ name ] = copy;
 					}
 				}
@@ -109,17 +115,7 @@ var scMapMgr = {
 	},
 
 	register : function(element, type, func) {
-		if (element.addEventListener) {
-			element.addEventListener(type, func, false);
-		} else if (element.attachEvent) {
-			if (!element._listeners) element._listeners = new Array();
-			if (!element._listeners[type]) element._listeners[type] = new Array();
-			var workaroundFunc = function() {
-				func.apply(element, new Array());
-			}
-			element._listeners[type][func] = workaroundFunc;
-			element.attachEvent('on' + type, workaroundFunc);
-		}
+		element.addEventListener(type, func, false);
 	},
 
 	unregister : function(element, type, func) {
@@ -135,10 +131,10 @@ var scMapMgr = {
 };
 
 (function($) {
-	var has_VML, has_canvas, create_canvas_for, add_shape_to, clear_canvas, shape_from_area,
+	let has_VML, has_canvas, create_canvas_for, add_shape_to, clear_canvas, shape_from_area,
 		canvas_style, hex_to_decimal, css3color, is_image_loaded, options_from_area;
 
-	
+
 	has_VML = document.namespaces;
 	has_canvas = !!document.createElement('canvas').getContext;
 
@@ -146,7 +142,7 @@ var scMapMgr = {
 		$.maphighlight = function() {};
 		return;
 	}
-	
+
 	if(has_canvas) {
 		hex_to_decimal = function(hex) {
 			return Math.max(0, Math.min(parseInt(hex, 16), 255));
@@ -155,78 +151,78 @@ var scMapMgr = {
 			return 'rgba('+hex_to_decimal(color.substr(0,2))+','+hex_to_decimal(color.substr(2,2))+','+hex_to_decimal(color.substr(4,2))+','+opacity+')';
 		};
 		create_canvas_for = function(img) {
-			var c = $.addElt('<canvas style="width:'+img.width+'px;height:'+img.height+'px;"></canvas>');
+			const c = $.addElt('<canvas style="width:' + img.width + 'px;height:' + img.height + 'px;"></canvas>');
 			c.getContext("2d").clearRect(0, 0, c.width, c.height);
 			return c;
 		};
-		var draw_shape = function(context, shape, coords, x_shift, y_shift) {
+		const draw_shape = function (context, shape, coords, x_shift, y_shift) {
 			x_shift = x_shift || 0;
 			y_shift = y_shift || 0;
-			
+
 			context.beginPath();
-			if(shape == 'rect') {
+			if (shape === 'rect') {
 
 				context.rect(coords[0] + x_shift, coords[1] + y_shift, coords[2] - coords[0], coords[3] - coords[1]);
-			} else if(shape == 'poly') {
+			} else if (shape === 'poly') {
 				context.moveTo(coords[0] + x_shift, coords[1] + y_shift);
-				for(i=2; i < coords.length; i+=2) {
-					context.lineTo(coords[i] + x_shift, coords[i+1] + y_shift);
+				for (let i = 2; i < coords.length; i += 2) {
+					context.lineTo(coords[i] + x_shift, coords[i + 1] + y_shift);
 				}
-			} else if(shape == 'circ') {
+			} else if (shape === 'circ') {
 
 				context.arc(coords[0] + x_shift, coords[1] + y_shift, coords[2], 0, Math.PI * 2, false);
 			}
 			context.closePath();
-		}
+		};
 		add_shape_to = function(canvas, shape, coords, options, name) {
-			var i, context = canvas.getContext('2d');
-			
+			let context = canvas.getContext('2d');
 
-			
+
+
 
 
 			if(options.shadow) {
 				context.save();
-				if(options.shadowPosition == "inside") {
+				if(options.shadowPosition === "inside") {
 
 					draw_shape(context, shape, coords);
 					context.clip();
 				}
-				
 
 
 
-				var x_shift = canvas.width * 100;
-				var y_shift = canvas.height * 100;
+
+				const x_shift = canvas.width * 100;
+				const y_shift = canvas.height * 100;
 				draw_shape(context, shape, coords, x_shift, y_shift);
-				
+
 				context.shadowOffsetX = options.shadowX - x_shift;
 				context.shadowOffsetY = options.shadowY - y_shift;
 				context.shadowBlur = options.shadowRadius;
 				context.shadowColor = css3color(options.shadowColor, options.shadowOpacity);
-				
 
 
 
-				var shadowFrom = options.shadowFrom;
+
+				let shadowFrom = options.shadowFrom;
 				if (!shadowFrom) {
-					if (options.shadowPosition == 'outside') {
+					if (options.shadowPosition === 'outside') {
 						shadowFrom = 'fill';
 					} else {
 						shadowFrom = 'stroke';
 					}
 				}
-				if (shadowFrom == 'stroke') {
+				if (shadowFrom === 'stroke') {
 					context.strokeStyle = "rgba(0,0,0,1)";
 					context.stroke();
-				} else if (shadowFrom == 'fill') {
+				} else if (shadowFrom === 'fill') {
 					context.fillStyle = "rgba(0,0,0,1)";
 					context.fill();
 				}
 				context.restore();
-				
 
-				if(options.shadowPosition == "outside") {
+
+				if(options.shadowPosition === "outside") {
 					context.save();
 
 					draw_shape(context, shape, coords);
@@ -236,11 +232,11 @@ var scMapMgr = {
 					context.restore();
 				}
 			}
-			
+
 			context.save();
-			
+
 			draw_shape(context, shape, coords);
-			
+
 
 
 			if(options.fill) {
@@ -254,9 +250,9 @@ var scMapMgr = {
 				context.lineWidth = options.strokeWidth;
 				context.stroke();
 			}
-			
+
 			context.restore();
-			
+
 		};
 		clear_canvas = function(canvas) {
 			canvas.getContext('2d').clearRect(0, 0, canvas.width,canvas.height);
@@ -266,15 +262,15 @@ var scMapMgr = {
 			return $.addElt('<var style="zoom:1;overflow:hidden;display:block;width:'+img.width+'px;height:'+img.height+'px;"></var>');
 		};
 		add_shape_to = function(canvas, shape, coords, options, name) {
-			var fill, stroke, opacity, e;
+			let fill, stroke, opacity, e;
 			fill = '<v:fill color="#'+options.fillColor+'" opacity="'+(options.fill ? options.fillOpacity : 0)+'" />';
 			stroke = (options.stroke ? 'strokeweight="'+options.strokeWidth+'" stroked="t" strokecolor="#'+options.strokeColor+'"' : 'stroked="f"');
 			opacity = '<v:stroke opacity="'+options.strokeOpacity+'"/>';
-			if(shape == 'rect') {
+			if(shape === 'rect') {
 				e = $.addElt('<v:rect name="'+name+'" filled="t" '+stroke+' style="zoom:1;margin:0;padding:0;display:block;position:absolute;left:'+coords[0]+'px;top:'+coords[1]+'px;width:'+(coords[2] - coords[0])+'px;height:'+(coords[3] - coords[1])+'px;"></v:rect>');
-			} else if(shape == 'poly') {
+			} else if(shape === 'poly') {
 				e = $.addElt('<v:shape name="'+name+'" filled="t" '+stroke+' coordorigin="0,0" coordsize="'+canvas.width+','+canvas.height+'" path="m '+coords[0]+','+coords[1]+' l '+coords.join(',')+' x e" style="zoom:1;margin:0;padding:0;display:block;position:absolute;top:0px;left:0px;width:'+canvas.width+'px;height:'+canvas.height+'px;"></v:shape>');
-			} else if(shape == 'circ') {
+			} else if(shape === 'circ') {
 				e = $.addElt('<v:oval name="'+name+'" filled="t" '+stroke+' style="zoom:1;margin:0;padding:0;display:block;position:absolute;left:'+(coords[0] - coords[2])+'px;top:'+(coords[1] - coords[2])+'px;width:'+(coords[2]*2)+'px;height:'+(coords[2]*2)+'px;"></v:oval>');
 			}
 			e.innerHTML = fill+opacity;
@@ -282,13 +278,13 @@ var scMapMgr = {
 		};
 		clear_canvas = function(canvas) {
 			$.each(scPaLib.findNodes("des:", canvas), function() {
-				if (this.getAttribute('name')=='highlighted') $.remove(this);
+				if (this.getAttribute('name')==='highlighted') $.remove(this);
 			});
 		};
 	}
-	
+
 	shape_from_area = function(area) {
-		var i, coords = area.getAttribute('coords').split(',');
+		let i, coords = area.getAttribute('coords').split(',');
 		for (i=0; i < coords.length; i++) { coords[i] = parseFloat(coords[i]); }
 		return [area.getAttribute('shape').toLowerCase().substr(0,4), coords];
 	};
@@ -296,10 +292,10 @@ var scMapMgr = {
 	options_from_area = function(area, options) {
 		return $.extend({}, options, $.data(area, 'maphighlight'), (area.maphighlight ? area.maphighlight : false));
 	};
-	
+
 	is_image_loaded = function(img) {
 		if(!img.complete) { return false; } // IE
-		if(typeof img.naturalWidth != "undefined" && img.naturalWidth == 0) { return false; } // Others
+		if(typeof img.naturalWidth != "undefined" && img.naturalWidth === 0) { return false; } // Others
 		return true;
 	};
 
@@ -310,15 +306,15 @@ var scMapMgr = {
 		padding: 0,
 		border: 0
 	};
-	
-	var ie_hax_done = false;
+
+	let ie_hax_done = false;
 	$.maphighlight = function(img, opts) {
 		opts = $.extend({}, $.defaults, opts);
-		
+
 		if(!has_canvas && scCoLib.isIE && !ie_hax_done) {
 			document.namespaces.add("v", "urn:schemas-microsoft-com:vml");
-			var style = document.createStyleSheet();
-			var shapes = ['shape','rect', 'oval', 'circ', 'fill', 'stroke', 'imagedata', 'group','textbox'];
+			const style = document.createStyleSheet();
+			const shapes = ['shape', 'rect', 'oval', 'circ', 'fill', 'stroke', 'imagedata', 'group', 'textbox'];
 			$.each(shapes,
 				function() {
 					style.addRule('v\\:' + this, "behavior: url(#default#VML); antialias:true");
@@ -326,8 +322,8 @@ var scMapMgr = {
 			);
 			ie_hax_done = true;
 		}
-		
-		var wrap, options, maps, map, canvas, canvas_always, addAlwaysOn, mouseover, highlighted_shape, usemap;
+
+		let wrap, options, maps, map, canvas, canvas_always, addAlwaysOn, mouseover, mouseout, usemap;
 
 		if(!is_image_loaded(img)) {
 
@@ -342,8 +338,8 @@ var scMapMgr = {
 
 		usemap = img.getAttribute('usemap');
 		maps = scDynUiMgr.getDocument(img).getElementsByTagName("map");
-		for (var i=0; i<maps.length; i++){
-			if (maps[i].getAttribute('name') == usemap.substr(1)) map = maps[i];
+		for (let i=0; i<maps.length; i++){
+			if (maps[i].getAttribute('name') === usemap.substr(1)) map = maps[i];
 		}
 
 		if(!(usemap && map.childNodes.length > 0)) {
@@ -354,20 +350,25 @@ var scMapMgr = {
 
 
 
-			var wrapper = img.parentNode;
-			var imgWidth = img.width, imgHeight = img.height; 
+			const wrapper = img.parentNode;
+			const imgWidth = img.width, imgHeight = img.height;
 			$.before(img, wrapper);
 			img.width = Math.max(imgWidth, img.width);
 			img.height = Math.max(imgHeight, img.height);
 			$.remove(wrapper);
 			$.each(scPaLib.findNodes("chi:area", map), function() {
+				const area_options = options_from_area(this, options);
 				$.unregister(this, 'mouseover', mouseover);
 				$.unregister(this, 'mouseout', mouseout);
+				if(area_options.focus){
+					$.unregister(this, 'focus', mouseover);
+					$.unregister(this, 'blur', mouseout);
+				}
 			});
 		}
 
 		wrap = $.addElt('<div></div>')
-		if (scDynUiMgr.readStyle(img,"position") == "absolute"){
+		if (scDynUiMgr.readStyle(img,"position") === "absolute"){
 			$.css(wrap, {
 				display:'block',
 				background:'url("'+img.src+'")',
@@ -377,7 +378,7 @@ var scMapMgr = {
 				height:img.height+"px",
 				top:scDynUiMgr.readStyle(img,"top"),
 				left:scDynUiMgr.readStyle(img,"left")
-				});
+			});
 		} else {
 			$.css(wrap, {
 				display:'block',
@@ -386,7 +387,7 @@ var scMapMgr = {
 				padding:0,
 				width:img.width+"px",
 				height:img.height+"px"
-				});
+			});
 		}
 		if(options.wrapClass) {
 			if(options.wrapClass === true) {
@@ -400,40 +401,36 @@ var scMapMgr = {
 		if(scCoLib.isIE) { $.css(img, 'filter', 'Alpha(opacity=0)'); }
 		$.remove(img);
 		$.append(wrap, img);
-		
+
 		canvas = create_canvas_for(img);
 		$.css(canvas, canvas_style);
 		canvas.height = img.height;
 		canvas.width = img.width;
-		
+
 		mouseover = function(e) {
-			var shape, area_options;
+			let shape, area_options;
 			area_options = options_from_area(this, options);
-			if( !area_options.neverOn && !area_options.alwaysOn ) {
+			if( !area_options.neverOn && (!area_options.alwaysOn || area_options.highlight.active)) {
 				shape = shape_from_area(this);
-				add_shape_to(canvas, shape[0], shape[1], area_options, "highlighted");
+				add_shape_to(canvas, shape[0], shape[1], area_options.highlight.active ? area_options.highlight : area_options, "highlighted");
 				if(area_options.groupBy) {
-					var areas;
+					let areas;
 
 					if(/^[a-zA-Z][-a-zA-Z]+$/.test(area_options.groupBy)) {
 						areas = map.find('area['+area_options.groupBy+'="'+$(this).attr(area_options.groupBy)+'"]')
 					} else {
 						areas = map.find(area_options.groupBy);
 					}
-					var first = this;
+					const first = this;
 					$.each(areas, function() {
-						if(this != first) {
-							var subarea_options = options_from_area(this, options);
+						if(this !== first) {
+							const subarea_options = options_from_area(this, options);
 							if(!subarea_options.neverOn && !subarea_options.alwaysOn) {
-								var shape = shape_from_area(this);
-								add_shape_to(canvas, shape[0], shape[1], subarea_options, "highlighted");
+								const shape = shape_from_area(this);
+								add_shape_to(canvas, shape[0], shape[1], subarea_options.highlight.active ? subarea_options.highlight : subarea_options, "highlighted");
 							}
 						}
 					});
-				}
-
-				if(!has_canvas) {
-					$.append(canvas, $.addElt('<v:rect></v:rect>'));
 				}
 			}
 		}
@@ -451,7 +448,7 @@ var scMapMgr = {
 				canvas.innerHTML = "";
 			}
 			$.each(scPaLib.findNodes("chi:area", map), function() {
-				var shape, area_options;
+				let shape, area_options;
 				area_options = options_from_area(this, options);
 				if(area_options.alwaysOn) {
 					if(!canvas_always && has_canvas) {
@@ -470,16 +467,21 @@ var scMapMgr = {
 				}
 			});
 		}
-		
+
 		addAlwaysOn();
 
 		$.each(scPaLib.findNodes("chi:area", map), function() {
+			const area_options = options_from_area(this, options);
 			$.register(this, 'mouseover', mouseover);
 			$.register(this, 'mouseout', mouseout);
+			if(area_options.focus){
+				$.register(this, 'focus', mouseover);
+				$.register(this, 'blur', mouseout);
+			}
 		});
-		
+
 		$.before(canvas, img); // if we put this after, the mouseover events wouldn't fire.
-		
+
 		$.addClass(img, 'maphighlighted');
 	};
 	$.defaults = {
@@ -490,8 +492,19 @@ var scMapMgr = {
 		strokeColor: 'ff0000',
 		strokeOpacity: 1,
 		strokeWidth: 1,
+		highlight:{
+			active: false,
+			fill: true,
+			fillColor: '000000',
+			fillOpacity: 0.2,
+			stroke: true,
+			strokeColor: '0000ff',
+			strokeOpacity: 1,
+			strokeWidth: 1,
+		},
 		alwaysOn: false,
 		neverOn: false,
+		focus: true,
 		groupBy: false,
 		wrapClass: true,
 		shadow: false,

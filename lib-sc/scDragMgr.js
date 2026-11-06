@@ -1,111 +1,127 @@
 
 
 
-var scDragMgr = {
-	fStartListeners : new Array(),
-	fStopListeners : new Array(),
+window.scDragMgr = {
+	fIsRtl : document.documentElement.getAttribute("dir") === "rtl",
+	fStartListeners: [],
+	fStopListeners: [],
 
 
 
-	makeContainer : function(pKey, pCatchment, pContainer, pIfEmpty, pImage) {
-		this.dragdrop.makeContainer(pKey, pCatchment, pContainer, pIfEmpty, pImage); return this;
+	makeContainer: function (pKey, pCatchment, pContainer, pIfEmpty, pImage) {
+		this.dragdrop.makeContainer(pKey, pCatchment, pContainer, pIfEmpty, pImage);
+		return this;
 	},
 
 
 
 
-	setMode : function(pContainer, pMode, pMax) {
-		this.dragdrop.setMode(pContainer, pMode, pMax); return this;
+	setMode: function (pContainer, pMode, pMax) {
+		this.dragdrop.setMode(pContainer, pMode, pMax);
+		return this;
 	},
 
 
 
-	setResizeOnDragOut : function(pContainer, pMode) {
-		this.dragdrop.setResizeOnDragOut(pContainer, pMode); return this;
+	setResizeOnDragOut: function (pContainer, pMode) {
+		this.dragdrop.setResizeOnDragOut(pContainer, pMode);
+		return this;
 	},
 
 
-	setDragOverClass : function(pContainer, pClass) {
-		this.dragdrop.setDragOverClass(pContainer, pClass); return this;
+	setDragOverClass: function (pContainer, pClass) {
+		this.dragdrop.setDragOverClass(pContainer, pClass);
+		return this;
 	},
 
 
-	getContainers : function (pKey, pRootNode) {
+
+
+	getContainers: function (pKey, pRootNode) {
 		return this.dragdrop.getContainers(pKey, pRootNode);
 	},
 
 
-	getLabels : function(pContainer) {
+	getLabels: function (pContainer) {
 		return this.dragdrop.getLabels(pContainer);
 	},
 
 
 
-	repopulateContainers : function (pKey) {
-		this.dragdrop.repopulateContainers(pKey); return this;
-	},
-	
-
-	makeDraggableLabel : function(pKey, pLabel, pHandle) {
-		this.dragdrop.makeDraggableLabel(pKey, pLabel, pHandle); return this;
-	},
-	
-
-	setCallback : function(pLabel, pfunction) {
-		this.dragdrop.setCallback(pLabel, pfunction); return this;
+	repopulateContainers: function (pKey) {
+		this.dragdrop.repopulateContainers(pKey);
+		return this;
 	},
 
 
-	setDraggable : function (pLabel, pIsDraggable) {
-		this.dragdrop.setDraggable(pLabel, pIsDraggable); return this;
+	makeDraggableLabel: function (pKey, pLabel, pHandle) {
+		this.dragdrop.makeDraggableLabel(pKey, pLabel, pHandle);
+		return this;
 	},
 
 
-	setConstraintBox : function (pLabel, pNode) {
-
-
-
-		this.dragdrop.setConstraintBox(pLabel, pNode); return this;
+	setCallback: function (pLabel, pfunction) {
+		this.dragdrop.setCallback(pLabel, pfunction);
+		return this;
 	},
 
 
-	setDragClass : function(pLabel, pClass) {
-		this.dragdrop.setDragClass(pLabel, pClass); return this;
+	setDraggable: function (pLabel, pIsDraggable) {
+		this.dragdrop.setDraggable(pLabel, pIsDraggable);
+		return this;
 	},
 
 
-	saveLabelPos : function (pLabel) {
+	setConstraintBox: function (pLabel, pNode) {
+		this.dragdrop.setConstraintBox(pLabel, pNode);
+		return this;
+	},
+
+
+	setDragClass: function (pLabel, pClass) {
+		this.dragdrop.setDragClass(pLabel, pClass);
+		return this;
+	},
+
+
+	saveLabelPos: function (pLabel) {
 		return this.dragdrop.saveLabelPos(pLabel);
 	},
 
 
-	addStartListener: function(pFunc) {
+	addStartListener: function (pFunc) {
 		this.fStartListeners.push(pFunc)
 	},
-	
 
-	addStopListener: function(pFunc) {
+
+	addStopListener: function (pFunc) {
 		this.fStopListeners.push(pFunc)
 	}
-}
+};
 
 scDragMgr.helpers = {
-	
+
 	addClass : function(pNode, pClass) {
-		var vNewClassStr = pNode.className;
-		for (var i = 1, n = arguments.length; i < n; i++) vNewClassStr += ' '+arguments[i];
+		let vNewClassStr = pNode.className;
+		let i = 1;
+		const n = arguments.length;
+		for (; i < n; i++) vNewClassStr += ' '+arguments[i];
 		pNode.className = vNewClassStr;
 		return scDragMgr.helpers;
 	},
-	
+
 	delClass : function(pNode, pClass) {
-		if (pClass != '') {
-			var vCurrentClasses = pNode.className.split(' ');
-			var vNewClasses = new Array();
-			for (var i = 0, n = vCurrentClasses.length; i < n; i++) {
-				var vClassFound = false;
-				for (var j = 1, m = arguments.length; j < m; j++) {
-					if (vCurrentClasses[i] == arguments[j]) vClassFound = true;
+		if (pClass !== '') {
+			const vCurrentClasses = pNode.className.split(' ');
+			const vNewClasses = [];
+			let i = 0;
+			const n = vCurrentClasses.length;
+			for (; i < n; i++) {
+				let vClassFound = false;
+				let j = 1;
+				const m = arguments.length;
+				for (; j < m; j++) {
+					if (vCurrentClasses[i] === arguments[j]) vClassFound = true;
 				}
 				if (!vClassFound) vNewClasses.push(vCurrentClasses[i]);
 			}
@@ -113,21 +129,24 @@ scDragMgr.helpers = {
 		}
 		return scDragMgr.helpers;
 	},
-	
+
 	switchClass : function(pNode, pClassOld, pClassNew) {
-		if (pClassOld && pClassOld != '') {
-			var vCurrentClasses = pNode.className.split(' ');
-			var vNewClasses = new Array();
-			var vClassFound = false;
-			for (var i = 0, n = vCurrentClasses.length; i < n; i++) {
-				if (vCurrentClasses[i] != pClassOld) {
+		if (pClassOld && pClassOld !== '') {
+			const vCurrentClasses = pNode.className.split(' ');
+			const vNewClasses = [];
+			let vClassFound = false;
+			let i = 0;
+			const n = vCurrentClasses.length;
+			for (; i < n; i++) {
+				if (vCurrentClasses[i] === pClassNew) return scDragMgr.helpers;
+				if (vCurrentClasses[i] !== pClassOld) {
 					vNewClasses.push(vCurrentClasses[i]);
 				} else {
-					if (pClassNew && pClassNew != '') vNewClasses.push(pClassNew);
+					if (pClassNew && pClassNew !== '') vNewClasses.push(pClassNew);
 					vClassFound = true;
 				}
 			}
-			if (pClassNew && pClassNew != '' && !vClassFound) vNewClasses.push(pClassNew);
+			if (pClassNew && pClassNew !== '' && !vClassFound) vNewClasses.push(pClassNew);
 			pNode.className = vNewClasses.join(' ');
 		}
 		return scDragMgr.helpers;
@@ -136,64 +155,64 @@ scDragMgr.helpers = {
 	isMouseInside : function(pDragEvent, pContainter) {
 		if(pContainter.fArea){
 			switch(pContainter.shape.toLowerCase()){
-			case "circle":
-				return (pDragEvent.transformedMouseOffset.insideCircle(pContainter.centerPosition, pContainter.radius));
-			case "poly":
-				return (pDragEvent.transformedMouseOffset.insidePoly(pContainter.pointsPosition));
-			case "rect":
-				return (pDragEvent.transformedMouseOffset.insideBox(pContainter.topLeftPosition, pContainter.bottomRightPosition));
+				case "circle":
+					return (pDragEvent.transformedMouseOffset.insideCircle(pContainter.centerPosition, pContainter.radius));
+				case "poly":
+					return (pDragEvent.transformedMouseOffset.insidePoly(pContainter.pointsPosition));
+				case "rect":
+					return (pDragEvent.transformedMouseOffset.insideBox(pContainter.topLeftPosition, pContainter.bottomRightPosition));
 			}
 		} else return (pDragEvent.transformedMouseOffset.inside(pContainter.topLeftPosition, pContainter.bottomRightPosition));
 	},
 
 	isTouchEvent : function(event) {
-		if (event.type=="touchstart" || event.type=="touchmove" || event.type=="touchend" || event.type=="touchcancel")
-			return true;
-		return false;
+		return event.type === "touchstart" || event.type === "touchmove" || event.type === "touchend" || event.type === "touchcancel";
 	},
 
 	map : function(array, func) {
-		for (var i = 0, n = array.length; i < n; i++) func(array[i]);
+		let i = 0;
+		const n = array.length;
+		for (; i < n; i++) func(array[i]);
 	},
 
 	nextItem : function(item, nodeName) {
 		if (item == null) return;
-		var next = item.nextSibling;
+		let next = item.nextSibling;
 		while (next != null) {
-			if (next.nodeName == nodeName) return next;
+			if (next.nodeName === nodeName) return next;
 			next = next.nextSibling;
 		}
 		return null;
 	},
 
 	previousItem : function(item, nodeName) {
-		var previous = item.previousSibling;
+		let previous = item.previousSibling;
 		while (previous != null) {
-			if (previous.nodeName == nodeName) return previous;
+			if (previous.nodeName === nodeName) return previous;
 			previous = previous.previousSibling;
 		}
 		return null;
 	},
 
 	moveBefore : function(item1, item2) {
-		var parent = item1.parentNode;
+		const parent = item1.parentNode;
 		parent.removeChild(item1);
 		parent.insertBefore(item1, item2);
 	},
 
 	moveAfter : function(item1, item2) {
-		var parent = item1.parentNode;
+		const parent = item1.parentNode;
 		parent.removeChild(item1);
 		parent.insertBefore(item1, item2 ? scDragMgr.helpers.nextItem(item2, item2.nodeName) : null);
 	},
-	
+
 	isEltContainedByNode: function(pElt, pContainer) {
-		var vElt = pElt;
-		var vFound = false;
+		let vElt = pElt;
+		let vFound = false;
 		if (vElt) {
 			while (vElt.parentNode && !vFound) {
 				vElt = vElt.parentNode;
-				vFound = vElt == pContainer;
+				vFound = vElt === pContainer;
 			}
 		}
 		return(vFound);
@@ -205,26 +224,12 @@ scDragMgr.events = {
 
 	fix : function(event) {
 		if (!event) event = window.event;
-		if (event.target) {
-			if (event.target.nodeType == 3) event.target = event.target.parentNode;
-		} else if (event.srcElement) {
-			event.target = event.srcElement;
-		}
+		if (event.target.nodeType === 3) event.target = event.target.parentNode;
 		return event;
 	},
 
 	register : function(element, type, func) {
-		if (element.addEventListener) {
-			element.addEventListener(type, func, false);
-		} else if (element.attachEvent) {
-			if (!element._listeners) element._listeners = new Array();
-			if (!element._listeners[type]) element._listeners[type] = new Array();
-			var workaroundFunc = function() {
-				func.apply(element, new Array());
-			}
-			element._listeners[type][func] = workaroundFunc;
-			element.attachEvent('on' + type, workaroundFunc);
-		}
+		element.addEventListener(type, func, false);
 	},
 
 	unregister : function(element, type, func) {
@@ -250,10 +255,10 @@ scDragMgr.coordinates = {
 	},
 
 	topLeftPosition : function(element) {
-		var left = parseInt(scDragMgr.css.readStyle(element, "left"));
-		var left = isNaN(left) ? 0 : left;
-		var top = parseInt(scDragMgr.css.readStyle(element, "top"));
-		var top = isNaN(top) ? 0 : top;
+		let left = parseInt(scDragMgr.css.readStyle(element, "left"));
+		left = isNaN(left) ? 0 : left;
+		let top = parseInt(scDragMgr.css.readStyle(element, "top"));
+		top = isNaN(top) ? 0 : top;
 		return this.create(left, top);
 	},
 
@@ -262,18 +267,26 @@ scDragMgr.coordinates = {
 	},
 
 	topLeftOffset : function(element) {
-		var offset = this._offset(element);
-		var parent = element.offsetParent;
+		let offset = this._offset(element);
+		let parent = element.offsetParent;
 		while (parent) {
 			offset = offset.plus(this._offset(parent));
-			offset = offset.minus(this._scroll(parent));
+			if (parent.tagName.toLowerCase()!=="body") offset = offset.minus(this._scroll(parent));
 			parent = parent.offsetParent;
 		}
 		return offset;
 	},
 
+	topRightOffset : function(element) {
+		return this.topLeftOffset(element).plus(this.create(element.offsetWidth, 0));
+	},
+
 	bottomRightOffset : function(element) {
 		return this.topLeftOffset(element).plus(this.create(element.offsetWidth, element.offsetHeight));
+	},
+
+	bottomLeftOffset : function(element) {
+		return this.topLeftOffset(element).plus(this.create(0, element.offsetHeight));
 	},
 
 	scrollOffset : function() {
@@ -307,10 +320,10 @@ scDragMgr.coordinates = {
 	mousePosition : function(event) {
 		event = scDragMgr.events.fix(event);
 
-		var eventPositionElement=event;
+		let eventPositionElement = event;
 		if (scDragMgr.helpers.isTouchEvent(event)) {
 
-			if (event.type=="touchend") {
+			if (event.type==="touchend") {
 				eventPositionElement=event.changedTouches[0];
 			} else {
 				eventPositionElement=event.touches[0];
@@ -323,10 +336,10 @@ scDragMgr.coordinates = {
 	 * mouse coordinate relative to the document
 	 */
 	mouseOffset : function(event) {
-		var eventPositionElement=event;
+		let eventPositionElement = event;
 		event = scDragMgr.events.fix(event);
 		if (scDragMgr.helpers.isTouchEvent(event)) {
-			if (event.type=="touchend") {
+			if (event.type==="touchend") {
 				eventPositionElement=event.changedTouches[0];
 			} else {
 				eventPositionElement=event.touches[0];
@@ -368,7 +381,7 @@ _scDragMgrCoordinate.prototype = {
 		return {"x":this.x,"y":this.y}
 	},
 
-	clone : function(that) {
+	clone : function() {
 		return this.factory.create(this.x, this.y);
 	},
 
@@ -389,8 +402,8 @@ _scDragMgrCoordinate.prototype = {
 	},
 
 	constrainTo : function (one, two) {
-		var min = one.min(two);
-		var max = one.max(two);
+		const min = one.min(two);
+		const max = one.max(two);
 		return this.max(min).min(max);
 	},
 
@@ -415,11 +428,11 @@ _scDragMgrCoordinate.prototype = {
 
 
 	insidePoly : function(pPts) {
-		for (var c = false, i = -1, l = pPts.length, j = l - 1; ++i < l; j = i)
+		for (let c = false, i = -1, l = pPts.length, j = l - 1; ++i < l; j = i)
 			((pPts[i].y <= this.y && this.y < pPts[j].y) || (pPts[j].y <= this.y && this.y < pPts[i].y))
 			&& (this.x < (pPts[j].x - pPts[i].x) * (this.y - pPts[i].y) / (pPts[j].y - pPts[i].y) + pPts[i].x)
 			&& (c = !c);
-		return c;	
+		return c;
 	},
 
 	inside : function(pTL, pBR) {
@@ -438,8 +451,8 @@ scDragMgr.css = {
 			} else if (element.currentStyle) {
 				return element.currentStyle[property];
 			} else if (document.defaultView && document.defaultView.getComputedStyle) {
-				var style = document.defaultView.getComputedStyle(element, null);
-				var prop = property.replace(/([A-Z])/g,"-$1").toLowerCase();
+				const style = document.defaultView.getComputedStyle(element, null);
+				const prop = property.replace(/([A-Z])/g, "-$1").toLowerCase();
 				if (style[prop]) return style[prop];
 				else return style.getPropertyValue(prop);
 			} else {
@@ -456,7 +469,7 @@ scDragMgr.drag = {
 
 	createSimpleGroup : function(element, handle) {
 		handle = handle ? handle : element;
-		var group = this.createGroup(element);
+		const group = this.createGroup(element);
 		group.setHandle(handle);
 		group.transparentDrag();
 		group.onTopWhileDragging();
@@ -465,7 +478,7 @@ scDragMgr.drag = {
 	},
 
 	createGroup : function(element) {
-		var group = new _scDragMgrDragGroup(this, element);
+		const group = new _scDragMgrDragGroup(this, element);
 		element.fStylePosBase = scDragMgr.css.readStyle(element, 'position');
 		element.fStylePosDrag = 'relative';
 		element.style["position"] = element.fStylePosDrag;
@@ -487,12 +500,12 @@ function _scDragMgrDragGroup(factory, element) {
 	this._handle = null;
 	this._draggable = true;
 	this._thresholdDistance = 0;
-	this._transforms = new Array();
-	this._listeners = new Array();
-	this._listeners['draginit'] = new Array();
-	this._listeners['dragstart'] = new Array();
-	this._listeners['dragmove'] = new Array();
-	this._listeners['dragend'] = new Array();
+	this._transforms = [];
+	this._listeners = [];
+	this._listeners['draginit'] = [];
+	this._listeners['dragstart'] = [];
+	this._listeners['dragmove'] = [];
+	this._listeners['dragend'] = [];
 }
 
 _scDragMgrDragGroup.prototype = {
@@ -504,8 +517,9 @@ _scDragMgrDragGroup.prototype = {
 	 */
 
 	setHandle : function(handle) {
-		var events = scDragMgr.events;
+		const events = scDragMgr.events;
 
+		this._handle = handle;
 		handle.scDragMgrDragGroup = this;
 		events.register(handle, 'mousedown', this._dragInit);
 		handle.onmousedown = function() { return false }
@@ -513,8 +527,10 @@ _scDragMgrDragGroup.prototype = {
 		events.register(handle, 'touchstart', this._dragInit);
 		handle.ontouchstart = function() { return false }
 
-		if (this.element != handle) events.unregister(this.element, 'mousedown', this._dragInit);
-		if (this.element != handle) events.unregister(this.element, 'touchstart', this._dragInit);
+		events.register(handle, 'keydown', this._keydown);
+
+		if (this.element !== handle) events.unregister(this.element, 'mousedown', this._dragInit);
+		if (this.element !== handle) events.unregister(this.element, 'touchstart', this._dragInit);
 	},
 
 	register : function(type, func) {
@@ -538,23 +554,23 @@ _scDragMgrDragGroup.prototype = {
 	},
 
 	transparentDrag : function(opacity) {
-		var opacity = typeof(opacity) != "undefined" ? opacity : 0.75;
-		var originalOpacity = scDragMgr.css.readStyle(this.element, "opacity", "");
+		opacity = typeof(opacity) != "undefined" ? opacity : 0.75;
+		const originalOpacity = scDragMgr.css.readStyle(this.element, "opacity", "");
 		this.register('dragstart', function(dragEvent) {
-			var element = dragEvent.group.element;
+			const element = dragEvent.group.element;
 			element.style.opacity = opacity;
 			element.style.filter = 'alpha(opacity=' + (opacity * 100) + ')';
 		})
 		this.register('dragend', function(dragEvent) {
-			var element = dragEvent.group.element;
+			const element = dragEvent.group.element;
 			element.style.opacity = originalOpacity;
 			element.style.filter = 'alpha(opacity=100)';
 		})
 	},
 
 	onTopWhileDragging : function(zIndex) {
-		var zIndex = typeof(zIndex) != "undefined" ? zIndex : 100000;
-		var originalZIndex = scDragMgr.css.readStyle(this.element, "zIndex", "");
+		zIndex = typeof(zIndex) != "undefined" ? zIndex : 100000;
+		const originalZIndex = scDragMgr.css.readStyle(this.element, "zIndex", "");
 		this.register('dragstart', function(dragEvent) {
 			dragEvent.group.element.style.zIndex = zIndex;
 		})
@@ -573,11 +589,27 @@ _scDragMgrDragGroup.prototype = {
 		this.element.style.MozUserSelect = "none";
 	},
 
+	_keydown : function(event) {
+		try {
+			event = scDragMgr.events.fix(event);
+			if (event.target === this.scDragMgrDragGroup._handle){
+				const vLabel = this.scDragMgrDragGroup.element;
+				if (event.keyCode === 13 && scDragMgr.getContainers(this.fKey).length>0) {
+					scDragMgr.keyboard.selectLabel(vLabel);
+				} else if (event.keyCode === 39 && vLabel.parentNode.fCatchment.fDropMode === "ordered") { // NEXT
+					scDragMgr.keyboard.moveLabelDown(vLabel);
+				} else if (event.keyCode === 37 && vLabel.parentNode.fCatchment.fDropMode === "ordered") { // PREV
+					scDragMgr.keyboard.moveLabelUp(vLabel);
+				}
+			}
+		} catch(e) {scCoLib.log("_scDragMgrDragGroup._keydown: " + e);}
+	},
+
 	_dragInit : function(event) {
 		try{
-			event = scDragMgr.events.fix(event)
-			var group = scDragMgr.scDragMgrDragGroup = this.scDragMgrDragGroup;
-			var dragEvent = group.factory._createEvent('draginit', event, group);
+			event = scDragMgr.events.fix(event);
+			const group = scDragMgr.scDragMgrDragGroup = this.scDragMgrDragGroup;
+			const dragEvent = group.factory._createEvent('draginit', event, group);
 			if (group._draggable) {
 				if (scDragMgr.helpers.isTouchEvent(event)) {
 					event.stopPropagation();
@@ -593,7 +625,7 @@ _scDragMgrDragGroup.prototype = {
 				scDragMgr.events.register(document, 'touchend', group._dragEnd);
 				scDragMgr.events.register(document, 'touchcancel', group._dragEnd);
 				group._notifyListeners(dragEvent);
-				for (var i=0; i<scDragMgr.fStartListeners.length; i++) try{scDragMgr.fStartListeners[i](group);}catch(e){}
+				for (let i=0; i<scDragMgr.fStartListeners.length; i++) try{scDragMgr.fStartListeners[i](group);}catch(e){}
 			}
 		} catch(e) {scCoLib.log("_scDragMgrDragGroup._dragInit: " + e);}
 	},
@@ -601,32 +633,32 @@ _scDragMgrDragGroup.prototype = {
 	_drag : function(event) {
 		try{
 			event = scDragMgr.events.fix(event);
-			var coordinates = scDragMgr.coordinates;
-			var group = this.scDragMgrDragGroup || scDragMgr.scDragMgrDragGroup;
+			const coordinates = scDragMgr.coordinates;
+			const group = this.scDragMgrDragGroup || scDragMgr.scDragMgrDragGroup;
 			if (!group) return;
 			if (scDragMgr.helpers.isTouchEvent(event)) {
 				event.stopPropagation();
 				event.preventDefault();
 			}
-			var dragEvent = group.factory._createEvent('dragmove', event, group);
-			var newTopLeftOffset = dragEvent.mouseOffset.minus(group._grabOffset);
+			const dragEvent = group.factory._createEvent('dragmove', event, group);
+			let newTopLeftOffset = dragEvent.mouseOffset.minus(group._grabOffset);
 			if (!group._isThresholdExceeded) {
-				var distance = dragEvent.mouseOffset.distance(group._initialMouseOffset);
+				const distance = dragEvent.mouseOffset.distance(group._initialMouseOffset);
 				if (distance < group._thresholdDistance) return;
 				group._isThresholdExceeded = true;
 				group._notifyListeners(group.factory._createEvent('dragstart', event, group));
 			}
-			for (var i=0; i<group._transforms.length; i++) {
-				var transform = group._transforms[i];
+			for (let i=0; i<group._transforms.length; i++) {
+				const transform = group._transforms[i];
 				newTopLeftOffset = transform(newTopLeftOffset, dragEvent);
 			}
-			var dragDelta = newTopLeftOffset.minus(dragEvent.topLeftOffset);
-			var newTopLeftPosition = dragEvent.topLeftPosition.plus(dragDelta);
+			const dragDelta = newTopLeftOffset.minus(dragEvent.topLeftOffset);
+			const newTopLeftPosition = dragEvent.topLeftPosition.plus(dragDelta);
 			newTopLeftPosition.reposition(group.element);
 			dragEvent.transformedMouseOffset = newTopLeftOffset.plus(group._grabOffset);
 			group._notifyListeners(dragEvent);
-			var errorDelta = newTopLeftOffset.minus(coordinates.topLeftOffset(group.element));
-			if (errorDelta.x != 0 || errorDelta.y != 0) {
+			const errorDelta = newTopLeftOffset.minus(coordinates.topLeftOffset(group.element));
+			if (errorDelta.x !== 0 || errorDelta.y !== 0) {
 				coordinates.topLeftPosition(group.element).plus(errorDelta).reposition(group.element);
 			}
 		} catch(e) {scCoLib.log("_scDragMgrDragGroup._drag: " + e);}
@@ -635,14 +667,14 @@ _scDragMgrDragGroup.prototype = {
 	_dragEnd : function(event) {
 		try{
 			event = scDragMgr.events.fix(event);
-			var group = this.scDragMgrDragGroup || scDragMgr.scDragMgrDragGroup;
-			var dragEvent = group.factory._createEvent('dragend', event, group);
+			const group = this.scDragMgrDragGroup || scDragMgr.scDragMgrDragGroup;
+			const dragEvent = group.factory._createEvent('dragend', event, group);
 			if (scDragMgr.helpers.isTouchEvent(event)) {
 				event.stopPropagation();
 				event.preventDefault();
 			}
 			group._notifyListeners(dragEvent);
-			for (var i=0; i<scDragMgr.fStopListeners.length; i++) try{scDragMgr.fStopListeners[i](group);}catch(e){}
+			for (let i=0; i<scDragMgr.fStopListeners.length; i++) try{scDragMgr.fStopListeners[i](group);}catch(e){}
 			if(this.scDragMgrDragGroup) this.scDragMgrDragGroup = null;
 			if(scDragMgr.scDragMgrDragGroup) scDragMgr.scDragMgrDragGroup = null;
 			scDragMgr.events.unregister(document, 'mousemove', group._drag);
@@ -654,11 +686,11 @@ _scDragMgrDragGroup.prototype = {
 			scDragMgr.events.unregister(document, 'touchcancel', group._dragEnd);
 		} catch (e){scCoLib.log("_scDragMgrDragGroup._dragEnd: " + e);}
 	},
-	
+
 	_notifyListeners : function(dragEvent) {
 		try{
-			var listeners = this._listeners[dragEvent.type];
-			for (var i=0; i<listeners.length; i++) {
+			const listeners = this._listeners[dragEvent.type];
+			for (let i=0; i<listeners.length; i++) {
 				listeners[i](dragEvent);
 			}
 		} catch(e) {scCoLib.log("_scDragMgrDragGroup._notifyListeners: " + e);}
@@ -684,35 +716,35 @@ _scDragMgrDragEvent.prototype = {
 }
 
 scDragMgr.drag._constraintFactory = {
-	
+
 	vertical : function() {
 		return function(coordinate, dragEvent) {
-			var x = dragEvent.topLeftOffset.x;
-			return coordinate.x != x ? coordinate.factory.create(x, coordinate.y) : coordinate;
+			const x = dragEvent.topLeftOffset.x;
+			return coordinate.x !== x ? coordinate.factory.create(x, coordinate.y) : coordinate;
 		}
 	},
 
 	horizontal : function() {
 		return function(coordinate, dragEvent) {
-			var y = dragEvent.topLeftOffset.y;
-			return coordinate.y != y ? coordinate.factory.create(coordinate.x, y) : coordinate;
+			const y = dragEvent.topLeftOffset.y;
+			return coordinate.y !== y ? coordinate.factory.create(coordinate.x, y) : coordinate;
 		}
 	}
 }
 
 
 scDragMgr.dragdrop = {
-	
 
-	fFirstCatchments : new Array(),
-	fLastCatchments : new Array(),
+
+	fFirstCatchments : {},
+	fLastCatchments : {},
 
 
 
 	makeContainer : function (pKey, pCatchment, pContainer, pIfEmpty, pImage) {
 		try {
-			var vKey = (typeof pKey != "undefined") ? pKey : 'defaultKey' ;
-			vKey = (vKey.length == 0) ? 'defaultKey' : vKey;
+			let vKey = (typeof pKey != "undefined") ? pKey : 'defaultKey';
+			vKey = (vKey.length === 0) ? 'defaultKey' : vKey;
 			if (typeof pCatchment.fKey != "undefined") {
 				scCoLib.log("dragdrop.makeContainer: "+pCatchment.id+" is already init.");
 				return
@@ -727,32 +759,32 @@ scDragMgr.dragdrop = {
 			pCatchment.xIsDropable = this._IsDropable;
 			pCatchment.xOnDragOver = this._onDragOver;
 			pCatchment.xOnDragOut = this._onDragOut;
-			if (pCatchment.tagName.toLowerCase()=="area"){
+			if (pCatchment.tagName.toLowerCase()==="area"){
 				if (typeof pImage == "undefined") {
 					scCoLib.log("dragdrop.makeContainer: area catchment without an image.");
 					return
 				}
 				pCatchment.fArea = true;
 				pCatchment.fImage = pImage
-				var vCoods = pCatchment.coords.split(",");
+				const vCoods = pCatchment.coords.split(",");
 				switch(pCatchment.shape.toLowerCase()){
-				case "circle":
-					pCatchment.centerDelta = scDragMgr.coordinates.create(scCoLib.toInt(vCoods[0]),scCoLib.toInt(vCoods[1]));
-					pCatchment.radius = scCoLib.toInt(vCoods[2]);
-					break;
-				case "poly":
-					pCatchment.pointsDelta = new Array(vCoods.length/2);
-					pCatchment.pointsPosition = new Array(vCoods.length/2);
-					for (var i = 0; i < pCatchment.pointsDelta.length; i++){
-						pCatchment.pointsDelta[i] = scDragMgr.coordinates.create(scCoLib.toInt(vCoods[2*i]),scCoLib.toInt(vCoods[2*i+1]));
-					}
-					break;
-				case "rect":
-					pCatchment.topLeftDelta = scDragMgr.coordinates.create(scCoLib.toInt(vCoods[0]),scCoLib.toInt(vCoods[1]));
-					pCatchment.bottomRightDelta = scDragMgr.coordinates.create(scCoLib.toInt(vCoods[2]),scCoLib.toInt(vCoods[3]));
+					case "circle":
+						pCatchment.centerDelta = scDragMgr.coordinates.create(scCoLib.toInt(vCoods[0]),scCoLib.toInt(vCoods[1]));
+						pCatchment.radius = scCoLib.toInt(vCoods[2]);
+						break;
+					case "poly":
+						pCatchment.pointsDelta = new Array(vCoods.length/2);
+						pCatchment.pointsPosition = new Array(vCoods.length/2);
+						for (let i = 0; i < pCatchment.pointsDelta.length; i++){
+							pCatchment.pointsDelta[i] = scDragMgr.coordinates.create(scCoLib.toInt(vCoods[2*i]),scCoLib.toInt(vCoods[2*i+1]));
+						}
+						break;
+					case "rect":
+						pCatchment.topLeftDelta = scDragMgr.coordinates.create(scCoLib.toInt(vCoods[0]),scCoLib.toInt(vCoods[1]));
+						pCatchment.bottomRightDelta = scDragMgr.coordinates.create(scCoLib.toInt(vCoods[2]),scCoLib.toInt(vCoods[3]));
 				}
 			}
-			
+
 
 			if (typeof this.fFirstCatchments[pCatchment.fKey] == "undefined") {
 				this.fFirstCatchments[pCatchment.fKey] = this.fLastCatchments[pCatchment.fKey] = pCatchment;
@@ -778,6 +810,8 @@ scDragMgr.dragdrop = {
 				pCatchment.fIfEmpty = pIfEmpty;
 			}
 			pCatchment.fIsEmpty = pCatchment.xUpdateGui();
+
+			scDragMgr.events.register(pCatchment, 'keydown', this._keydown);
 		} catch (e) {
 			scCoLib.log("dragdrop.makeContainer: " + e);
 		}
@@ -787,7 +821,7 @@ scDragMgr.dragdrop = {
 	setMode : function(pContainer, pMode, pMax) {
 		try {
 			if  (typeof pContainer.fCatchment != "undefined") {
-				var vCatchment = pContainer.fCatchment;
+				const vCatchment = pContainer.fCatchment;
 				vCatchment.fDropMode = pMode;
 				vCatchment.fMaxLabels = pMax;
 				switch(vCatchment.fDropMode.toLowerCase()){
@@ -825,15 +859,18 @@ scDragMgr.dragdrop = {
 	},
 
 
+
 	getContainers : function(pKey, pRootNode) {
 		try {
-			var vContainers = new Array();
-			var vCatchment = scDragMgr.dragdrop.fFirstCatchments[pKey];
+			const vContainers = [];
+			let vCatchment = scDragMgr.dragdrop.fFirstCatchments[pKey];
 			while (vCatchment != null) {
-				if (scDragMgr.helpers.isEltContainedByNode(vCatchment, pRootNode)) vContainers.push(vCatchment.fContainer);
+				if (pRootNode){
+					if (scDragMgr.helpers.isEltContainedByNode(vCatchment, pRootNode)) vContainers.push(vCatchment.fContainer);
+				} else vContainers.push(vCatchment.fContainer);
 				vCatchment = vCatchment.fNextCatchment;
 			}
-			return (vContainers)
+			return vContainers;
 		} catch (e) {
 			scCoLib.log("dragdrop.getContainers: " + e);
 		}
@@ -842,9 +879,9 @@ scDragMgr.dragdrop = {
 
 	getLabels : function(pContainer) {
 		try {
-			var vLabels = new Array();
+			const vLabels = [];
 			if  (typeof pContainer != "undefined") {
-				var vChild = pContainer.firstChild;
+				let vChild = pContainer.firstChild;
 				while (vChild != null) {
 					if  (vChild.fIsDraggable) vLabels.push(vChild);
 					vChild = vChild.nextSibling;
@@ -855,13 +892,13 @@ scDragMgr.dragdrop = {
 			scCoLib.log("dragdrop.getLabels: " + e);
 		}
 	},
-	
+
 
 	countLabels : function(pContainer) {
 		try {
-			var vCount = 0;
+			let vCount = 0;
 			if  (typeof pContainer != "undefined") {
-				var vChild = pContainer.firstChild;
+				let vChild = pContainer.firstChild;
 				while (vChild != null) {
 					if  (vChild.fIsDraggable) vCount++;
 					vChild = vChild.nextSibling;
@@ -877,7 +914,7 @@ scDragMgr.dragdrop = {
 
 	repopulateContainers : function (pKey) {
 		try {
-			var vCatchment = scDragMgr.dragdrop.fFirstCatchments[pKey];
+			let vCatchment = scDragMgr.dragdrop.fFirstCatchments[pKey];
 			while (vCatchment != null) {
 				this._emptyLabels(vCatchment.fContainer);
 				vCatchment = vCatchment.fNextCatchment;
@@ -891,12 +928,12 @@ scDragMgr.dragdrop = {
 			scCoLib.log("dragdrop.repopulateContainers: " + e);
 		}
 	},
-	
+
 
 	makeDraggableLabel : function(pKey, pLabel, pHandle) {
 		try {
-			var vKey = (typeof pKey != "undefined") ? pKey : 'defaultKey';
-			vKey = (vKey.length == 0) ? 'defaultKey' : vKey;
+			let vKey = (typeof pKey != "undefined") ? pKey : 'defaultKey';
+			vKey = (vKey.length === 0) ? 'defaultKey' : vKey;
 			if (typeof pLabel.fKey != "undefined") {
 				scCoLib.log("dragdrop.makeDraggableLabel: "+pLabel.id+" is already init.");
 				return
@@ -907,7 +944,7 @@ scDragMgr.dragdrop = {
 				pLabel.parentNode.fCatchment.xUpdateGui();
 			}
 			pHandle = pHandle ? pHandle : pLabel;
-			var vGroup = scDragMgr.drag.createGroup(pLabel);
+			const vGroup = scDragMgr.drag.createGroup(pLabel);
 			vGroup.setHandle(pHandle);
 			vGroup.transparentDrag();
 			vGroup.setThreshold(4);
@@ -925,13 +962,13 @@ scDragMgr.dragdrop = {
 			scCoLib.log("dragdrop.makeDraggableLabel: " + e);
 		}
 	},
-	
+
 
 	setConstraintBox : function(pLabel, pNode) {
 		try {
-			var vCoords = scDragMgr.coordinates;
-			var vMaxTopLeft = vCoords.topLeftOffset(pNode);
-			var vMaxBottomRight = vCoords.bottomRightOffset(pNode).minus(vCoords._size(pLabel));
+			const vCoords = scDragMgr.coordinates;
+			const vMaxTopLeft = vCoords.topLeftOffset(pNode);
+			const vMaxBottomRight = vCoords.bottomRightOffset(pNode).minus(vCoords._size(pLabel));
 			pLabel.fGroup.addTransform(function(pCoordinate, pDragEvent) {
 				return pCoordinate.constrainTo(vMaxTopLeft, vMaxBottomRight);
 			})
@@ -939,7 +976,7 @@ scDragMgr.dragdrop = {
 			scCoLib.log("dragdrop.setConstraintBox: " + e);
 		}
 	},
-	
+
 
 	setCallback : function(pLabel, pfunction) {
 		try {
@@ -953,8 +990,12 @@ scDragMgr.dragdrop = {
 	setDraggable : function (pLabel, pIsDraggable) {
 		try {
 			pLabel.fGroup.setDraggable(pIsDraggable);
-			var vStyle = pLabel.style;
+			const vStyle = pLabel.style;
 			if(vStyle["position"]) vStyle["position"] = (pIsDraggable ? (pLabel.fStylePosDrag ? pLabel.fStylePosDrag : 'relative') : (pLabel.fStylePosBase ? pLabel.fStylePosBase : 'static'));
+			if(scDragMgr.keyboard.fEnabled){
+				if (pIsDraggable) pLabel.fGroup._handle.setAttribute("tabindex", "0");
+				else pLabel.fGroup._handle.removeAttribute("tabindex");
+			}
 		} catch (e) {
 			scCoLib.log("dragdrop.setDraggable: " + e);
 		}
@@ -969,8 +1010,8 @@ scDragMgr.dragdrop = {
 
 	saveLabelPos : function (pLabel) {
 		try {
-			var vRetVal = 'x:'+pLabel.offsetLeft;
-			vRetVal += ',y:'+pLabel.offsetTop;
+			let vRetVal = '"x":' + pLabel.offsetLeft;
+			vRetVal += ',"y":'+pLabel.offsetTop;
 			return vRetVal;
 		} catch (e) {
 			scCoLib.log("dragdrop.saveLabelPos: " + e);
@@ -981,10 +1022,10 @@ scDragMgr.dragdrop = {
 
 	_emptyLabels : function(pContainer) {
 		if  (typeof pContainer != "undefined") {
-			var vChild = pContainer.firstChild;
+			let vChild = pContainer.firstChild;
 			while (vChild != null) {
 				if  (vChild.fIsDraggable) {
-					var vNextChild = vChild.nextSibling;
+					const vNextChild = vChild.nextSibling;
 					pContainer.removeChild(vChild);
 					vChild = vNextChild;
 				} else vChild = vChild.nextSibling;
@@ -995,11 +1036,13 @@ scDragMgr.dragdrop = {
 
 	_populate : function(pContainer) {
 		if  (typeof pContainer != "undefined" && pContainer.labelsToAdd) {
-			for (var i = 0, n = pContainer.labelsToAdd.length; i < n; i++) {
+			let i = 0;
+			const n = pContainer.labelsToAdd.length;
+			for (; i < n; i++) {
 				if (pContainer.labelsToAdd[i] && pContainer.labelsToAdd[i].label) {
-					var vLabel = pContainer.labelsToAdd[i].label;
+					const vLabel = pContainer.labelsToAdd[i].label;
 					pContainer.appendChild(vLabel);
-					if (pContainer.fCatchment.fDropMode == 'inBulk') {
+					if (pContainer.fCatchment.fDropMode === 'inBulk') {
 						scDragMgr.coordinates.create((pContainer.labelsToAdd[i].x ? pContainer.labelsToAdd[i].x : 0), (pContainer.labelsToAdd[i].y ? pContainer.labelsToAdd[i].y : 0)).reposition(vLabel);
 					} else scDragMgr.coordinates.create(0, 0).reposition(vLabel);
 				}
@@ -1009,24 +1052,24 @@ scDragMgr.dragdrop = {
 			pContainer.labelsToAdd = null;
 		}
 	},
-	
+
 
 	_UpdateCatchments : function(pKey, pForce) {
-		var vCatchment = scDragMgr.dragdrop.fFirstCatchments[pKey];
+		let vCatchment = scDragMgr.dragdrop.fFirstCatchments[pKey];
 		while (vCatchment != null) {
 			if (pForce || vCatchment.fUpdatable){
 				if(vCatchment.fArea){
-					var vImgtopLeftPosition = scDragMgr.coordinates.topLeftOffset(vCatchment.fImage);
+					const vImgtopLeftPosition = scDragMgr.coordinates.topLeftOffset(vCatchment.fImage);
 					switch(vCatchment.shape.toLowerCase()){
-					case "circle":
-						vCatchment.centerPosition = vImgtopLeftPosition.plus(vCatchment.centerDelta);
-						break;
-					case "poly":
-						for (var i = 0; i < vCatchment.pointsDelta.length; i++) vCatchment.pointsPosition[i] = vImgtopLeftPosition.plus(vCatchment.pointsDelta[i]);
-						break;
-					case "rect":
-						vCatchment.topLeftPosition = vImgtopLeftPosition.plus(vCatchment.topLeftDelta);
-						vCatchment.bottomRightPosition = vImgtopLeftPosition.plus(vCatchment.bottomRightDelta);
+						case "circle":
+							vCatchment.centerPosition = vImgtopLeftPosition.plus(vCatchment.centerDelta);
+							break;
+						case "poly":
+							for (let i = 0; i < vCatchment.pointsDelta.length; i++) vCatchment.pointsPosition[i] = vImgtopLeftPosition.plus(vCatchment.pointsDelta[i]);
+							break;
+						case "rect":
+							vCatchment.topLeftPosition = vImgtopLeftPosition.plus(vCatchment.topLeftDelta);
+							vCatchment.bottomRightPosition = vImgtopLeftPosition.plus(vCatchment.bottomRightDelta);
 					}
 				} else {
 					vCatchment.topLeftPosition = scDragMgr.coordinates.topLeftOffset(vCatchment);
@@ -1037,12 +1080,12 @@ scDragMgr.dragdrop = {
 			vCatchment = vCatchment.fNextCatchment;
 		}
 	},
-	
+
 
 	_UpdateGui : function() {
-		var vHasItems = false;
+		let vHasItems = false;
 		if  (typeof this.fContainer != "undefined") {
-			var vChild = this.fContainer.lastChild;
+			let vChild = this.fContainer.lastChild;
 			while (vChild != null && !vHasItems) {
 				if  (vChild.fIsDraggable) {
 					vHasItems = true;
@@ -1050,7 +1093,7 @@ scDragMgr.dragdrop = {
 				vChild = vChild.previousSibling;
 			}
 			if (typeof this.fIfEmpty != "undefined") {
-				if (typeof this.fContainer != "undefined" && this.fContainer != this) this.fContainer.style["display"] = (!vHasItems ? "none" : this.fContainer.fDelaultDisplay);
+				if (typeof this.fContainer != "undefined" && this.fContainer !== this) this.fContainer.style["display"] = (!vHasItems ? "none" : this.fContainer.fDelaultDisplay);
 				this.fIfEmpty.style["display"] = (vHasItems ? "none" : this.fIfEmpty.fDelaultDisplay);
 			}
 		}
@@ -1060,12 +1103,12 @@ scDragMgr.dragdrop = {
 
 
 	_IsDropable : function(pDragEvent) {
-		return( this.fMaxLabels == -1 || scDragMgr.dragdrop.countLabels(this.fContainer) < this.fMaxLabels || pDragEvent.group.element.parentNode.fCatchment == this );
+		return( this.fMaxLabels === -1 || scDragMgr.dragdrop.countLabels(this.fContainer) < this.fMaxLabels || pDragEvent.group.element.parentNode.fCatchment === this );
 	},
 
 	_onDragOver : function(pDragEvent) {
-		var vItem = pDragEvent.group.element;
-		var vCurrentCatchment = vItem.parentNode.fCatchment;
+		const vItem = pDragEvent.group.element;
+		const vCurrentCatchment = vItem.parentNode.fCatchment;
 		vCurrentCatchment.onDragOut();
 		scDragMgr.helpers.delClass(vCurrentCatchment, vCurrentCatchment.fDragOverClass);
 		vCurrentCatchment.fContainer.removeChild(vItem);
@@ -1080,9 +1123,9 @@ scDragMgr.dragdrop = {
 	},
 
 	_onDragOut : function(pDragEvent) {
-		var vItem = pDragEvent.group.element;
-		var vCurrentContainer = vItem.parentNode;
-		var vCurrentCatchment = vCurrentContainer.fCatchment;
+		const vItem = pDragEvent.group.element;
+		const vCurrentContainer = vItem.parentNode;
+		const vCurrentCatchment = vCurrentContainer.fCatchment;
 		vCurrentCatchment.onDragOut()
 		scDragMgr.helpers.delClass(vCurrentCatchment, vCurrentCatchment.fDragOverClass);
 		vItem.fLastContainer = null;
@@ -1093,11 +1136,11 @@ scDragMgr.dragdrop = {
 				vCurrentCatchment.style.height = (vCurrentCatchment.offsetHeight - scCoLib.toInt(vCurrentCatchment.currentStyle.borderTopWidth) - scCoLib.toInt(vCurrentCatchment.currentStyle.borderBottomWidth))+"px";
 				vCurrentCatchment.style.width = (vCurrentCatchment.offsetWidth - scCoLib.toInt(vCurrentCatchment.currentStyle.borderLeftWidth) - scCoLib.toInt(vCurrentCatchment.currentStyle.borderRightWidth))+"px";
 			} else {
-				vCurrentCatchment.style.height = (vCurrentCatchment.clientHeight!=""?vCurrentCatchment.clientHeight+"px":"");
-				vCurrentCatchment.style.width = (vCurrentCatchment.clientWidth!=""?vCurrentCatchment.clientWidth+"px":"");
+				vCurrentCatchment.style.height = (vCurrentCatchment.clientHeight!==""?vCurrentCatchment.clientHeight+"px":"");
+				vCurrentCatchment.style.width = (vCurrentCatchment.clientWidth!==""?vCurrentCatchment.clientWidth+"px":"");
 			}
 		}
-		if (vCurrentContainer != vItem.fStartContainer) {
+		if (vCurrentContainer !== vItem.fStartContainer) {
 			vCurrentCatchment.fContainer.removeChild(vItem);
 			vCurrentCatchment.fUpdatable = true;
 			vCurrentCatchment.xUpdateGui();
@@ -1113,22 +1156,37 @@ scDragMgr.dragdrop = {
 	},
 
 	_onDropReposition : function(pDragEvent) {
-		var vItem = pDragEvent.group.element
+		const vItem = pDragEvent.group.element;
 		scDragMgr.coordinates.create(0, 0).reposition(vItem);
 	},
 
 
 	_onDragSort : function(pDragEvent) {
-		var vHelpers = scDragMgr.helpers;
-		var vItem = pDragEvent.group.element;
-		var vMoveTo = null;
-		var vCoordinates = scDragMgr.coordinates;
-		var vXmouse = pDragEvent.transformedMouseOffset;
-		var vPrevious = vHelpers.previousItem(vItem, vItem.nodeName);
+		let vThreshold, vThresholdLeft, vThresholdRight;
+		const vHelpers = scDragMgr.helpers;
+		const vItem = pDragEvent.group.element;
+		let vMoveTo = null;
+		const vCoordinates = scDragMgr.coordinates;
+		const vXmouse = pDragEvent.transformedMouseOffset;
+		let vPrevious = vHelpers.previousItem(vItem, vItem.nodeName);
 		while (vPrevious != null) {
-			var vThreshold = vCoordinates.bottomRightOffset(vPrevious);
-			if (vXmouse.y <= vThreshold.y && vXmouse.x <= vThreshold.x) {
-				vMoveTo = vPrevious;
+			if(scDragMgr.fIsRtl){
+				vThresholdLeft = vCoordinates.bottomLeftOffset(vPrevious);
+				vThresholdRight = vCoordinates.bottomRightOffset(vPrevious);
+				if(vHelpers.previousItem(vPrevious, vItem.nodeName)){
+					if (vXmouse.y <= vThresholdLeft.y && vXmouse.x >= vThresholdLeft.x && vXmouse.x < vThresholdRight.x) {
+						vMoveTo = vPrevious;
+					}
+				} else {
+					if (vXmouse.y <= vThresholdLeft.y && vXmouse.x >= vThresholdLeft.x) {
+						vMoveTo = vPrevious;
+					}
+				}
+			} else {
+				vThreshold = vCoordinates.bottomRightOffset(vPrevious);
+				if (vXmouse.y <= vThreshold.y && vXmouse.x <= vThreshold.x) {
+					vMoveTo = vPrevious;
+				}
 			}
 			vPrevious = vHelpers.previousItem(vPrevious, vItem.nodeName);
 		}
@@ -1137,34 +1195,47 @@ scDragMgr.dragdrop = {
 			vItem.fForceDropCallback = true;
 			return;
 		}
-		var vNext = vHelpers.nextItem(vItem, vItem.nodeName)
+		let vNext = vHelpers.nextItem(vItem, vItem.nodeName);
 		while (vNext != null) {
-			var vThreshold = vCoordinates.topLeftOffset(vNext);
-			if (vThreshold.y <= vXmouse.y && vThreshold.x <= vXmouse.x) {
-				vMoveTo = vNext;
+			if(scDragMgr.fIsRtl){
+				vThresholdLeft = vCoordinates.topLeftOffset(vNext);
+				vThresholdRight = vCoordinates.topRightOffset(vNext);
+				if (vHelpers.nextItem(vNext, vItem.nodeName)){
+					if (vThresholdLeft.y <= vXmouse.y && vThresholdRight.x >= vXmouse.x && vThresholdLeft.x < vXmouse.x) {
+						vMoveTo = vNext;
+					}
+				} else {
+					if (vThresholdLeft.y <= vXmouse.y && vThresholdRight.x >= vXmouse.x) {
+						vMoveTo = vNext;
+					}
+				}
+			} else {
+				vThreshold = vCoordinates.topLeftOffset(vNext);
+				if (vThreshold.y <= vXmouse.y && vThreshold.x <= vXmouse.x) {
+					vMoveTo = vNext;
+				}
 			}
 			vNext = vHelpers.nextItem(vNext, vItem.nodeName);
 		}
 		if (vMoveTo != null) {
 			vHelpers.moveBefore(vItem, vHelpers.nextItem(vMoveTo, vItem.nodeName));
 			vItem.fForceDropCallback = true;
-			return;
 		}
 	},
 
 
 	_onDragStart : function(pDragEvent) {
-		var vItem = pDragEvent.group.element;
+		const vItem = pDragEvent.group.element;
 
 		scDragMgr.dragdrop._UpdateCatchments(vItem.fKey, true);
-		
+
 		vItem.fStartContainer = vItem.parentNode;
 		vItem.fStartPrevSibling = scDragMgr.helpers.previousItem(vItem, vItem.nodeName);
 		vItem.fStartNextSibling = scDragMgr.helpers.nextItem(vItem, vItem.nodeName);
 		vItem.fLastContainer = vItem.fStartContainer;
 		scDragMgr.helpers.addClass(vItem, vItem.fDragClass);
 		vItem.parentNode.fCatchment.onDragOver();
-		
+
 
 		if (scTooltipMgr) scTooltipMgr.hideTooltip(true);
 
@@ -1172,11 +1243,11 @@ scDragMgr.dragdrop = {
 	},
 
 	_onDragMove : function(pDragEvent) {
-		var vItem = pDragEvent.group.element;
+		const vItem = pDragEvent.group.element;
 
 
-		var vIsOutside = true;
-		var vCatchment = scDragMgr.dragdrop.fFirstCatchments[vItem.fKey];
+		let vIsOutside = true;
+		let vCatchment = scDragMgr.dragdrop.fFirstCatchments[vItem.fKey];
 		while (vCatchment != null) {
 			if (scDragMgr.helpers.isMouseInside(pDragEvent, vCatchment) && vCatchment.xIsDropable(pDragEvent)) {
 				vIsOutside = false;
@@ -1190,19 +1261,19 @@ scDragMgr.dragdrop = {
 				vItem.fLastContainer.fCatchment.xOnDragOut(pDragEvent);
 			}
 
-		} else if (vCatchment && (vItem.fLastContainer == null || vCatchment != vItem.fLastContainer.fCatchment)) {
+		} else if (vCatchment && (vItem.fLastContainer == null || vCatchment !== vItem.fLastContainer.fCatchment)) {
 			vCatchment.xOnDragOver(pDragEvent);
 		}
 		if (vCatchment) vCatchment.xOnDragPostProcess(pDragEvent, vCatchment);
 	},
 
 	_onDragEnd : function(pDragEvent) {
-		var vItem = pDragEvent.group.element;
+		const vItem = pDragEvent.group.element;
 		scDragMgr.helpers.delClass(vItem, vItem.fDragClass);
 		vItem.parentNode.fCatchment.onDragOut();
 		scDragMgr.helpers.delClass(vItem.parentNode.fCatchment, vItem.parentNode.fCatchment.fDragOverClass);
 
-		var vCatchment = scDragMgr.dragdrop.fFirstCatchments[vItem.fKey];
+		let vCatchment = scDragMgr.dragdrop.fFirstCatchments[vItem.fKey];
 		while (vCatchment != null) {
 			if (! vCatchment.fResizeOnDragOut){
 				vCatchment.style.height="";
@@ -1210,7 +1281,7 @@ scDragMgr.dragdrop = {
 			}
 			vCatchment = vCatchment.fNextCatchment;
 		}
-		if (vItem.fForceDropCallback || vItem.fStartContainer != vItem.parentNode) {
+		if (vItem.fForceDropCallback || vItem.fStartContainer !== vItem.parentNode) {
 			try{
 				vItem.xDropCallback();
 			} catch (e){
@@ -1218,5 +1289,119 @@ scDragMgr.dragdrop = {
 			}
 		}
 		vItem.parentNode.fCatchment.xOnDragEndPostProcess(pDragEvent);
+	},
+
+	_keydown : function(event) {
+		try {
+			event = scDragMgr.events.fix(event);
+			if (event.target === this && this.fContainer){
+				if ( event.keyCode === 13){
+					scDragMgr.keyboard.insertCurrentLabel(this.fContainer);
+				}
+			}
+		} catch(e) {scCoLib.log("dragdrop._keydown: " + e);}
+	},
+}
+
+
+scDragMgr.keyboard = {
+	fEnabled : true,
+
+	enable: function (pYes){
+		this.fEnabled = (!!pYes);
+		for (let vKey in scDragMgr.dragdrop.fFirstCatchments){
+			let vCatchment = scDragMgr.dragdrop.fFirstCatchments[vKey];
+			while (vCatchment != null) {
+				vCatchment.removeAttribute("tabindex");
+				const vLabels = scDragMgr.dragdrop.getLabels(vCatchment.fContainer);
+				for (let j = 0, n = vLabels.length; j < n; j++) {
+					vLabels[j].fGroup._handle.removeAttribute("data-selected");
+					if (this.fEnabled) vLabels[j].fGroup._handle.setAttribute("tabindex", "0");
+					else vLabels[j].fGroup._handle.removeAttribute("tabindex");
+				}
+				vCatchment = vCatchment.fNextCatchment;
+			}
+		}
+	},
+
+	moveLabelUp: function (pLabel){
+		if (pLabel.previousElementSibling){
+			pLabel.parentNode.insertBefore(pLabel, pLabel.previousElementSibling);
+			try{
+				pLabel.xDropCallback();
+			} catch (e){
+				scCoLib.log("scDragMgr.keyboard.moveLabelUp.xDropCallback: " + e);
+			}
+			pLabel.focus();
+		}
+	},
+
+	moveLabelDown: function (pLabel){
+		if (pLabel.nextElementSibling){
+			pLabel.parentNode.insertBefore(pLabel, pLabel.nextElementSibling.nextElementSibling);
+			try{
+				pLabel.xDropCallback();
+			} catch (e){
+				scCoLib.log("scDragMgr.keyboard.moveLabelDown.xDropCallback: " + e);
+			}
+			pLabel.focus();
+		}
+	},
+
+	selectLabel: function (pLabel){
+		try {
+			if (!this.fEnabled) return;
+			if (this.fCurrentLabel) pLabel.fGroup._handle.removeAttribute("data-selected");
+			this.fCurrentLabel = pLabel;
+			pLabel.fGroup._handle.setAttribute("data-selected", "true");
+			let vCatchment = scDragMgr.dragdrop.fFirstCatchments[pLabel.parentNode.fCatchment.fKey];
+			while (vCatchment != null) {
+				vCatchment.setAttribute("tabindex", "0");
+				const vLabels = scDragMgr.dragdrop.getLabels(vCatchment.fContainer);
+				for (let i = 0, n = vLabels.length; i < n; i++) {
+					vLabels[i].fGroup._handle.removeAttribute("tabindex");
+				}
+				vCatchment = vCatchment.fNextCatchment;
+			}
+			pLabel.parentNode.fCatchment.focus();
+		} catch(e) {scCoLib.log("scDragMgr.keyboard.selectLabel: " + e);}
+	},
+
+	insertCurrentLabel: function (pContainer){
+		try {
+			if (!this.fEnabled || !this.fCurrentLabel) return;
+			const vOldContainer = this.fCurrentLabel.parentNode;
+			pContainer.appendChild(this.fCurrentLabel);
+			if (pContainer.fCatchment.fDropMode === 'inBulk') {
+				scDragMgr.coordinates.create((this.fCurrentLabel.x ? this.fCurrentLabel.x : 0), (this.fCurrentLabel.y ? this.fCurrentLabel.y : 0)).reposition(this.fCurrentLabel);
+			} else scDragMgr.coordinates.create(0, 0).reposition(this.fCurrentLabel);
+			pContainer.fCatchment.fUpdatable = true;
+			pContainer.fCatchment.xUpdateGui();
+			vOldContainer.fCatchment.fUpdatable = true;
+			vOldContainer.fCatchment.xUpdateGui();
+			let vCatchment = scDragMgr.dragdrop.fFirstCatchments[pContainer.fCatchment.fKey];
+			while (vCatchment != null) {
+				vCatchment.removeAttribute("tabindex");
+				const vLabels = scDragMgr.dragdrop.getLabels(vCatchment.fContainer);
+				let i = 0;
+				const n = vLabels.length;
+				for (; i < n; i++) {
+					vLabels[i].fGroup._handle.removeAttribute("tabindex");
+					if (vLabels[i].fGroup._draggable) vLabels[i].fGroup._handle.setAttribute("tabindex", "0");
+				}
+				vCatchment = vCatchment.fNextCatchment;
+			}
+			this.fCurrentLabel.focus();
+			this.fCurrentLabel.fGroup._handle.removeAttribute("data-selected");
+
+			if (this.fCurrentLabel.fForceDropCallback || vOldContainer !== pContainer) {
+				try{
+					this.fCurrentLabel.xDropCallback();
+				} catch (e){
+					scCoLib.log("scDragMgr.keyboard.insertCurrentLabel.xDropCallback: " + e);
+				}
+			}
+			this.fCurrentLabel = null;
+		} catch(e) {scCoLib.log("scDragMgr.keyboard.insertCurrentLabel: " + e);}
 	}
 }

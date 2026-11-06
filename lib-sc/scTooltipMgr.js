@@ -1,29 +1,26 @@
 
 
-var scTooltipMgr = {
+window.scTooltipMgr = {
 
+	cIsRtl : document.documentElement.getAttribute("dir") === "rtl",
 	cTtAbove : false, // tooltip above mousepointer?
 	cTtDelay : 500, // time span until tooltip shows up [milliseconds]
 	cTtLeft : false, // tooltip on the left of the mouse?
 	cTtOffsetX : 12, // horizontal offset of left-top corner from mousepointer
-	cTtOffsetY : 15, // vertical offset 
-	cTtShadow : false, // Add shadow?
+	cTtOffsetY : 15, // vertical offset
 	cTtStatic : false, // tooltip NOT move with the mouse?
 	cTtSticky : false, // do NOT hide tooltip on mouseout?
 	cTtFocus : false, // do NOT focus tooltip on show?
 	cTtTemp : 0, // time span after which the tooltip disappears, 0 (zero) means "infinite timespan"
 	cTtMaxWidth : 400, // Max width of tooltips
 	cTtMaxHeight : 250, // Max height of tooltips (a scrollbar is added)
-	cTtFixType : "win", // type of fixed positionning (win,node,id)
-	cTtTextAlign : "left",
-	cTtHPos : "leftAlign",
+	cTtFixType : "win", // type of fixed positioning (win,node,id)
+	cTtHPos : "startAlign",
 	cTtVPos : "topAlign",
 
 
 	fCurrTt : null, // current tooltip
 	fCurrTtId : null, // current tooltip ID
-	fIfrm : null, // iframe to cover windowed controls in IE
-	fIfrmId : null, // ID of iframe to cover windowed controls in IE
 	fCurrTtW : 0, fCurrTtH : 0, // width and height of fCurrTt
 	fCurrTtX : 0, fCurrTtY : 0,
 	fOffX : 0, fOffY : 0,
@@ -31,118 +28,107 @@ var scTooltipMgr = {
 	fSup : false, // true if Opt.ABOVE
 	fSticky : false, // fCurrTt sticky?
 	fFocus : false, // fCurrTt focus?
-	fWait : false,
 	fAct : false, // tooltip visibility flag
 	fSub : false, // true while tooltip below mousepointer
-	fArea : false,
-	fMmovEvt : null, // stores previous mousemove evthandler
-	fWsizEvt : null, // stores previous window.onresize evthandler
-	fMupEvt : null, // stores previous mouseup evthandler
-
-	fTag : null, // stores hovered dom node, href and previous statusbar txt
+	fMmovEvt : null, // stores previous mousemove evt handler
+	fWsizEvt : null, // stores previous window.onresize evt handler
+	fMupEvt : null, // stores previous mouseup evt handler
 	fDb : null, // Document body
-	fNua : null, //userAgent
-	fNuav : null, //Navigator version
 	fFix : false,
 	fFixId : null,
 	fFixType : "win",
 	fTtHPos : null,
 	fTtVPos : null,
-	fMakeListeners : new Array(),
-	fShowListeners : new Array(),
-	fHideListeners : new Array(),
+	fTtParent : null,
+	fMakeListeners : [],
+	fShowListeners : [],
+	fHideListeners : [],
 	fHideBasket : true,
 	fRegCls : "scTtRegistered",
-	
 
-	fNavie:null, fNavie6:null, fNavie8:null, fNavn6:null, fNavw3c:null,
-	
 
 	xInitMgr: function() {
-		if (this.fDb == null) {
-			this.fDb = (document.compatMode && document.compatMode != "BackCompat")? document.documentElement : document.body? document.body : null;
-			this.fNua = navigator.userAgent.toLowerCase();
-			this.fNuav = navigator.appVersion;
-			this.fNavie = this.fNua.indexOf("msie") != -1 && document.all && this.fDb;
-			this.fNavie6 = this.fNavie && parseFloat(this.fNuav.substring(this.fNuav.indexOf("MSIE")+5)) < 7;
-			this.fNavie8 = this.fNavie && parseFloat(this.fNuav.substring(this.fNuav.indexOf("MSIE")+5)) < 9;
-			this.fNavn6 = (document.defaultView && typeof document.defaultView.getComputedStyle != "undefined");
-			this.fNavw3c = !this.fNavie && !this.fNavn6 && document.getElementById;
-		}
-	},
-	xInitIfrm: function() {
-		if (this.fNavie6 && !this.xGetElt(this.fIfrmId)) {
-			var vTmpDiv = document.createElement("DIV"); 
-			this.fIfrmId = this.xGenId("TTiEiFrM")
-			vTmpDiv.innerHTML = '<iframe id="'+this.fIfrmId+'" src="javascript:false" scrolling="no" frameborder="0" style="filter:Alpha(opacity=0);position:absolute;top:0px;left:0px;display:none;"></iframe>';
-			var vTtDiv = vTmpDiv.firstChild;
-			while(vTtDiv && vTtDiv.nodeType != 1) vTtDiv = vTtDiv.nextSibling;
-			document.body.appendChild(vTtDiv);
-			this.fIfrm = sc$(this.fIfrmId);
+		if (!this.fInit) {
+			this.fDb = (document.compatMode && document.compatMode !== "BackCompat")? document.documentElement : document.body ? document.body : null;
+			document.addEventListener("keyup", function(pEvent){
+				if (pEvent.code === "Escape") scTooltipMgr.hideTooltip(true);
+			});
+			screen.orientation.addEventListener("change", (event) => {
+				if(this.fCurrTt) scTooltipMgr.hideTooltip(true);
+			});
+			this.fInit = true;
 		}
 	},
 	xBuildCls: function(pCls, pSufx) {
-		var vCls = pCls.split(" ");
-		var vRetCls = "";
-		for(var i=0; i<vCls.length; i++) vRetCls += vCls[i]+(pSufx ? ('_'+pSufx) : '')+' ';
+		const vCls = pCls.split(" ");
+		let vRetCls = "";
+		for(let i=0; i<vCls.length; i++) vRetCls += vCls[i]+(pSufx ? ('_'+pSufx) : '')+' ';
 		return(vRetCls);
 	},
 	xMakeTt: function(pNode, pCo, pTi, pCls, pClsRoot) {
-		var vCo = typeof pCo == "string" ? pCo : "";
-		var vTi = typeof pTi == "string" ? pTi : "";
+		const vCo = typeof pCo == "string" ? pCo : "";
+		const vTi = typeof pTi == "string" ? pTi : "";
 		pCls = pCls + (pNode.fOpt.CLASS ? " "+pNode.fOpt.CLASS : "");
 		pNode.ttId = this.xGenId("scTooltip"); //generate a new tooltip ID
-		pNode.setAttribute("aria-describedby", pNode.ttId);
-		pNode.fTtShownCls = this.xBuildCls(pCls,"act").split(' '); 
-		var vHtml = '<div id="'+pNode.ttId+'" role="dialog"'+(pTi? ' aria-labelledby="'+pNode.ttId+'ti"' : '')+(pNode.fOpt.FOCUS? ' tabindex="-1"' : '')+' class="'+this.xBuildCls(pCls,"fra")+(pClsRoot!=''?' '+pClsRoot:'')+'"'+(pNode.fOpt.FIXTYPE!='free' ? ' style="position:absolute;z-index:1010;left:0px;top:0px;visibility:hidden;text-align:left;"' : '')+'>';
+		if (!pNode.title && !pNode.getAttribute("aria-label") && !pNode.getAttribute("aria-labelledby")) pNode.setAttribute("aria-describedby", pNode.ttId);
+		pNode.fTtShownCls = this.xBuildCls(pCls,"act").split(' ');
+		if (typeof pNode.fOpt.PARENT == "string") pNode.fOpt.PARENT = scPaLib.findNode(pNode.fOpt.PARENT, pNode);
+		let vHtml = '<div>';
+		if (pNode.fOpt.FOCUS) vHtml += '<div tabindex="0" inert="true" onfocus="' + (pNode.fOpt.FOCUS === "transient" ? 'scTooltipMgr.hideTooltip(true);' : 'scTooltipMgr.fCurrTt.focus();') + '"></div>';
+		vHtml += '<div id="' + pNode.ttId + '"'+(pNode.fOpt.FOCUS === "true" ? ' role="dialog"' : '') + (pTi ? ' aria-labelledby="' + pNode.ttId + 'ti"' : '') + (pNode.fOpt.FOCUS ? ' tabindex="-1"' : '') + ' class="' + this.xBuildCls(pCls, "fra") + (pClsRoot !== '' ? ' ' + pClsRoot : '') + '"' + (pNode.fOpt.FIXTYPE !== 'free' ? ' style="position:absolute;z-index:1010;left:0px;top:0px;visibility:hidden;text-align:initial;"' : '') + '>';
 		vHtml += '<div style="position:absolute;" class="'+this.xBuildCls(pCls,"")+'">';
 		if(pTi) vHtml += '<div id="'+pNode.ttId+'ti" class="'+this.xBuildCls(pCls,"ti")+'"><span>'+vTi+'</span></div>';
 		vHtml += '<div id="'+pNode.ttId+'Scrol" class="'+this.xBuildCls(pCls,"srl")+'"><div id="'+pNode.ttId+'co" class="'+this.xBuildCls(pCls,"co")+'">'+vCo+'</div></div>';
-		if (pNode.fOpt.CLSBTN) vHtml += '<a href="#" onclick="return scTooltipMgr.hideTooltip(true);" class="'+this.xBuildCls(pCls,"x")+'" title="'+pNode.fOpt.CLSBTNTI+'"><span>'+pNode.fOpt.CLSBTNCAP+'</span></a>';
-		if (pNode.fOpt.FOCUS) vHtml += '<a href="#" onclick="return false;" onfocus="scTooltipMgr.fCurrTt.focus();" style="position:absolute;" aria-hidden="true"></a>';
-		vHtml += '</div></div>'
-		var vTmpDiv=(pNode.fOpt.PARENT.ownerDocument?pNode.fOpt.PARENT.ownerDocument:pNode.fOpt.PARENT).createElement("DIV"); // Temp div to hold the created tooltip html
+		if (pNode.fOpt.CLSBTN) vHtml += '<a href="#" role="button" onkeyup="scTooltipMgr.xBtnKeyUp(event);" onkeydown="scTooltipMgr.xBtnKeyDwn(event);" onclick="return scTooltipMgr.hideTooltip(true);" class="'+this.xBuildCls(pCls,"x")+'" title="'+pNode.fOpt.CLSBTNTI+'"><span>'+pNode.fOpt.CLSBTNCAP+'</span></a>';
+		if (pNode.fOpt.FOCUS) vHtml += '<div tabindex="0" onfocus="' + (pNode.fOpt.FOCUS === "transient" ? 'scTooltipMgr.hideTooltip(true);' : 'scTooltipMgr.fCurrTt.focus();') + '"></div>';
+		vHtml += '</div></div></div>'
+		const vTmpDiv = (pNode.fOpt.PARENT.ownerDocument ? pNode.fOpt.PARENT.ownerDocument : pNode.fOpt.PARENT).createElement("DIV"); // Temp div to hold the created tooltip HTML
 		vTmpDiv.innerHTML = vHtml;
-		var vTtDiv = vTmpDiv.firstChild;
-		while(vTtDiv && vTtDiv.nodeType != 1) vTtDiv = vTtDiv.nextSibling;
-		pNode.fOpt.PARENT.appendChild(vTtDiv); //Apend the created tooltip to the required parent
+		let vTtDiv = vTmpDiv.firstChild;
+		while(vTtDiv && vTtDiv.nodeType !== 1) vTtDiv = vTtDiv.nextSibling;
+		pNode.fOpt.PARENT.appendChild(vTtDiv); //Append the created tooltip to the required parent
 		if (typeof pCo == "object") {
-			var vTtCo = sc$(pNode.ttId+"co");
-			var vCoElt = pCo.firstChild;
+			const vTtCo = sc$(pNode.ttId + "co");
+			let vCoElt = pCo.firstChild;
 			while(vCoElt){
 				vTtCo.appendChild(vCoElt.cloneNode(true));
 				vCoElt = vCoElt.nextSibling;
-			} 
+			}
 		}
 		if (typeof pTi == "object") {
-			var vTtTi = sc$(pNode.ttId+"ti");
-			var vTiElt = pTi.firstChild;
+			const vTtTi = sc$(pNode.ttId + "ti").firstChild;
+			let vTiElt = pTi.firstChild;
 			while(vTiElt){
 				vTtTi.appendChild(vTiElt.cloneNode(true));
 				vTiElt = vTiElt.nextSibling;
-			} 
+			}
 		}
+		vTtDiv = sc$(pNode.ttId);
 		vTtDiv.fNode = pNode; //Keep pointer to owner node on the tooltip
-		this.xSetTtSize(pNode.ttId, pNode.fOpt); //Calculate size & resize if needed
+		if(pNode.fOpt.FOCUS) vTtDiv.fFocusElt = scPaLib.findNode("psi:div", vTtDiv);
+		let vTt = vTtDiv.firstChild;
+		while(vTt && vTt.nodeType !== 1) vTt = vTt.nextSibling;
+		vTtDiv.style.top = -2*this.xGetEltH(vTt) + "px";
+		vTtDiv.style.left = -2*this.xGetEltW(vTt) + "px";
 
 
 		if (pNode.fOpt.FORCESTICKY) pNode.ttFSticky = true;
 		pNode.fOpt.STICKY = pNode.fOpt.STICKY || (pNode.ttFSticky || false);
 		if(!pNode.fOpt.STICKY) pNode.onmouseout = this.hideTooltip;
+		if (pNode.fOpt.FOCUS==="transient") pNode.setAttribute("aria-expanded", "false");
 
-		for(var i=0; i<this.fMakeListeners.length; i++) try{this.fMakeListeners[i](pNode);}catch(e){};
+		for(let i=0; i<this.fMakeListeners.length; i++) try{this.fMakeListeners[i](pNode);}catch(e){}
 		return(pNode.ttId);
 	},
 	xShow: function(pEvt, pId, pOpt) {
 		if(this.fCurrTt) this.hideTooltip(true);
 		this.fMmovEvt = document.onmousemove || null;
 		this.fWsizEvt = window.onresize || null;
-		if(window.dd && (window.DRAG && this.fMmovEvt == DRAG || window.RESIZE && this.fMmovEvt == RESIZE)) return;
-		this.fCurrTt = this.xGetElt(pId);
+		if(window.dd && (window.DRAG && this.fMmovEvt === DRAG || window.RESIZE && this.fMmovEvt === RESIZE)) return;
+		this.fCurrTt = sc$(pId);
 		this.fCurrTtId = pId;
 		if(this.fCurrTt) {
 			this.xSetTtSize(pId, this.fCurrTt.fNode.fOpt);
-			pEvt = pEvt || window.event;
 			if(this.fCurrTt.fNode.alt) {
 				this.fCurrTt.fNode.ttAlt = this.fCurrTt.fNode.alt;
 				this.fCurrTt.fNode.alt = "";
@@ -151,7 +137,8 @@ var scTooltipMgr = {
 				this.fCurrTt.fNode.ttTitle  = this.fCurrTt.fNode.title;
 				this.fCurrTt.fNode.removeAttribute("title");
 			}
-			for(var i=0; i<this.fCurrTt.fNode.fTtShownCls.length; i++) this.xAddClass(this.fCurrTt.fNode, this.fCurrTt.fNode.fTtShownCls[i])
+			for(let i=0; i<this.fCurrTt.fNode.fTtShownCls.length; i++) this.xAddClass(this.fCurrTt.fNode, this.fCurrTt.fNode.fTtShownCls[i]);
+			if (this.fCurrTt.fNode.fOpt.FOCUS==="transient") this.fCurrTt.fNode.setAttribute("aria-expanded", "true");
 			this.fSub = !(this.fSup = pOpt.ABOVE);
 			this.fSticky = pOpt.STICKY;
 			this.fFocus = pOpt.FOCUS;
@@ -165,41 +152,37 @@ var scTooltipMgr = {
 			this.fFixForce = pOpt.FIXFORCE;
 			this.fTtHPos = pOpt.HPOS;
 			this.fTtVPos = pOpt.VPOS;
-			this.fXlim = this.xInt((this.fDb && this.fDb.clientWidth)? this.fDb.clientWidth : window.innerWidth)+this.xInt(window.pageXOffset || (this.fDb? this.fDb.scrollLeft : 0) || 0)-this.fCurrTtW;
-			this.fYlim = this.xInt(window.innerHeight || this.fDb.clientHeight)+this.xInt(window.pageYOffset || (this.fDb? this.fDb.scrollTop : 0) || 0)-this.fCurrTtH-this.fOffY;
+			this.fTtParent = pOpt.PARENT;
+			this.fXlim = scCoLib.toInt((this.fDb && this.fDb.clientWidth)? this.fDb.clientWidth : window.innerWidth)+scCoLib.toInt(window.pageXOffset || (this.fDb? this.fDb.scrollLeft : 0) || 0)-this.fCurrTtW;
+			this.fYlim = scCoLib.toInt(window.innerHeight || this.fDb.clientHeight)+scCoLib.toInt(window.pageYOffset || (this.fDb? this.fDb.scrollTop : 0) || 0)-this.fCurrTtH-this.fOffY;
 			this.xSetDivZ();
-			if(pOpt.FIXTYPE != 'free'){
+			if(pOpt.FIXTYPE !== 'free'){
 				if(pOpt.FIX) this.xSetDivPosFix(pOpt.FIXTYPE, pOpt.FIX[0], pOpt.FIX[1], pOpt.FIXID, pOpt.HPOS, pOpt.VPOS, pOpt.FIXFORCE);
-				else this.xSetDivPos(this.xEvX(pEvt), this.xEvY(pEvt));
+				else this.xSetDivPos(this.xEvX(pEvt) - (this.cIsRtl ? this.fCurrTtW : 0), this.xEvY(pEvt));
 			}
-			var vTimeOutTxt = 'scTooltipMgr.showDiv(\'true\');';
-			if(pOpt.STICKY) vTimeOutTxt += '{scTooltipMgr.releaseMov();scTooltipMgr.releaseSize();scTooltipMgr.fMupEvt = document.onmouseup || null;if(document.captureEvents && !scTooltipMgr.fNavn6) document.captureEvents(Event.MOUSEUP);document.onmouseup = scTooltipMgr.hideTooltip;}';
+			let vTimeOutTxt = 'scTooltipMgr.showDiv(\'true\');';
+			if(pOpt.STICKY) vTimeOutTxt += '{scTooltipMgr.releaseMov();scTooltipMgr.releaseSize();scTooltipMgr.fMupEvt = document.onmouseup || null;document.onmouseup = scTooltipMgr.hideTooltip;}';
 			else if(pOpt.STATIC) vTimeOutTxt += 'scTooltipMgr.releaseMov();scTooltipMgr.releaseSize();';
 			if(pOpt.FOCUS) vTimeOutTxt += 'scTooltipMgr.fCurrTt.focus();';
 			if(pOpt.TEMP > 0) vTimeOutTxt += 'window.tt_rtm = window.setTimeout(\'scTooltipMgr.fSticky = false; scTooltipMgr.hideTooltip();\','+pOpt.TEMP+');';
 			window.tt_rdl = window.setTimeout(vTimeOutTxt, pOpt.DELAY);
 			if(!pOpt.FIX && (!pOpt.STICKY || (pOpt.STICKY && this.fCurrTt.fNode.onmouseover))) {
-				if(document.captureEvents && !this.fNavn6) document.captureEvents(Event.MOUSEMOVE);
 				document.onmousemove = this.moveTooltip;
 			} else if (pOpt.FIX && pOpt.FIXID) {
-				if(document.captureEvents && !this.fNavn6) document.captureEvents(Event.RESIZE);
 				window.onresize = this.reposTooltip;
 			}
+			if(this.fCurrTt.fFocusElt) this.fCurrTt.fFocusElt.removeAttribute("inert");
 		}
 	},
-	xInt: function(pX){
-		var vY;
-		return isNaN(vY = parseInt(pX))? 0 : vY;
-	},
 	xEvX: function(pEvt){
-		var vX = this.xInt(pEvt.pageX || pEvt.clientX || 0)+this.xInt(this.fNavie8? this.fDb.scrollLeft : 0)+this.fOffX;
+		let vX = scCoLib.toInt(pEvt.pageX || pEvt.clientX || 0) + this.fOffX;
 		if(vX > this.fXlim) vX = this.fXlim;
-		var vScr = this.xInt(window.pageXOffset || (this.fDb? this.fDb.scrollLeft : 0) || 0);
+		const vScr = scCoLib.toInt(window.pageXOffset || (this.fDb ? this.fDb.scrollLeft : 0) || 0);
 		if(vX < vScr) vX = vScr;
 		return vX;
 	},
 	xEvY: function(pEvt) {
-		var vY = this.xInt(pEvt.pageY || pEvt.clientY || 0)+this.xInt(this.fNavie8? this.fDb.scrollTop : 0);
+		let vY = scCoLib.toInt(pEvt.pageY || pEvt.clientY || 0);
 		if(this.fSup) vY -= (this.fCurrTtH + this.fOffY - 15);
 		else if(vY > this.fYlim || !this.fSub && vY > this.fYlim-24) {
 			vY -= (this.fCurrTtH + 5);
@@ -210,206 +193,152 @@ var scTooltipMgr = {
 		}
 		return (vY<0? 0 : vY);
 	},
-	xShowIfrm: function(pX) {
-		if(!this.fCurrTt || !this.fIfrm) return;
-		if(pX)	{
-			this.fIfrm.style.width = this.fCurrTtW+'px';
-			this.fIfrm.style.height = this.fCurrTtH+'px';
-			this.fIfrm.style.display = "block";
-		}
-		else this.fIfrm.style.display = "none";
-	},
-	xGetElt: function(pId) {
-		return(this.fNavie? (document.all[pId] || null) : (sc$(pId) || null));
-	},
 	xGetEltW: function(pElt) {
-		return(this.xInt(pElt.style.pixelWidth || pElt.offsetWidth)+(this.fNavie? (this.xInt(pElt.currentStyle.borderRightWidth)+this.xInt(pElt.currentStyle.borderLeftWidth)):0));
+		return scCoLib.toInt(pElt.offsetWidth);
 	},
 	xGetEltH: function(pElt) {
-		return(this.xInt(pElt.style.pixelHeight || pElt.offsetHeight)+(this.fNavie? (this.xInt(pElt.currentStyle.borderTopWidth)+this.xInt(pElt.currentStyle.borderBottomWidth)):0));
+		return scCoLib.toInt(pElt.offsetHeight);
 	},
 	xGetEltL: function(pElt) {
-		var vX;
-		if (pElt.style.pixelLeft) {
-			vX = this.xInt(pElt.style.pixelLeft);
-		} else {
-			vX = this.xInt(pElt.offsetLeft);
-			if (pElt.offsetParent && pElt.offsetParent.tagName.toLowerCase() != 'body' && pElt.offsetParent.tagName.toLowerCase() != 'html') {
-				vX -= pElt.offsetParent.scrollLeft;
-				vX += this.xGetEltL(pElt.offsetParent);
-			}
+		if (!pElt) return 0;
+		let vX = scCoLib.toInt(pElt.offsetLeft);
+		if (pElt.offsetParent && pElt.offsetParent.tagName.toLowerCase() !== 'body' && pElt.offsetParent.tagName.toLowerCase() !== 'html') {
+			vX -= pElt.offsetParent.scrollLeft;
+			vX += this.xGetEltL(pElt.offsetParent);
 		}
 		return vX;
 	},
 	xGetEltT: function(pElt) {
-		var vY;
-		if (pElt.style.pixelTop) {
-			vY = this.xInt(pElt.style.pixelTop);
-		} else {
-			vY = this.xInt(pElt.offsetTop);
-			if (pElt.offsetParent && pElt.offsetParent.tagName.toLowerCase() != 'body' && pElt.offsetParent.tagName.toLowerCase() != 'html') {
-				vY -= pElt.offsetParent.scrollTop;
-				vY += this.xGetEltT(pElt.offsetParent);
-			}
+		if (!pElt) return 0;
+		let vY = scCoLib.toInt(pElt.offsetTop);
+		if (pElt.offsetParent && pElt.offsetParent.tagName.toLowerCase() !== 'body' && pElt.offsetParent.tagName.toLowerCase() !== 'html') {
+			vY -= pElt.offsetParent.scrollTop;
+			vY += this.xGetEltT(pElt.offsetParent);
 		}
 		return vY;
 	},
 	xSetEltW: function(pElt, pW) {
-		if(typeof pElt.style.pixelWidth != "undefined") pElt.style.pixelWidth = pW;
-		else 
 		pElt.style.width = pW+'px';
 	},
 	xSetEltH: function(pElt, pH) {
-		if(typeof pElt.style.pixelHeight != "undefined") pElt.style.pixelHeight = pH;
-		else pElt.style.height = pH+'px';
+		pElt.style.height = pH+'px';
 	},
 	xSetEltT: function(pElt, pT) {
-		if(typeof pElt.style.pixelTop != "undefined") pElt.style.pixelTop = pT;
-		else pElt.style.top = pT+'px';
+		pElt.style.top = pT+'px';
 	},
 	xSetEltL: function(pElt, pL) {
-		if(typeof pElt.style.pixelLeft != "undefined") pElt.style.pixelLeft = pL;
-		else pElt.style.left = pL+'px';
+		pElt.style.left = pL+'px';
 	},
 
 	xSetDivZ: function() {
-		var vTtsh = this.fCurrTt.style || this.fCurrTt;
+		const vTtsh = this.fCurrTt.style || this.fCurrTt;
 		if(vTtsh) {
 			if(window.dd && dd.z) vTtsh.zIndex = Math.max(dd.z+1, vTtsh.zIndex);
-			if(this.fIfrm) this.fIfrm.style.zIndex = vTtsh.zIndex-1;
 		}
 	},
 	xSetDivPosFix: function(pType, pX, pY, pRelId, pHPos, pVPos, pForce) {
-		var vX;
-		var vY;
-		if (pType == 'free') return;
-		else if (pType == "win"){
+		let vX;
+		let vY;
+		if (pType === 'free') return;
+		else if (pType === "win"){
 			switch(pHPos){
-			case "center":
-				vX = this.fXlim / 2 + pX;
-				break
-			case "rightAlign":
-				vX = this.fXlim + pX;
-				break
-			default :
-				vX = pX;
+				case "center":
+					vX = this.fXlim / 2 + pX;
+					break
+				case "rightAlign":
+					vX = this.fXlim + pX;
+					break
+				default :
+					vX = pX;
 			}
 			switch(pVPos){
-			case "center":
-				vY = this.fYlim / 2 + pX;
-				break
-			case "bottomAlign":
-				vY = this.fYlim + pX;
-				break
-			default :
-				vY = pY;
+				case "center":
+					vY = this.fYlim / 2 + pY;
+					break
+				case "bottomAlign":
+					vY = this.fYlim + pY;
+					break
+				default :
+					vY = pY;
 			}
 		} else {
-			var vRelBase = null;
+			let vRelBase;
 			switch(pType){
-			case "id":
-				vRelBase = sc$(pRelId);
-				break;
-			case "dom":
-				vRelBase = pRelId;
-				break;
-			default :
-				vRelBase = this.fCurrTt.fNode;
+				case "id":
+					vRelBase = sc$(pRelId);
+					break;
+				case "dom":
+					vRelBase = pRelId;
+					break;
+				default :
+					vRelBase = this.fCurrTt.fNode;
 			}
 			switch(pHPos){
-			case "center":
-				vX = this.xGetEltL(vRelBase) + (this.xGetEltW(vRelBase) - this.fCurrTtW)/2 + pX;
-				break
-			case "rightAlign":
-				vX = this.xGetEltL(vRelBase) + this.xGetEltW(vRelBase) - this.fCurrTtW + pX;
-				break
-			case "leftOfElement":
-				vX = this.xGetEltL(vRelBase) - this.fCurrTtW + pX;
-				if (!pForce && !this.xIsInWinH(vX)) vX = this.xGetEltL(vRelBase) + this.xGetEltW(vRelBase) - pX;
-				break
-			case "rightOfElement":
-				vX = this.xGetEltL(vRelBase) + this.xGetEltW(vRelBase) + pX;
-				if (!pForce && !this.xIsInWinH(vX)) vX = this.xGetEltL(vRelBase) - this.fCurrTtW - pX;
-				break
-			default :
-				vX = this.xGetEltL(vRelBase) + pX;
+				case "center":
+					vX = this.xGetEltL(vRelBase) + (this.xGetEltW(vRelBase) - this.fCurrTtW)/2 + pX;
+					break
+				case "rightAlign":
+					vX = this.xGetEltL(vRelBase) + this.xGetEltW(vRelBase) - this.fCurrTtW + pX;
+					break
+				case "leftOfElement":
+					vX = this.xGetEltL(vRelBase) - this.fCurrTtW + pX;
+					if (!pForce && !this.xIsInWinH(vX)) vX = this.xGetEltL(vRelBase) + this.xGetEltW(vRelBase) - pX;
+					break
+				case "rightOfElement":
+					vX = this.xGetEltL(vRelBase) + this.xGetEltW(vRelBase) + pX;
+					if (!pForce && !this.xIsInWinH(vX)) vX = this.xGetEltL(vRelBase) - this.fCurrTtW - pX;
+					break
+				default :
+					vX = this.xGetEltL(vRelBase) + pX;
 			}
 			switch(pVPos){
-			case "center":
-				vY = this.xGetEltT(vRelBase) + (this.xGetEltH(vRelBase) - this.fCurrTtH)/2 + pY;
-				break
-			case "bottomAlign":
-				vY = this.xGetEltT(vRelBase) + this.xGetEltH(vRelBase) - this.fCurrTtH + pY;
-				break
-			case "aboveElement":
-				vY = this.xGetEltT(vRelBase) - this.fCurrTtH + pY;
-				if (!pForce && !this.xIsInWinV(vY)) vY = this.xGetEltT(vRelBase) + this.xGetEltH(vRelBase) - pY;
-				break
-			case "belowElement":
-				vY = this.xGetEltT(vRelBase) + this.xGetEltH(vRelBase) + pY;
-				if (!pForce && !this.xIsInWinV(vY)) vY = this.xGetEltT(vRelBase) - this.fCurrTtH - pY;
-				break
-			default :
-				vY = this.xGetEltT(vRelBase) + pY;
+				case "center":
+					vY = this.xGetEltT(vRelBase) + (this.xGetEltH(vRelBase) - this.fCurrTtH)/2 + pY;
+					break
+				case "bottomAlign":
+					vY = this.xGetEltT(vRelBase) + this.xGetEltH(vRelBase) - this.fCurrTtH + pY;
+					break
+				case "aboveElement":
+					vY = this.xGetEltT(vRelBase) - this.fCurrTtH + pY;
+					if (!pForce && !this.xIsInWinV(vY)) vY = this.xGetEltT(vRelBase) + this.xGetEltH(vRelBase) - pY;
+					break
+				case "belowElement":
+					vY = this.xGetEltT(vRelBase) + this.xGetEltH(vRelBase) + pY;
+					if (!pForce && !this.xIsInWinV(vY)) vY = this.xGetEltT(vRelBase) - this.fCurrTtH - pY;
+					break
+				default :
+					vY = this.xGetEltT(vRelBase) + pY;
 			}
 		}
 		if (!pForce){
 			if(vX > this.fXlim) vX = this.fXlim;
-			var vScrX = this.xInt(window.pageXOffset || (this.fDb? this.fDb.scrollLeft : 0) || 0);
+			const vScrX = scCoLib.toInt(window.pageXOffset || (this.fDb ? this.fDb.scrollLeft : 0) || 0);
 			if(vX < vScrX) vX = vScrX;
 			if(vY > this.fYlim) vY = this.fYlim;
-			var vScrY = this.xInt(window.pageYOffset || (this.fDb? this.fDb.scrollTop : 0) || 0);
+			const vScrY = scCoLib.toInt(window.pageYOffset || (this.fDb ? this.fDb.scrollTop : 0) || 0);
 			if(vY < vScrY) vY = vScrY;
 		}
 		this.xSetDivPos(vX, vY);
 	},
 	xIsInWinH: function(pX) {
-		if(pX > this.fXlim) return(false);
-		var vScr = this.xInt(window.pageXOffset || (this.fDb? this.fDb.scrollLeft : 0) || 0);
-		if(pX < vScr) return(false);
-		return(true);
+		if(pX > this.fXlim) return false;
+		const vScr = scCoLib.toInt(window.pageXOffset || (this.fDb ? this.fDb.scrollLeft : 0) || 0);
+		return pX >= vScr;
+
 	},
 	xIsInWinV: function(pY) {
-		if(pY > this.fYlim) return(false);
-		var vScr = this.xInt(window.pageYOffset || (this.fDb? this.fDb.scrollTop : 0) || 0);
-		if(pY < vScr) return(false);
-		return(true);
+		if(pY > this.fYlim) return false;
+		const vScr = scCoLib.toInt(window.pageYOffset || (this.fDb ? this.fDb.scrollTop : 0) || 0);
+		return pY >= vScr;
+
 	},
 	xSetDivPos: function(pX, pY) {
-		if (this.fCurrTt.fNode.fOpt.FIXTYPE == 'free') return;
-		var vTtsh = this.fCurrTt.style || this.fCurrTt;
-		vTtsh.left = (this.fCurrTtX = pX)+'px';
-		vTtsh.top = (this.fCurrTtY = pY)+'px';
-		if(this.fIfrm) {
-			this.fIfrm.style.left = vTtsh.left;
-			this.fIfrm.style.top = vTtsh.top;
-		}
-	},
-	xOpDeHref: function(pEvt) {
-		var vTag;
-		if(pEvt) {
-			vTag = pEvt.target;
-			while(vTag) {
-				if(vTag.hasAttribute("href")) {
-					this.fTag = vTag
-					this.fTag.t_href = this.fTag.getAttribute("href");
-					this.fTag.removeAttribute("href");
-					this.fTag.style.cursor = "hand";
-					this.fTag.onmousedown = this.xOpReHref;
-					this.fTag.stats = window.status;
-					window.status = this.fTag.t_href;
-					break;
-				}
-				vTag = vTag.parentElement;
-			}
-		}
-	},
-	xOpReHref: function() {
-		if(this.fTag) {
-			this.fTag.setAttribute("href", this.fTag.t_href);
-			window.status = this.fTag.stats;
-			this.fTag = null;
-		}
+		if (this.fCurrTt.fNode.fOpt.FIXTYPE === 'free') return;
+		const vTtsh = this.fCurrTt.style || this.fCurrTt;
+		this.fCurrTtX = pX -this.xGetEltL(this.fCurrTt.offsetParent);
+		this.fCurrTtY = pY -this.xGetEltT(this.fCurrTt.offsetParent);
+		vTtsh.left = this.fCurrTtX+'px';
+		vTtsh.top = this.fCurrTtY+'px';
 	},
 	xSetEltSizePos: function(pElt, pT, pL, pW, pH) {
 		this.xSetEltL(pElt, pL);
@@ -418,30 +347,30 @@ var scTooltipMgr = {
 		this.xSetEltH(pElt, pH);
 	},
 	xSetTtSize: function(pId, pOpt) {
-		if (pOpt.FIXTYPE == 'free') return;
-		var vCont = this.xGetElt(pId);
+		if (pOpt.FIXTYPE === 'free') return;
+		const vCont = sc$(pId);
 		if (vCont) {
-			var vMaxX = this.xInt((this.fDb && this.fDb.clientWidth)? this.fDb.clientWidth : window.innerWidth)+this.xInt(window.pageXOffset || (this.fDb? this.fDb.scrollLeft : 0) || 0);
-			var vTt = vCont.firstChild;
-			while(vTt && vTt.nodeType != 1) vTt = vTt.nextSibling;
+			const vMaxX = scCoLib.toInt((this.fDb && this.fDb.clientWidth) ? this.fDb.clientWidth : window.innerWidth) + scCoLib.toInt(window.pageXOffset || (this.fDb ? this.fDb.scrollLeft : 0) || 0);
+			let vTt = vCont.firstChild;
+			while(vTt && vTt.nodeType !== 1) vTt = vTt.nextSibling;
 			vTt.style.width = '';
 			vCont.style.width = vMaxX ? vMaxX + 'px' : '';
 			vCont.style.height = '';
 			vCont.style.top = '';
 			vCont.style.left = '';
-			var vMaxW = pOpt.MAXWIDTH;
-			var vMaxH = pOpt.MAXHEIGHT;
-			var vTtScrol = this.xGetElt(pId+'Scrol');
-			var vTtW = this.xGetEltW(vTt);
+			const vMaxW = Math.min(pOpt.MAXWIDTH, window.screen.width);
+			const vMaxH = Math.min(pOpt.MAXHEIGHT, window.screen.height);
+			const vTtScrol = sc$(pId + 'Scrol');
+			let vTtW = this.xGetEltW(vTt);
 			if (vTtW > vMaxW) { //Fix max width if needed
 				this.xSetEltW(vTt, vMaxW);
 				vTtW = this.xGetEltW(vTt);
 			}
-			var vTtH = this.xGetEltH(vTt);
+			let vTtH = this.xGetEltH(vTt);
 			if (vTtH > vMaxH) { //Fix max height & add scroll if needed
 				vTtH = vMaxH;
-				var vTtScrolH = vTtH; 
-				var vTtTi = this.xGetElt(pId+'ti');
+				let vTtScrolH = vTtH;
+				const vTtTi = sc$(pId + 'ti');
 				if (vTtTi) vTtScrolH -= this.xGetEltH(vTtTi);
 				if (typeof vTtScrol.style.overflowY != "undefined") vTtScrol.style.overflowY = 'auto';
 				else vTtScrol.style.overflow = 'auto';
@@ -449,149 +378,177 @@ var scTooltipMgr = {
 				vTtH = this.xGetEltH(vTt);
 				pOpt.FORCESTICKY = true; //Set force sticky flag if scroll
 			}
-			var vContW = vTtW;
-			var vContH = vTtH;
+			const vContW = vTtW;
+			const vContH = vTtH;
 			this.xSetEltSizePos(vCont,-2*vContH,-2*vContW,vContW,vContH);
 		}
 	},
 	xEltInContId: function(pElt, pId) {
-		var vElt = pElt;
-		var vFound = false;
+		let vElt = pElt;
+		let vFound = false;
 		if (vElt) {
-			vFound = vElt.id == pId;
+			vFound = vElt.id === pId;
 			while (vElt.parentNode && !vFound) {
 				vElt = vElt.parentNode
-				vFound = vElt.id == pId;
+				vFound = vElt.id === pId;
 			}
 		}
 		return(vFound);
 	},
 	xEltInContTtId: function(pElt, pTtId) {
-		var vElt = pElt;
-		var vFound = false;
+		let vElt = pElt;
+		let vFound = false;
 		if (vElt) {
-			vFound = vElt.ttId == pTtId;
+			vFound = vElt.ttId === pTtId;
 			while (vElt.parentNode && !vFound) {
 				vElt = vElt.parentNode
-				vFound = vElt.ttId == pTtId;
+				vFound = vElt.ttId === pTtId;
 			}
 		}
 		return(vFound);
 	},
 	xGetTargetElt: function(pEvt) {
-		var vEvt = pEvt || window.event;
-		var vTargetElt = null
-		if(vEvt && vEvt.target) vTargetElt = vEvt.target;
-		if(!vTargetElt && vEvt && vEvt.srcElement) vTargetElt = vEvt.srcElement;
+		let vTargetElt = null;
+		if(pEvt && pEvt.target) vTargetElt = pEvt.target;
 		return(vTargetElt);
 	},
 	xGenId: function(pPrefix) {
-		var vIndex = 0;
-		while((this.xGetElt(pPrefix+vIndex) || this.xGetElt(pPrefix+vIndex+'co') || this.xGetElt(pPrefix+vIndex+'ti') || this.xGetElt(pPrefix+vIndex+'SdwB') || this.xGetElt(pPrefix+vIndex+'Scrol')) && vIndex < 10000) vIndex++;
-		if (vIndex == 10000) {
+		let vIndex = 0;
+		while((sc$(pPrefix+vIndex) || sc$(pPrefix+vIndex+'co') || sc$(pPrefix+vIndex+'ti') || sc$(pPrefix+vIndex+'SdwB') || sc$(pPrefix+vIndex+'Scrol')) && vIndex < 10000) vIndex++;
+		if (vIndex === 10000) {
 			alert("Tooltip creation Error");
 			return("");
 		} else return (pPrefix + vIndex);
 	},
 	xInitOpts: function(pOpt) {
-		var vOpt = (typeof pOpt != "undefined")? pOpt : {}; //Retreave  display Opts if any...
-		vOpt.CLASS = (typeof vOpt.CLASS != "undefined")? vOpt.CLASS : "", 
-		vOpt.ABOVE = (typeof vOpt.ABOVE != "undefined")? vOpt.ABOVE : this.cTtAbove, 
-		vOpt.DELAY = (typeof vOpt.DELAY != "undefined")? vOpt.DELAY : this.cTtDelay,
-		vOpt.FIX = (typeof vOpt.FIX != "undefined")? vOpt.FIX : "",
-		vOpt.FIXID = (typeof vOpt.FIXID != "undefined")? vOpt.FIXID : "",
-		vOpt.FIXTYPE = (typeof vOpt.FIXTYPE != "undefined")? vOpt.FIXTYPE : ((vOpt.FIXID == "")? this.cTtFixType : "id"),
-		vOpt.FIXFORCE = (typeof vOpt.FIXFORCE != "undefined")? vOpt.FIXFORCE : false,
-		vOpt.LEFT = (typeof vOpt.LEFT != "undefined")? vOpt.LEFT : this.cTtLeft,
-		vOpt.MAXWIDTH = (typeof vOpt.MAXWIDTH != "undefined")? vOpt.MAXWIDTH : this.cTtMaxWidth;
-		vOpt.MAXHEIGHT = (typeof vOpt.MAXHEIGHT != "undefined")? vOpt.MAXHEIGHT : this.cTtMaxHeight; 
-		vOpt.VPOS = (typeof vOpt.VPOS != "undefined")? vOpt.VPOS : this.cTtVPos,
-		vOpt.HPOS = (typeof vOpt.HPOS != "undefined")? vOpt.HPOS : this.cTtHPos,
-		vOpt.OFFSETX = (typeof vOpt.OFFSETX != "undefined")? vOpt.OFFSETX : this.cTtOffsetX,
-		vOpt.OFFSETY = (typeof vOpt.OFFSETY != "undefined")? vOpt.OFFSETY : this.cTtOffsetY,
-		vOpt.STATIC = (typeof vOpt.STATIC != "undefined")? vOpt.STATIC : this.cTtStatic,
-		vOpt.STICKY = (typeof vOpt.STICKY != "undefined")? vOpt.STICKY : this.cTtSticky,
-		vOpt.FOCUS = (typeof vOpt.FOCUS != "undefined")? vOpt.FOCUS : this.cTtFocus,
-		vOpt.TEMP = (typeof vOpt.TEMP != "undefined")? vOpt.TEMP : this.cTtTemp;
-		vOpt.CLSBTN = (typeof vOpt.CLSBTN != "undefined")? vOpt.CLSBTN : false;
-		vOpt.PARENT = (typeof vOpt.PARENT != "undefined")? vOpt.PARENT : document.body;
-		if (vOpt.CLSBTN) {
-			vOpt.CLSBTNCAP = (typeof vOpt.CLSBTNCAP != "undefined")? vOpt.CLSBTNCAP : "&nbsp;";
-			vOpt.CLSBTNTI = (typeof vOpt.CLSBTNTI != "undefined")? vOpt.CLSBTNTI : "";
+		const vOpt = (typeof pOpt != "undefined") ? pOpt : {}; //Retrieve  display Opts if any...
+		const vOptNew = {};
+		vOptNew.CLASS = (typeof vOpt.CLASS != "undefined")? vOpt.CLASS : "";
+		vOptNew.ABOVE = (typeof vOpt.ABOVE != "undefined")? vOpt.ABOVE : this.cTtAbove;
+		vOptNew.DELAY = (typeof vOpt.DELAY != "undefined")? vOpt.DELAY : this.cTtDelay;
+		vOptNew.FIX = (typeof vOpt.FIX != "undefined")? vOpt.FIX : "";
+		vOptNew.FIXID = (typeof vOpt.FIXID != "undefined")? vOpt.FIXID : "";
+		vOptNew.FIXTYPE = (typeof vOpt.FIXTYPE != "undefined")? vOpt.FIXTYPE : ((vOpt.FIXID === "")? this.cTtFixType : "id");
+		vOptNew.FIXFORCE = (typeof vOpt.FIXFORCE != "undefined")? vOpt.FIXFORCE : false;
+		vOptNew.LEFT = (typeof vOpt.LEFT != "undefined")? vOpt.LEFT : this.cTtLeft;
+		vOptNew.MAXWIDTH = (typeof vOpt.MAXWIDTH != "undefined")? vOpt.MAXWIDTH : this.cTtMaxWidth;
+		vOptNew.MAXHEIGHT = (typeof vOpt.MAXHEIGHT != "undefined")? vOpt.MAXHEIGHT : this.cTtMaxHeight;
+		vOptNew.VPOS = (typeof vOpt.VPOS != "undefined")? vOpt.VPOS : this.cTtVPos;
+		vOptNew.HPOS = (typeof vOpt.HPOS != "undefined")? vOpt.HPOS : this.cTtHPos;
+		vOptNew.OFFSETX = (typeof vOpt.OFFSETX != "undefined")? vOpt.OFFSETX : this.cTtOffsetX;
+		vOptNew.OFFSETY = (typeof vOpt.OFFSETY != "undefined")? vOpt.OFFSETY : this.cTtOffsetY;
+		vOptNew.STATIC = (typeof vOpt.STATIC != "undefined")? vOpt.STATIC : this.cTtStatic;
+		vOptNew.STICKY = (typeof vOpt.STICKY != "undefined")? vOpt.STICKY : this.cTtSticky;
+		vOptNew.FOCUS = (typeof vOpt.FOCUS != "undefined")? vOpt.FOCUS : this.cTtFocus;
+		vOptNew.TEMP = (typeof vOpt.TEMP != "undefined")? vOpt.TEMP : this.cTtTemp;
+		vOptNew.CLSBTN = (typeof vOpt.CLSBTN != "undefined")? vOpt.CLSBTN : false;
+		vOptNew.PARENT = (typeof vOpt.PARENT != "undefined")? vOpt.PARENT : document.body;
+		if (vOptNew.CLSBTN) {
+			vOptNew.CLSBTNCAP = (typeof vOpt.CLSBTNCAP != "undefined")? vOpt.CLSBTNCAP : "&#160;";
+			vOptNew.CLSBTNTI = (typeof vOpt.CLSBTNTI != "undefined")? vOpt.CLSBTNTI : "";
 		}
-		return vOpt;
+		if (vOptNew.HPOS==="startAlign") vOptNew.HPOS = this.cIsRtl ? "rightAlign" : "leftAlign";
+		if (vOptNew.HPOS==="endAlign") vOptNew.HPOS = this.cIsRtl ? "leftAlign" : "rightAlign";
+		if (vOptNew.HPOS==="startOfElement") vOptNew.HPOS = this.cIsRtl ? "rightOfElement" : "leftOfElement";
+		if (vOptNew.HPOS==="endOfElement") vOptNew.HPOS = this.cIsRtl ? "leftOfElement" : "rightOfElement";
+		if (vOptNew.FIXTYPE==="node" && vOptNew.FIX) vOptNew.FIX[0] = this.cIsRtl ? -vOptNew.FIX[0] : vOptNew.FIX[0];
+		if(vOptNew.FOCUS==="false") vOptNew.FOCUS = false;
+		return vOptNew;
 	},
 	xAddClass : function(pNode, pClass) {
-		var vNewClassStr = pNode.className;
-		for (var i = 1, n = arguments.length; i < n; i++) vNewClassStr += ' '+arguments[i];
-		pNode.className = vNewClassStr;
+		if (pClass !== '') {
+			if (pNode.classList) {
+				for (let i = 1, n = arguments.length; i < n; i++) {
+					if (!pNode.classList.contains(arguments[i])) pNode.classList.add(arguments[i]);
+				}
+			}
+			else {
+				let vNewClassStr = pNode.className;
+				for (let i = 1, n = arguments.length; i < n; i++) vNewClassStr += ' '+arguments[i];
+				pNode.className = vNewClassStr;
+			}
+		}
 	},
 	xDelClass : function(pNode, pClass) {
-		if (pClass != '') {
-			var vCurrentClasses = pNode.className.split(' ');
-			var vNewClasses = new Array();
-			for (var i = 0, n = vCurrentClasses.length; i < n; i++) {
-				var vClassFound = false;
-				for (var j = 1, m = arguments.length; j < m; j++) {
-					if (vCurrentClasses[i] == arguments[j]) vClassFound = true;
+		if (pClass !== '') {
+			if (pNode.classList) {
+				for (let i = 1, n = arguments.length; i < n; i++) {
+					if (pNode.classList.contains(arguments[i])) pNode.classList.remove(arguments[i]);
 				}
-				if (!vClassFound) vNewClasses.push(vCurrentClasses[i]);
+			} else {
+				const vCurrentClasses = pNode.className.split(' ');
+				const vNewClasses = [];
+				for (let i = 0, n = vCurrentClasses.length; i < n; i++) {
+					let vClassFound = false;
+					for (let j = 1, m = arguments.length; j < m; j++) {
+						if (vCurrentClasses[i] === arguments[j]) vClassFound = true;
+					}
+					if (!vClassFound) vNewClasses.push(vCurrentClasses[i]);
+				}
+				pNode.className = vNewClasses.join(' ');
 			}
-			pNode.className = vNewClasses.join(' ');
 		}
 	},
 	xHasAttr : function(pTag, pAttrName) {
 		return pTag.hasAttribute ? pTag.hasAttribute(pAttrName) : typeof pTag[pAttrName] !== "undefined";
+	},
+	xBtnKeyUp: function(pEvent) {
+		if (pEvent.code === "Space") pEvent.target.click();
+	},
+	xBtnKeyDwn: function(pEvent) {
+		if (pEvent.code === "Space") pEvent.preventDefault();
 	},
 
 
 
 	moveTooltip: function(pEvt) {
 		if(!scTooltipMgr.fCurrTt) return;
-		if(scTooltipMgr.fNavn6 || scTooltipMgr.fNavw3c) {
-			if(scTooltipMgr.fWait) return;
-			scTooltipMgr.fWait = true;
-			setTimeout('scTooltipMgr.fWait = false;', 5);
-		}
-		var vEvt = pEvt || window.event;
-		scTooltipMgr.xSetDivPos(scTooltipMgr.xEvX(vEvt), scTooltipMgr.xEvY(vEvt));
-		if(scTooltipMgr.fCurrTt.fNode.onmouseover &&  !scTooltipMgr.xEltInContTtId(scTooltipMgr.xGetTargetElt(vEvt), scTooltipMgr.fCurrTtId)) scTooltipMgr.hideTooltip();
+		scTooltipMgr.xSetDivPos(scTooltipMgr.xEvX(pEvt), scTooltipMgr.xEvY(pEvt));
+		if(scTooltipMgr.fCurrTt.fNode.onmouseover &&  !scTooltipMgr.xEltInContTtId(scTooltipMgr.xGetTargetElt(pEvt), scTooltipMgr.fCurrTtId)) scTooltipMgr.hideTooltip();
 	},
 	releaseMov: function() {
-		if(document.onmousemove == this.moveTooltip) {
-			if(!this.fMmovEvt && document.releaseEvents && !this.fNavn6) document.releaseEvents(Event.MOUSEMOVE);
+		if(document.onmousemove === this.moveTooltip) {
 			document.onmousemove = this.fMmovEvt;
 		}
 	},
 	releaseSize: function() {
-		if(window.onresize == this.reposTooltip) {
-			if(!this.fWsizEvt && document.releaseEvents && !this.fNavn6) document.releaseEvents(Event.RESIZE);
+		if(window.onresize === this.reposTooltip) {
 			window.onresize = this.fWsizEvt;
 		}
 	},
 	showDiv: function(pFlag) {
-		this.xShowIfrm(pFlag);
 		this.fCurrTt.style.visibility = pFlag? 'visible' : 'hidden';
 		this.fAct = pFlag;
 	},
 	hideTooltip: function(pPara) {
-		var vForce = (typeof pPara == "boolean")? pPara : false;
-		if(scTooltipMgr.fCurrTt) {
-			if(window.tt_rdl) window.clearTimeout(tt_rdl);
-			if(!scTooltipMgr.fSticky || !scTooltipMgr.fAct || (scTooltipMgr.fSticky && !scTooltipMgr.xEltInContId(scTooltipMgr.xGetTargetElt(pPara),scTooltipMgr.fCurrTtId)) || vForce) {
-				if(window.tt_rtm) window.clearTimeout(tt_rtm);
-				scTooltipMgr.showDiv(false);
-				scTooltipMgr.xSetDivPos(-2*scTooltipMgr.fCurrTtW, -2*scTooltipMgr.fCurrTtH);
-				if (scTooltipMgr.fCurrTt.fNode.ttTitle) scTooltipMgr.fCurrTt.fNode.setAttribute("title", scTooltipMgr.fCurrTt.fNode.ttTitle);
-				if (scTooltipMgr.fCurrTt.fNode.ttAlt) scTooltipMgr.fCurrTt.fNode.alt = scTooltipMgr.fCurrTt.fNode.ttAlt;
-				for(var i=0; i<scTooltipMgr.fCurrTt.fNode.fTtShownCls.length; i++) scTooltipMgr.xDelClass(scTooltipMgr.fCurrTt.fNode, scTooltipMgr.fCurrTt.fNode.fTtShownCls[i]);
-				for(var i=0; i<scTooltipMgr.fHideListeners.length; i++) try{scTooltipMgr.fHideListeners[i](scTooltipMgr.fCurrTt.fNode);}catch(e){};
-				scTooltipMgr.fCurrTt.fNode.focus();
-				scTooltipMgr.fCurrTt = null;
-				if(typeof scTooltipMgr.fMupEvt != "undefined") document.onmouseup = scTooltipMgr.fMupEvt;
+		const vForce = (typeof pPara == "boolean") ? pPara : false;
+		let i;
+		if(scTooltipMgr.fHiding) return;
+		try {
+			scTooltipMgr.fHiding = true;
+			if(scTooltipMgr.fCurrTt) {
+				if(window.tt_rdl) window.clearTimeout(tt_rdl);
+				if(!scTooltipMgr.fSticky || !scTooltipMgr.fAct || (scTooltipMgr.fSticky && !scTooltipMgr.xEltInContId(scTooltipMgr.xGetTargetElt(pPara),scTooltipMgr.fCurrTtId)) || vForce) {
+					if(window.tt_rtm) window.clearTimeout(tt_rtm);
+					scTooltipMgr.showDiv(false);
+					scTooltipMgr.xSetDivPos(-2*scTooltipMgr.fCurrTtW, -2*scTooltipMgr.fCurrTtH);
+					if (scTooltipMgr.fCurrTt.fNode.ttTitle) scTooltipMgr.fCurrTt.fNode.setAttribute("title", scTooltipMgr.fCurrTt.fNode.ttTitle);
+					if (scTooltipMgr.fCurrTt.fNode.ttAlt) scTooltipMgr.fCurrTt.fNode.alt = scTooltipMgr.fCurrTt.fNode.ttAlt;
+					if (scTooltipMgr.fCurrTt.fNode.fOpt.FOCUS==="transient") scTooltipMgr.fCurrTt.fNode.setAttribute("aria-expanded", "false");
+					for(i = 0; i<scTooltipMgr.fCurrTt.fNode.fTtShownCls.length; i++) scTooltipMgr.xDelClass(scTooltipMgr.fCurrTt.fNode, scTooltipMgr.fCurrTt.fNode.fTtShownCls[i]);
+					for(i = 0; i<scTooltipMgr.fHideListeners.length; i++) try{scTooltipMgr.fHideListeners[i](scTooltipMgr.fCurrTt.fNode);}catch(e){}
+					if(scTooltipMgr.fCurrTt.fFocusElt) scTooltipMgr.fCurrTt.fFocusElt.setAttribute("inert", "true");
+					scTooltipMgr.fCurrTt.fNode.focus();
+					scTooltipMgr.fCurrTt = null;
+					if(typeof scTooltipMgr.fMupEvt != "undefined") document.onmouseup = scTooltipMgr.fMupEvt;
+				}
+				scTooltipMgr.releaseMov();
+				scTooltipMgr.releaseSize();
 			}
-			scTooltipMgr.releaseMov();
-			scTooltipMgr.releaseSize();
+		} catch (e){
+			console.error(e);
+		} finally {
+			scTooltipMgr.fHiding = false;
 		}
 		return false;
 	},
@@ -601,43 +558,63 @@ var scTooltipMgr = {
 
 
 
+	registerTooltips: function(pRoot) {
+		try{
+			this.fDb = null;
+			const vRoot = pRoot || document;
+			const vAncs = vRoot.querySelectorAll("*[data-sctooltip]");
+			for (let i=0; i < vAncs.length; i++){
+				const vAnc = vAncs[i];
+				const vOpts = JSON.parse(vAnc.getAttribute("data-sctooltip"));
+				this.registerTooltip(vAnc.id, vOpts.ttId, vOpts.trigger, vOpts.class, vOpts.classRoot, vOpts.options);
+			}
+		} catch(e){
+			console.error("scTooltipMgr.registerTooltips - error : "+e);
+		}
+	},
 	registerTooltip: function(pIdAnc, pIdTt, pTrig, pCls, pClsRoot, pOpt) {
 		try{
 			this.xInitMgr(); // Initialize tooltipMgr if needed
-			var vAncNode = this.xGetElt(pIdAnc);
-			var vTtSrc = this.xGetElt(pIdTt);
+			const vAncNode = sc$(pIdAnc);
+			const vTtSrc = sc$(pIdTt);
 			vTtSrc.ttIds = [];
 			vAncNode.fOpt = scTooltipMgr.xInitOpts(pOpt);
-			var vTi = vTtSrc.firstChild;
-			while(vTi && vTi.nodeType != 1) vTi = vTi.nextSibling;
-			var vCo = vTi.nextSibling;
-			while(vCo && vCo.nodeType != 1) vCo = vCo.nextSibling;
+			let vTi = vTtSrc.firstChild;
+			while(vTi && vTi.nodeType !== 1) vTi = vTi.nextSibling;
+			let vCo = vTi.nextSibling;
+			while(vCo && vCo.nodeType !== 1) vCo = vCo.nextSibling;
 			vTtSrc.ttIds.push(this.xMakeTt(vAncNode, vCo, vTi, pCls, pClsRoot)); //build the tooltip HTML
 			vAncNode[pTrig] = function (pEvt) {return scTooltipMgr.showTooltip(this,pEvt);}
-			if (pTrig != "onclick" && vAncNode.href && vAncNode.href.split("#")[0] == window.location.href) vAncNode.onclick = vAncNode[pTrig] // Force onclick for accessibility
-			
+			if (pTrig === "onclick") {
+				vAncNode.setAttribute("role", "button");
+				vAncNode.onkeyup = function (pEvt) {return scTooltipMgr.xBtnKeyUp(pEvt);}
+				vAncNode.onkeydown = function (pEvt) {return scTooltipMgr.xBtnKeyDwn(pEvt);}
+			} else if (vAncNode.href && scCoLib.hrefBase(vAncNode.href) === scCoLib.hrefBase()) vAncNode.onclick = vAncNode[pTrig] // Force onclick for accessibility
+
 
 			if (!pOpt.NOREF){
-				var vRef = vAncNode.nextSibling;
-				while(vRef && vRef.nodeType != 1) vRef = vRef.nextSibling;
+				let vRef = vAncNode.nextSibling;
+				while(vRef && vRef.nodeType !== 1) vRef = vRef.nextSibling;
 				if(vRef && this.fHideBasket) vRef.style.display = "none";
-				else if(vRef) vRef.className = vRef.className + " " + this.fRegCls;
+				else if(vRef && this.fRegCls) vRef.className = vRef.className + " " + this.fRegCls;
 			}
 
 			if (this.fHideBasket) vTtSrc.style.display = "none";
-			else vTtSrc.className = vTtSrc.className + " " + this.fRegCls;
+			else if(this.fRegCls) vTtSrc.className = vTtSrc.className + " " + this.fRegCls;
 
-			var vBskt = vTtSrc.parentNode;
-			var vBsktElts = vBskt.childNodes;
-			if (this.xHasAttr(vBskt, "data-titled-basket")) vBskt = vBskt.parentNode;
-			var vEmpty = true;
-			for(var i = 0; i < vBsktElts.length; i++) if (vBsktElts[i].nodeType==1 && !vBsktElts[i].ttIds) {vEmpty = false; break;} 
-			if (vEmpty){
-				if (this.fHideBasket) vBskt.style.display = "none";
-				else vBskt.className = vBskt.className + " " + this.fRegCls;
+			if (this.fHideBasket || this.fRegCls){
+				let vBskt = vTtSrc.parentNode;
+				const vBsktElts = vBskt.childNodes;
+				if (this.xHasAttr(vBskt, "data-titled-basket")) vBskt = vBskt.parentNode;
+				let vEmpty = true;
+				for(let i = 0; i < vBsktElts.length; i++) if (vBsktElts[i].nodeType===1 && !vBsktElts[i].ttIds) {vEmpty = false; break;}
+				if (vEmpty){
+					if (this.fHideBasket) vBskt.style.display = "none";
+					else vBskt.className = vBskt.className + " " + this.fRegCls;
+				}
 			}
 		} catch(e){
-			scCoLib.log("scTooltipMgr.registerTooltip - error : "+e);
+			console.error("scTooltipMgr.registerTooltip - error : "+e);
 		}
 	},
 	addMakeListener: function(pFunc) {this.fMakeListeners.push(pFunc)},
@@ -646,23 +623,22 @@ var scTooltipMgr = {
 	showTooltip: function(pNode, pEvt, pCo, pTi, pCls, pClsRoot, pOpt) {
 		if(document.scDragMgrDragGroup) return; // no tooltips while draging
 		this.xInitMgr(); // Initialize tooltipMgr  if needed
-		var vTtId = pNode.ttId || null; //Retreave the tooltip ID if it has already been created
-		if (this.fCurrTt != null && this.fCurrTt == this.xGetElt(vTtId)) return; // If the tooltip is already shown, exit (safari bug & moz call of multiple onmouseover)
-		
+		let vTtId = pNode.ttId || null; //Retrieve the tooltip ID if it has already been created
+		if (this.fCurrTt != null && this.fCurrTt === sc$(vTtId)) return; // If the tooltip is already shown, exit
+
 
 		if (vTtId == null) {
 			pNode.fOpt = this.xInitOpts(pOpt);
 			vTtId = this.xMakeTt(pNode, pCo, pTi, pCls, pClsRoot); //build the tooltip HTML
-			if (!pNode.onclick && pNode.href && pNode.href.split("#")[0] == window.location.href) pNode.onclick = function() {return false;};
+			if (!pNode.onclick && pNode.href && pNode.href.split("#")[0] === window.location.href) pNode.onclick = function() {return false;};
 		}
-		this.xInitIfrm(); // Init ie iframe if needed
 		pNode.fOpt.STICKY = pNode.fOpt.STICKY || (pNode.ttFSticky || false);
 
 
 		this.xShow(pEvt, vTtId, pNode.fOpt);
 
 
-		for(var i=0; i<this.fShowListeners.length; i++) try{this.fShowListeners[i](pNode);}catch(e){};
+		for(let i=0; i<this.fShowListeners.length; i++) try{this.fShowListeners[i](pNode);}catch(e){};
 		return false;
 	}
 };
