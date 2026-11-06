@@ -1,59 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html>
-<html lang="fr">
- <head>
-  <meta http-equiv="x-ua-compatible" content="IE=EDGE">
-  <title>Mod&eacute;lisation en variables mixtes&nbsp;: &quot;Big M&quot;</title>
-  <meta charset="UTF-8">
-  <meta name="generator" content="SCENARI 4.2.106 / Opale 3.6.103">
-  <meta name="revision" content="2022-05-21 20:47">
-  <link rel="start" href="Sylvain_serra.html" title="Dr (HDR) Sylvain Serra">
-  <meta name="author" content>
-  <meta name="date" content>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" type="text/css" href="../lib-md/w_scImgMgr/scImgMgr.css">
-  <link rel="stylesheet" type="text/css" href="../lib-md/w_scCodeMgr/scCodeMgr.css">
-  <script type="text/JavaScript">
-/*0*/ var scServices = {id:"l3gce046"};
+<html lang="fr" xml:lang="fr" dir="ltr" xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>Modélisation en variables mixtes : "Big M"</title>
+		<meta charset="UTF-8" />
+		<meta name="generator" content="SCENARI 6.5.4 / OpaleExtEmeraude 26.0.3" />
+		<meta name="revision" content="2026-11-05 21:06" />
+		<link rel="start" href="Sylvain_serra.html" title="Dr (HDR) Sylvain Serra" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<script type="importmap">{"imports":{"skin/":"../skin/","lib-sc/":"../lib-sc/","lib-md/":"../lib-md/"}}</script>
+		<link rel="stylesheet" type="text/css" href="../lib-md/w_scCodeMgr/scCodeMgr.css" />
+		<link rel="stylesheet" type="text/css" href="../lib-md/w_jsmind/jsmind.css" />
+		<link rel="stylesheet" type="text/css" href="../lib-md/w_tePlayer/tePlayer.css" />
+		<script>/*<![CDATA[*/
+/*0*/ var scServices = {id:"mw41cpr4"};
 /*1*/ window.scLoadParams = {destUri:"/co/Variables_mixtes.html", pathToRoot:"../"};
-</script>
-  <script type="text/JavaScript" src="../lib-sc/scCoLib.js"></script>
-  <script type="text/JavaScript" src="../lib-sc/scTiLib.js"></script>
-  <script type="text/JavaScript" src="../lib-sc/scSiLib.js"></script>
-  <script type="text/JavaScript" src="../lib-sc/scPaLib.js"></script>
-  <script type="text/JavaScript" src="../lib-sc/scTooltipMgr.js"></script>
-  <script type="text/JavaScript" src="../lib-sc/scDynUiMgr.js"></script>
-  <script type="text/JavaScript" src="../lib-md/s_assmnt.js"></script>
-  <script type="text/JavaScript" src="../lib-sc/scMapMgr.js"></script>
-  <script type="text/JavaScript" src="../lib-sc/scDragMgr.js"></script>
-  <script type="text/JavaScript" src="../lib-sc/scAssmntMgr.js"></script>
-  <script type="text/JavaScript" src="../lib-md/s_scSearch/scSearch.js"></script>
-  <script type="text/JavaScript" src="../lib-md/w_mathjax/mathjaxMgr.js"></script>
-  <script type="text/JavaScript" src="../lib-md/w_tplMgr/tplMgr.js"></script>
-  <script type="text/JavaScript" src="../lib-md/w_scCodeMgr/scCodeMgr.js"></script>
-  <script type="text/JavaScript" src="../lib-md/w_scMediaMgr/scMediaMgr.js"></script>
-  <script type="text/JavaScript" src="../lib-md/w_scImgMgr/scImgMgr.js"></script>
-  <script type="text/JavaScript">
+/*]]>*/</script>
+		<script src="../lib-sc/scCoLib.js" ></script>
+		<script src="../lib-sc/scSiLib.js" ></script>
+		<script src="../lib-sc/scTiLib.js" ></script>
+		<script src="../lib-sc/scPaLib.js" ></script>
+		<script src="../lib-sc/scMapMgr.js" ></script>
+		<script src="../lib-md/s_assmnt.js" ></script>
+		<script src="../lib-sc/scDynUiMgr.js" ></script>
+		<script src="../lib-sc/scTooltipMgr.js" ></script>
+		<script src="../lib-sc/scDragMgr.js" ></script>
+		<script src="../lib-sc/scAssmntMgr.js" ></script>
+		<script src="../lib-md/w_teMgr/teLoader.js" ></script>
+		<script src="../lib-md/w_tplMgr/tplMgr.js" ></script>
+		<script src="../lib-md/s_scSearch/jsSearch.js" ></script>
+		<script src="../lib-md/w_mathjax/mathjaxMgr.js" ></script>
+		<script src="../lib-md/w_tePlayer/tePlayer.js" ></script>
+		<script src="../lib-md/w_scCodeMgr/scCodeMgr.js" ></script>
+		<script src="../lib-md/w_scImageMgr/scImageMgr.js" ></script>
+		<script src="../lib-md/w_mapMgr/mapMgr.js" ></script>
+		<script src="../lib-md/w_jsmind/jsmind.js" ></script>
+		<script>/*<![CDATA[*/
 /*0*/ try{if(window.opener && window.opener.scServices && window.opener.scServices.id == scServices.id) scServices = window.opener.scServices; else if(window.parent && window.parent.scServices && window.parent.scServices.id == scServices.id) scServices = window.parent.scServices;}catch(e){}
+scImageMgr.registerZoom("des:a.imgZoom",{toolbar:1,mag:1,titlePath:"par:/nsi:/des:span.capTi"});
 scCodeMgr.registerCode("des:div.code");
 
-scImgMgr.registerAdaptedImage("ide:content/des:img");
+scImageMgr.registerAdaptedImage("ide:content/des:figure.resInFlow/chi:.resInFlow_co/chi:img");
+scImageMgr.registerAdaptedImage("ide:content/des:figure.resInFlow/chi:.resInFlow_co/chi:a/chi:img");
 
-scImgMgr.registerGallery("des:div.galFra");
+scImageMgr.registerGallery("des:ul.galFra");
 
-scImgMgr.registerZoom("des:a.imgZoom",{toolbar:1,mag:1,titlePath:"par:/nsi:/des:span.capTi"});
+scImageMgr.registerSequence("des:ul.seqFra");
 
-</script>
-  <link type="text/css" rel="stylesheet" href="../skin/css/main.css" media="all">
-  <link type="text/css" rel="stylesheet" href="../skin/css/skin.css" media="all">
-  <link type="text/css" rel="stylesheet" href="../skin/css/print.css" media="print">
-  <script type="text/javascript">try{
+scImageMgr.registerZoom("des:a.svgZoom",{type:"svg",svgMax:1,toolbar:1,titlePath:"par:/nsi:/des:span.capTi"});
+
+tePlayerMgr.init();
+/*]]>*/</script>
+		<meta name="robots" content="index,follow" />
+		<link type="text/css" rel="stylesheet" href="types.css" />
+		<link type="text/css" rel="stylesheet" href="../skin/css/main.css" media="all" />
+		<link type="text/css" rel="stylesheet" href="../skin/css/skin.css" media="all" />
+		<link type="text/css" rel="stylesheet" href="../skin/css/print.css" media="print" />
+		<script>/*<![CDATA[*/try{
 	if(window.frameElement.setSubWindowTitle) window.frameElement.setSubWindowTitle(document.title);
 }catch(e){}
-</script>
- </head>
- <body class="subWin ref">
-  <div id="root"><header id="header" role="banner"><nav role="navigation"><ul id="accessibility"><li class="waiContent"><a href="#content"><span>contenu</span></a></li></ul></nav></header><main id="main" role="main"><div id="document"><div id="content" tabindex="-1"><div class="scroller"><hr class="hidden"><section class="hBk article expUc"><h2 class="hBk_ti"><span>Mod&eacute;lisation en variables mixtes&nbsp;: &quot;Big M&quot;</span></h2><div class="hBk_co "><div class="iBk info"><div class="iBk_co "><div class="rBk res"><figure role="group" class="resInFlow jpeg"><div class="resInFlow_co "><img src="../res/vari_Mixt.jpg" width="572" height="187" alt></div></figure></div><div class="rBk "><p>La temp&eacute;rature <span class="txt_mathtex_tl "><span aria-label="Notation Latex&nbsp;: T_0">\(T_0\)</span></span> du courant sortant doit &ecirc;tre &eacute;gale &agrave; celle du seul courant existant&nbsp;!</p><p><span class="txt_mathtex_tl "><span aria-label="Notation Latex&nbsp;: \overset{N}{\underset{i=1}{\Sigma}} y_i = 1 ">\(\overset{N}{\underset{i=1}{\Sigma}} y_i = 1 \)</span></span></p></div><div class="rBk "><p><span class="txt_mathtex_tl "><span aria-label="Notation Latex&nbsp;: T_0\geq T_i-M(1-y_i )">\(T_0\geq T_i-M(1-y_i )\)</span></span> si <span class="txt_mathtex_tl "><span aria-label="Notation Latex&nbsp;: y_i=1">\(y_i=1\)</span></span> alors <span class="txt_mathtex_tl "><span aria-label="Notation Latex&nbsp;: T_i\leq T_0\leq T_i">\(T_i\leq T_0\leq T_i\)</span></span> soit <span class="txt_mathtex_tl "><span aria-label="Notation Latex&nbsp;: T_i=T_0">\(T_i=T_0\)</span></span></p><p><span class="txt_mathtex_tl "><span aria-label="Notation Latex&nbsp;: T_0\leq T_i+M(1-y_i )">\(T_0\leq T_i+M(1-y_i )\)</span></span> si <span class="txt_mathtex_tl "><span aria-label="Notation Latex&nbsp;: y_i=0">\(y_i=0\)</span></span> alors <span class="txt_mathtex_tl "><span aria-label="Notation Latex&nbsp;: -M\leq T_0\leq M">\(-M\leq T_0\leq M\)</span></span></p></div></div></div></div></section></div></div></div></main><footer id="footer" role="contentinfo" tabindex="-1"><hr class="hidden"></footer></div>
-  <script type="text/JavaScript" src="../skin/js/skin.js"></script>
-  <script type="text/javascript">tplMgr.init();scCodeMgr.init();mathjaxMgr.init();scMediaMgr.init("ide:content/chi:div/chi:section/des:.mediaPlayer",{processYoutubeUrls :true});scImgMgr.init();</script>
- </body>
-</html>
+/*]]>*/</script></head>
+	<body class="subWin ref">
+		<div id="root"><header id="header"><nav><ul id="accessibility"><li class="waiContent"><a href="#content"><span>contenu</span></a></li></ul></nav></header><main id="main" role="main"><div id="document"><div id="content" tabindex="0"><div class="scroller"><hr class="hidden" /><section class="hBk article expUc"><h2 class="hBk_ti "><span>Modélisation en variables mixtes : "Big M"</span></h2><div class="hBk_co "><div class="iBk info"><div class="iBk_co "><div class="rBk res"><figure role="group" class="resInFlow image" aria-label=""><div class="resInFlow_co "><img src="../res/vari_Mixt.jpg" width="572" height="187" alt="" /></div></figure></div><div class="rBk "><p>La température <span class="txt_mathtex_tl "><span>\(T_0\)</span></span> du courant sortant doit être égale à celle du seul courant existant !</p><p><span class="txt_mathtex_tl "><span>\(\overset{N}{\underset{i=1}{\Sigma}} y_i = 1\)</span></span></p></div><div class="rBk "><p><span class="txt_mathtex_tl "><span>\(T_0\geq T_i-M(1-y_i )\)</span></span> si <span class="txt_mathtex_tl "><span>\(y_i=1\)</span></span> alors <span class="txt_mathtex_tl "><span>\(T_i\leq T_0\leq T_i\)</span></span> soit <span class="txt_mathtex_tl "><span>\(T_i=T_0\)</span></span></p><p><span class="txt_mathtex_tl "><span>\(T_0\leq T_i+M(1-y_i )\)</span></span> si <span class="txt_mathtex_tl "><span>\(y_i=0\)</span></span> alors <span class="txt_mathtex_tl "><span>\(-M\leq T_0\leq M\)</span></span></p></div></div></div></div></section></div></div></div></main><footer id="footer" tabindex="-1"><hr class="hidden" /></footer></div>
+		<script src="../skin/js/skin.js" ></script>
+		<script>/*<![CDATA[*/
+/* 0 */ tplMgr.init({accessBar:"none",zenMode:0,themeMode:"none",addMenuBtn:true});
+/* 5 */ mapMgr.init();
+/* 5 */ scCodeMgr.init();
+/* 5 */ scImageMgr.init();
+/*]]>*/</script>
+		<script>/*<![CDATA[*/mathjaxMgr.init();/*]]>*/</script></body></html>
